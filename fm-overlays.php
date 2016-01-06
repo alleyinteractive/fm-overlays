@@ -27,7 +27,7 @@
  *
  * @var string
  */
-define( 'FM_OVERLAYS_VERSION', '0.0.2' );
+define( 'FM_OVERLAYS_VERSION', '0.0.1' );
 
 /**
  * Localization Domain
