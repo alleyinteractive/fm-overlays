@@ -3,7 +3,7 @@
 /*
 	Plugin Name: Fieldmanager Overlays
 	Plugin URI: https://github.com/alleyinteractive/fm-overlays
-	Description: A Fieldmanager extension which creates overlays/modal boxes.
+	Description: A Fieldmanager extension to render dynamic content in modal boxes/overlays on a site.
 	Version: 0.1
 	Author: Alley Interactive
 	Author URI: http://www.alleyinteractive.com/
@@ -30,13 +30,6 @@
 define( 'FM_OVERLAYS_VERSION', '0.0.1' );
 
 /**
- * Localization Domain
- *
- * @var string
- */
-define( 'FM_OVERLAYS_DOMAIN', 'fm-overlays' );
-
-/**
  * Filesystem path to Ad Layers.
  *
  * @var string
@@ -45,7 +38,7 @@ define( 'FM_OVERLAYS_PATH', plugin_dir_path( __FILE__ ) );
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
-	wp_die( esc_html__( 'Denied!', FM_OVERLAYS_DOMAIN ) );
+	wp_die( esc_html__( 'Denied!', 'fm-overlays' ) );
 }
 
 function fm_overlays_setup_files() {
@@ -59,12 +52,12 @@ function fm_overlays_setup_files() {
 	 *
 	 * Just kidding, load in singleton base class.
 	 */
-	require_once( FM_OVERLAYS_PATH . 'php/fm-overlays-singleton.php' );
+	require_once( FM_OVERLAYS_PATH . 'php/class-fm-overlays-singleton.php' );
 
 	/**
 	 * require post type
 	 */
-	require_once( FM_OVERLAYS_PATH . 'php/fm-overlays-post-type.php' );
+	require_once( FM_OVERLAYS_PATH . 'php/class-fm-overlays-post-type.php' );
 }
 
 add_action( 'after_setup_theme', 'fm_overlays_setup_files' );
