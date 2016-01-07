@@ -23,11 +23,19 @@ if ( ! class_exists( 'Fm_Overlays_Post_Type' ) ) :
 		 * Set us up the singleton, why don't we?
 		 */
 		public function setup() {
-			// Create the post type
+			// Create overlay post type
 			add_action( 'init', array( $this, 'create_post_type' ) );
 
-			// Add the custom meta boxes for managing this post type
+			/**
+			 * Add the custom meta boxes for managing this post type
+			 *
+			 * @TODO Build out useful FM fields for this post type.
+			 */
 			add_action( 'fm_post_' . $this->post_type, array( $this, 'add_meta_boxes' ) );
+
+			/**
+			 * @TODO Integrate targeting logic (yet to be created -- look into ad-layers for inspo).
+			 */
 		}
 
 		/**
