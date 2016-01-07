@@ -5,7 +5,7 @@
  * @created     1/6/16 3:42 PM
  * @author      Alley Interactive
  * @package     fm-overlays
- * @description Set up the custom post type for the overlays
+ * @description Set up the abstract base class for all fm-overlays singletons.
  *
  */
 
