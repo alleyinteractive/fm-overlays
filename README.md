@@ -1,2 +1,2 @@
 # fm-overlays
-A Fieldmanager extension for creating logic-controlled overlays/modal boxes
+A Fieldmanager extension to render dynamic content in modal boxes/overlays on a site.
