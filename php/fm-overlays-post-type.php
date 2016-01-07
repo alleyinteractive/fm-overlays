@@ -28,8 +28,6 @@ if ( ! class_exists( 'Fm_Overlays_Post_Type' ) ) :
 
 			/**
 			 * Add the custom meta boxes for managing this post type
-			 *
-			 * @TODO Build out useful FM fields for this post type.
 			 */
 			add_action( 'fm_post_' . $this->post_type, array( $this, 'add_meta_boxes' ) );
 
@@ -69,6 +67,8 @@ if ( ! class_exists( 'Fm_Overlays_Post_Type' ) ) :
 
 		/**
 		 * Adds the meta boxes required to manage an overlay.
+		 *
+		 * @TODO Build out useful FM fields for this post type.
 		 */
 		public function add_meta_boxes() {
 
