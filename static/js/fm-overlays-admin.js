@@ -37,8 +37,7 @@
 
 		} );
 
-		// trigger a change for the select fields on page load
-		// so the label load according to their values
+		// trigger a change for the select fields so the labels load according to their values
 		$( 'select[conditional="labels"]' ).trigger( 'change' );
 	}
 
