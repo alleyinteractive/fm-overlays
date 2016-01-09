@@ -138,7 +138,7 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 						),
 					) ),
 				) ),
-			)
+			),
 		) );
 		$fm->add_meta_box( __( 'Use these fields to determine on which pages this overlay will appear.', 'fm-overlays' ), $this->post_type, 'normal', 'high' );
 	}
