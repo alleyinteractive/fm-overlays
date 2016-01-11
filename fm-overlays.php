@@ -30,11 +30,23 @@
 define( 'FM_OVERLAYS_VERSION', '0.0.1' );
 
 /**
- * Filesystem path to Ad Layers.
+ * Assets Version number.
+ *
+ * @var string
+ */
+define( 'FM_OVERLAYS_ASSETS_VERSION', '0.0.1' );
+
+/**
+ * Filesystem path to Fm Overlays.
  *
  * @var string
  */
 define( 'FM_OVERLAYS_PATH', plugin_dir_path( __FILE__ ) );
+
+/**
+ * URL for assets.
+ */
+define( 'FM_OVERLAYS_ASSET_URL', plugin_dir_url( __FILE__ ) );
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
@@ -55,9 +67,16 @@ function fm_overlays_setup_files() {
 	require_once( FM_OVERLAYS_PATH . 'php/class-fm-overlays-singleton.php' );
 
 	/**
-	 * require post type
+	 * Require post type
 	 */
 	require_once( FM_OVERLAYS_PATH . 'php/class-fm-overlays-post-type.php' );
+
+	/**
+	 * Require admin manipulations
+	 */
+	if ( is_admin() ) {
+		require_once( FM_OVERLAYS_PATH . 'php/class-fm-overlays-admin.php' );
+	}
 }
 
 add_action( 'after_setup_theme', 'fm_overlays_setup_files' );

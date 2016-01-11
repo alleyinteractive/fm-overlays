@@ -67,13 +67,80 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 	/**
 	 * Adds the meta boxes required to manage an overlay.
 	 *
-	 * @TODO Build out useful FM fields for this post type.
+	 * @TODO Build out useful content fields for this post type.
 	 */
 	public function add_meta_boxes() {
-		$fm = new Fieldmanager_TextField( array(
-			'name' => 'fm_overlay_header',
+		$fm = new Fieldmanager_Group( array(
+			'name' => 'fm_overlays_conditionals',
+			'collapsible' => true,
+			'sortable' => true,
+			'limit' => 0,
+			'label' => __( 'Condition', 'fm-overlays' ),
+			'add_more_label' => __( 'Add another condition', 'fm-overlays' ),
+			'extra_elements' => 0,
+			'children' => array(
+				'condition_select' => new Fieldmanager_Select( array(
+					'attributes' => array(
+						'conditional' => 'labels',
+					),
+					'options' => array(
+						'is_home' => __( 'Is Home', 'fm-overlays' ),
+						'is_front_page' => __( 'Is Front Page', 'fm-overlays' ),
+						'is_category' => __( 'Is Category', 'fm-overlays' ),
+						'has_category' => __( 'Has Category', 'fm-overlays' ),
+						'is_single' => __( 'Is Single', 'fm-overlays' ),
+						'is_page' => __( 'Is Page', 'fm-overlays' ),
+						'is_tag' => __( 'Is Tag', 'fm-overlays' ),
+						'has_tag' => __( 'Has Tag', 'fm-overlays' ),
+					),
+				) ),
+				'condition_argument_category' => new Fieldmanager_Autocomplete( array(
+					'display_if' => array(
+						'src' => 'condition_select',
+						'value' => 'is_category,has_category',
+					),
+					'label' => __( 'Specific Category (Leave blank for any category)', 'fm-overlays' ),
+					'datasource' => new Fieldmanager_Datasource_Term( array(
+						'taxonomy' => 'category',
+					) ),
+				) ),
+				'condition_argument_tag' => new Fieldmanager_Autocomplete( array(
+					'display_if' => array(
+						'src' => 'condition_select',
+						'value' => 'is_tag,has_tag',
+					),
+					'label' => __( 'Specific tag (Leave blank for any tag)', 'fm-overlays' ),
+					'datasource' => new Fieldmanager_Datasource_Term( array(
+						'taxonomy' => 'post_tag',
+					) ),
+				) ),
+				'condition_argument_single' => new Fieldmanager_Autocomplete( array(
+					'display_if' => array(
+						'src' => 'condition_select',
+						'value' => 'is_single',
+					),
+					'label' => __( 'Specific post (Leave blank for any single post)', 'fm-overlays' ),
+					'datasource' => new Fieldmanager_Datasource_Post( array(
+						'query_args' => array(
+							'post_type' => 'post',
+						),
+					) ),
+				) ),
+				'condition_argument_page' => new Fieldmanager_Autocomplete( array(
+					'display_if' => array(
+						'src' => 'condition_select',
+						'value' => 'is_page',
+					),
+					'label' => __( 'Specific page (Leave blank for any WP page)', 'fm-overlays' ),
+					'datasource' => new Fieldmanager_Datasource_Post( array(
+						'query_args' => array(
+							'post_type' => 'page',
+						),
+					) ),
+				) ),
+			),
 		) );
-		$fm->add_meta_box( __( 'Overlay Header', 'fm-overlays' ), $this->post_type, 'normal', 'high' );
+		$fm->add_meta_box( __( 'Use these fields to determine on which pages this overlay will appear.', 'fm-overlays' ), $this->post_type, 'normal', 'high' );
 	}
 }
 
