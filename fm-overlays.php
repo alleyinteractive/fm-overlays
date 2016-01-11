@@ -46,7 +46,7 @@ define( 'FM_OVERLAYS_PATH', plugin_dir_path( __FILE__ ) );
 /**
  * URL for assets.
  */
-define( 'FM_OVERLAYS_ASSET_DIR', plugin_dir_url( __FILE__ ) );
+define( 'FM_OVERLAYS_ASSET_URL', plugin_dir_url( __FILE__ ) );
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {

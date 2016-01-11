@@ -75,7 +75,7 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 			'collapsible' => true,
 			'sortable' => true,
 			'limit' => 0,
-			'label' => 'Condition',
+			'label' => __( 'Condition', 'fm-overlays' ),
 			'add_more_label' => __( 'Add another condition', 'fm-overlays' ),
 			'extra_elements' => 0,
 			'children' => array(

@@ -22,7 +22,7 @@
 				selectVal = selectField.val(),
 				separator = ' - ',
 				labelSelector = selectField.closest( '.fm-fm_overlays_conditionals' ).find( '.fm-label-fm_overlays_conditionals' ),
-				labelHTML = labelSelector.html();
+				labelText = labelSelector.text();
 
 			if ( ! selectVal ) {
 				selectVal = '';
@@ -30,10 +30,10 @@
 			}
 
 			// update the label string
-			labelHTML = labelHTML.split( ' ', 1 ) + separator + selectVal;
+			labelText = labelText.split( ' ', 1 ) + separator + selectVal;
 
 			// replace the label
-			labelSelector.html( labelHTML );
+			labelSelector.text( labelText );
 
 		} );
 
@@ -45,6 +45,6 @@
 	 * DOM ready
 	 */
 	$( document ).ready( function() {
-		conditionFieldLabelLoader()
+		conditionFieldLabelLoader();
 	} );
 })( jQuery );
