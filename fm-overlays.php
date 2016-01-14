@@ -5,7 +5,7 @@
 	Plugin URI: https://github.com/alleyinteractive/fm-overlays
 	Description: A Fieldmanager extension to render dynamic content in modal boxes/overlays on a site.
 	Version: 0.1
-	Author: Alley Interactive
+	Author:  Jake Foster, Matthew Boynes, Alley Interactive
 	Author URI: http://www.alleyinteractive.com/
 */
 
