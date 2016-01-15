@@ -263,7 +263,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 			$prioritized_overlay = $prioritized_overlays[ $prioritized_index ];
 
 			/*
-			 * $overlay_to_display could be an array of overlays with the same menu_order priority.
+			 * $$prioritized_overlay could be an array of overlays with the same menu_order priority.
 			 * The first one will be the latest, most preferred overlay.
 			 */
 			$prioritized_overlay = $prioritized_overlay[0];
