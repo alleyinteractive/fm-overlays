@@ -50,7 +50,7 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 		/**
 		 * Add the custom meta boxes for managing this post type
 		 */
-		add_action( 'fm_post_' . $this->post_type, array( $this, 'add_meta_boxes' ) );
+		add_action( "fm_post_{$this->post_type}", array( $this, 'add_meta_boxes' ) );
 	}
 
 	/**
