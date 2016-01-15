@@ -170,7 +170,7 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 	/**
 	 * Add Menu Order to columns
 	 *
-	 * @param $columns
+	 * @param array $columns
 	 *
 	 * @return mixed
 	 */
@@ -185,7 +185,7 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 	/**
 	 * Show custom order column values
 	 *
-	 * @param $name
+	 * @param string $name
 	 */
 	public function show_menu_order_column( $name ) {
 		global $post;
@@ -203,7 +203,7 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 	/**
 	 * Register the menu order column as "sortable".
 	 *
-	 * @param $columns
+	 * @param array $columns
 	 *
 	 * @return mixed
 	 */
@@ -217,7 +217,7 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 	 * Using pre_get_posts, make sure the overlays are
 	 * loading sorted by priority in the admin area
 	 *
-	 * @param $query
+	 * @param object $query
 	 */
 	public function load_sorted_by_columns( $query ) {
 		if ( ! is_admin() || $this->post_type !== get_query_var( 'post_type' ) ) {

@@ -127,7 +127,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 
 	/**
 	 * Helper to return the appropriate associated conditional arg meta field.
-	 * @param $conditional
+	 * @param array $conditional
 	 *
 	 * @return string
 	 */
@@ -146,7 +146,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	/**
 	 * Destroy transient
 	 *
-	 * @param $post_id
+	 * @param int $post_id
 	 */
 	public function destroy_transient( $post_id ) {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
@@ -167,7 +167,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	/**
 	 * Get the conditional values for an overlay
 	 *
-	 * @param $overlay_id
+	 * @param int $overlay_id
 	 *
 	 * @return bool|mixed
 	 */
@@ -181,7 +181,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	 *
 	 * @TODO Perform further testing on the various combinations of conditions with and without args.
 	 *
-	 * @param $overlay
+	 * @param array $overlay
 	 *
 	 * @return array
 	 */
