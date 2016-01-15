@@ -157,9 +157,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 		// see final line of function
 		remove_action( 'save_post', 'destroy_transient' );
 
-		$fm_overlays_post_type = Fm_Overlays_Post_Type::instance()->get_post_type();
-
-		if ( $fm_overlays_post_type === get_post_type( $post_id ) ) {
+		if ( Fm_Overlays_Post_Type::instance()->get_post_type() === get_post_type( $post_id ) ) {
 			delete_transient( 'fm_overlays' );
 		}
 
