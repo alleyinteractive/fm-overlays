@@ -283,7 +283,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	public function display_overlay( $overlay_id = null ) {
 		if ( empty( $overlay_id ) ) {
 			$overlay = $this->get_targeted_overlay();
-		} elseif ( null === $overlay_id ) {
+		} elseif ( null !== $overlay_id ) {
 			$overlay = get_post( absint( $overlay_id ) );
 		}
 
