@@ -176,7 +176,7 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 	 */
 	public function add_menu_order_column( $columns ) {
 		$new_columns = array(
-			'menu_order'   => __( 'Priority', 'fm-overlays' ),
+			'menu_order' => __( 'Priority', 'fm-overlays' ),
 		);
 
 		return array_merge( $columns, $new_columns );
