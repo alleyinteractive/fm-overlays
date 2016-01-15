@@ -26,7 +26,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	}
 
 	/**
-	 * Get overlay content
+	 * Get untargeted, unprioritized overlays
 	 *
 	 * @return array|bool|mixed
 	 */
