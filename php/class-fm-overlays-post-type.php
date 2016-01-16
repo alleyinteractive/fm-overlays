@@ -22,17 +22,35 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 	 * Set us up the singleton, why don't we?
 	 */
 	public function setup() {
-		// Create overlay post type
+		/**
+		 * Create overlay post type
+		 */
 		add_action( 'init', array( $this, 'create_post_type' ) );
+
+		/**
+		 * add order column to admin listing screen for menu order
+		 */
+		add_filter( "manage_{$this->post_type}_posts_columns", array( $this, 'add_menu_order_column' ) );
+
+		/**
+		 * Show columns
+		 */
+		add_action( "manage_{$this->post_type}_posts_custom_column", array( $this, 'show_menu_order_column' ), 10, 2 );
+
+		/**
+		 * Register the menu order column as "sortable".
+		 */
+		add_filter( "manage_edit-{$this->post_type}_sortable_columns", array( $this, 'register_sortable_menu_order_column' ) );
+
+		/**
+		 * Load sorted Overlays in admin area by priority
+		 */
+		add_action( 'pre_get_posts', array( $this, 'load_sorted_by_columns' ) );
 
 		/**
 		 * Add the custom meta boxes for managing this post type
 		 */
-		add_action( 'fm_post_' . $this->post_type, array( $this, 'add_meta_boxes' ) );
-
-		/**
-		 * @TODO Integrate targeting logic (yet to be created -- look into ad-layers for inspo).
-		 */
+		add_action( "fm_post_{$this->post_type}", array( $this, 'add_meta_boxes' ) );
 	}
 
 	/**
@@ -60,7 +78,7 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 			'exclude_from_search' => true,
 			'show_in_menu'        => true,
 			'show_in_nav_menus'   => false,
-			'supports'            => array( 'title', 'revisions' ),
+			'supports'            => array( 'title', 'revisions', 'page-attributes' ),
 		) );
 	}
 
@@ -138,9 +156,86 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 						),
 					) ),
 				) ),
+				'condition_negation' => new Fieldmanager_Checkbox( array(
+					'label_after_element' => false,
+					'label' => __( 'Not this condition', 'fm-overlays' ),
+					'checked_value' => 'negated',
+					'default_value' => '0',
+				) ),
 			),
 		) );
 		$fm->add_meta_box( __( 'Use these fields to determine on which pages this overlay will appear.', 'fm-overlays' ), $this->post_type, 'normal', 'high' );
+	}
+
+	/**
+	 * Add Menu Order to columns
+	 *
+	 * @param array $columns
+	 *
+	 * @return mixed
+	 */
+	public function add_menu_order_column( $columns ) {
+		$new_columns = array(
+			'menu_order' => __( 'Priority', 'fm-overlays' ),
+		);
+
+		return array_merge( $columns, $new_columns );
+	}
+
+	/**
+	 * Show custom order column values
+	 *
+	 * @param string $name
+	 */
+	public function show_menu_order_column( $name ) {
+		global $post;
+
+		switch ( $name ) {
+			case 'menu_order':
+				$order = $post->menu_order;
+				echo (int) $order ;
+				break;
+			default:
+				break;
+		}
+	}
+
+	/**
+	 * Register the menu order column as "sortable".
+	 *
+	 * @param array $columns
+	 *
+	 * @return mixed
+	 */
+	public function register_sortable_menu_order_column( $columns ) {
+		$columns['menu_order'] = 'menu_order';
+
+		return $columns;
+	}
+
+	/**
+	 * Using pre_get_posts, make sure the overlays are
+	 * loading sorted by priority in the admin area
+	 *
+	 * @param object $query
+	 */
+	public function load_sorted_by_columns( $query ) {
+		if ( ! is_admin() || $this->post_type !== get_query_var( 'post_type' ) ) {
+			return;
+		}
+
+		$query->set( 'orderby', 'menu_order date' );
+		$query->set( 'order', 'DESC' );
+	}
+
+	/**
+	 * Gets the post type name used for fm overlays.
+	 *
+	 * @access public
+	 * @return string
+	 */
+	public function get_post_type() {
+		return $this->post_type;
 	}
 }
 
