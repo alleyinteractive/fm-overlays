@@ -20,9 +20,22 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 		add_action( 'save_post', array( $this, 'destroy_transient' ) );
 
 		/**
+		 * Load in front end assets
+		 */
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_fe_assets' ) );
+
+		/**
 		 * Display the overlay post markup
 		 */
 		add_action( 'wp_footer', array( $this, 'display_overlay' ) );
+	}
+
+	/**
+	 * Load in scripts and styles used by the front end
+	 */
+	public function enqueue_fe_assets() {
+		wp_enqueue_style( 'fm-overlays-global-css', FM_OVERLAYS_ASSET_URL . '/static/css/fm-overlays-global.css', array(), FM_GLOBAL_ASSET_VERSION );
+		wp_enqueue_script( 'fm-overlays-global-js', FM_OVERLAYS_ASSET_URL . '/static/js/fm-overlays-global.js', array( 'jquery' ), FM_GLOBAL_ASSET_VERSION, true );
 	}
 
 	/**
@@ -288,9 +301,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 		}
 
 		if ( ! empty( $overlay ) ) {
-			/**
-			 * @TODO Retrieve and output the overlay content (currently awaiting content fields to be added to the Overlay CPT)
-			 */
+			include( FM_OVERLAYS_PATH . 'templates/fm-overlay-basic.php' );
 		}
 	}
 }
