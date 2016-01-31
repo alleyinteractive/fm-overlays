@@ -1,4 +1,8 @@
-.fm-overlay-wrapper {
+.fm-overlay {
+	display: none; /* let jQuery display the overlay */
+}
+
+.fm-overlay-fade {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -8,7 +12,7 @@
 	background-color: rgba(0,0,0,0.75);
 }
 
-.fm-overlay-content {
+.fm-overlay-wrapper {
 	position: fixed;
 	top: 50%;
 	left: 50%;
@@ -22,4 +26,8 @@
 	background: rgba(255, 255, 255, .925);
 	padding: 2em;
 	z-index: 11; /* 1 higher than the overlay wrapper layer */
+}
+
+.fm-overlay-content {
+
 }
