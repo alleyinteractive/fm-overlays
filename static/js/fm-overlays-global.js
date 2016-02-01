@@ -67,7 +67,7 @@
 	/**
 	 * Initialize
 	 */
-	jQuery( document ).ready( function() {
+	$( document ).ready( function() {
 		fmOverlay();
 	} );
 
