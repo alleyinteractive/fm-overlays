@@ -88,6 +88,12 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 	 * @TODO Build out useful content fields for this post type.
 	 */
 	public function add_meta_boxes() {
+		$fm = new Fieldmanager_RichTextArea( array(
+				'name' => 'fm_overlays_content',
+			)
+		);
+		$fm->add_meta_box( __( 'Overlay content', 'fm-overlays' ), $this->post_type, 'normal', 'high' );
+
 		$fm = new Fieldmanager_Group( array(
 			'name' => 'fm_overlays_conditionals',
 			'collapsible' => true,
@@ -220,7 +226,7 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 	 * @param object $query
 	 */
 	public function load_sorted_by_columns( $query ) {
-		if ( ! is_admin() || $this->post_type !== get_query_var( 'post_type' ) ) {
+		if ( ! is_admin() || get_query_var( 'post_type' ) !== $this->post_type ) {
 			return;
 		}
 
