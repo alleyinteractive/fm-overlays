@@ -226,7 +226,7 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 	 * @param object $query
 	 */
 	public function load_sorted_by_columns( $query ) {
-		if ( ! is_admin() || $this->post_type !== get_query_var( 'post_type' ) ) {
+		if ( ! is_admin() || get_query_var( 'post_type' ) !== $this->post_type ) {
 			return;
 		}
 
