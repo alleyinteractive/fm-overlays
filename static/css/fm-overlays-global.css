@@ -1,5 +1,10 @@
 .fm-overlay {
-	display: none; /* let jQuery display the overlay */
+	transition: opacity .5s ease-in-out;
+	opacity: 0;
+}
+
+.fm-overlay.visible {
+	opacity: 1;
 }
 
 .fm-overlay-fade {
@@ -9,7 +14,7 @@
 	height: 100%;
 	width: 100%;
 	z-index: 10;
-	background-color: rgba(0,0,0,0.75);
+	background-color: rgba(0, 0, 0, 0.75);
 }
 
 .fm-overlay-wrapper {
@@ -28,6 +33,36 @@
 	z-index: 11; /* 1 higher than the overlay wrapper layer */
 }
 
-.fm-overlay-content {
+/* @TODO Replace css generated close 'x' with an SVG file */
+.fm-overlay-close {
+	cursor: pointer;
+	position: absolute;
+	z-index: 12;
+	display: inline-block;
+	overflow: hidden;
+	width: 17px;
+	height: 17px;
+	right: 5px;
+	top: 5px;
+	text-indent: -9999pt;
+}
 
+.fm-overlay-close::before,
+.fm-overlay-close::after {
+	content: '';
+	position: absolute;
+	height: 1px;
+	width: 100%;
+	top: 50%;
+	left: 0;
+	background: #000000;
+}
+
+.fm-overlay-close::before {
+	transform: rotate(45deg);
+}
+
+.fm-overlay-close::after {
+	margin-top: -1px;
+	transform: rotate(-45deg);
 }

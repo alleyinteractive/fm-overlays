@@ -19,9 +19,21 @@
 	function fmOverlay() {
 
 		var overlay = $( '#fm-overlay' ),
-			timer = 150,
-			speed = 250,
-			closeButton = overlay.children( 'a.close-fm-overlay' );
+			overlayWrapper = overlay.children( '.fm-overlay-wrapper' ),
+			timer = 500, // matches css transition duration
+			activeClass = 'visible',
+			closeButton = overlayWrapper.children( 'a.fm-overlay-close' );
+
+		/**
+		 * Hide overlay after fading out
+		 */
+		function hideOverlay() {
+			overlay.removeClass( activeClass );
+
+			setTimeout( function() {
+				overlay.hide();
+			}, timer );
+		}
 
 		if ( overlay.length ) {
 
@@ -29,7 +41,7 @@
 			 * Display the overlay
 			 */
 			setTimeout( function() {
-				overlay.fadeIn( speed );
+				overlay.show().addClass( activeClass );
 			}, timer );
 
 			/**
@@ -37,23 +49,17 @@
 			 */
 			$( document ).keyup( function( e ) {
 				if ( e.keyCode == 27 ) {
-					setTimeout( function() {
-						overlay.fadeOut( speed );
-					}, timer );
+					hideOverlay();
 				}
 			} );
 
 			closeButton.click( function() {
-				setTimeout( function() {
-					overlay.fadeOut( speed );
-				}, timer );
+				hideOverlay();
 			} );
 
 			// close the overlay when a click occurs outside of the overlay content
 			overlay.children( '.fm-overlay-fade' ).click( function() {
-				setTimeout( function() {
-					overlay.fadeOut( speed );
-				}, timer );
+				hideOverlay();
 			} );
 		}
 	}
