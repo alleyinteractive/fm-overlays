@@ -1,3 +1,5 @@
+$overlay-index: 10;
+
 .fm-overlay {
 	transition: opacity .5s ease-in-out;
 	opacity: 0;
@@ -14,7 +16,7 @@
 	left: 0;
 	height: 100%;
 	width: 100%;
-	z-index: 10;
+	z-index: $overlay-index;
 	background-color: rgba(0, 0, 0, 0.75);
 }
 
@@ -27,14 +29,10 @@
 	width: 75%;
 	height: auto;
 	max-height: 75%;
-	-webkit-transform: translateX(-50%) translateY(-50%);
-	-moz-transform: translateX(-50%) translateY(-50%);
-	-ms-transform: translateX(-50%) translateY(-50%);
-	-o-transform: translateX(-50%) translateY(-50%);
 	transform: translateX(-50%) translateY(-50%);
 	background: rgba(255, 255, 255, .925);
 	padding: 50px;
-	z-index: 11; /* 1 higher than the overlay wrapper layer */
+	z-index: $overlay-index + 1;
 
 	.fm-overlay-close {
 		padding: 0;

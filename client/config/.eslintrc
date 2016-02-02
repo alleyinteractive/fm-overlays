@@ -31,7 +31,7 @@ rules:
   id-length: [2, {"properties": "never", "exceptions": ["$","x","y","i","e","d","n","t","m","q"]}]
   func-names: [0]
   no-use-before-define: [2, "nofunc"]
-
+  yoda: [2, "always"]
   object-curly-spacing: [2, "always"]
   array-bracket-spacing: [2, "never"]
   space-unary-ops: [2, {"words": true, "nonwords": false}]

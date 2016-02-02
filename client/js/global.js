@@ -46,7 +46,7 @@ function fmOverlay() {
      *
      */
     $(document).keyup((e) => {
-      if (e.keyCode === 27) {
+      if (27 === e.keyCode) {
         hideOverlay();
       }
     });
