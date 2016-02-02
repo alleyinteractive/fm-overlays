@@ -1,10 +1,11 @@
 .fm-overlay {
 	transition: opacity .5s ease-in-out;
 	opacity: 0;
-}
 
-.fm-overlay.visible {
-	opacity: 1;
+	&.visible {
+		opacity: 1;
+	}
+
 }
 
 .fm-overlay-fade {
@@ -18,51 +19,71 @@
 }
 
 .fm-overlay-wrapper {
+	border-radius: 5px;
+	box-shadow: 5px 5px 15px -3px #000;
 	position: fixed;
 	top: 50%;
 	left: 50%;
-	width: auto;
+	width: 75%;
 	height: auto;
+	max-height: 75%;
 	-webkit-transform: translateX(-50%) translateY(-50%);
 	-moz-transform: translateX(-50%) translateY(-50%);
 	-ms-transform: translateX(-50%) translateY(-50%);
 	-o-transform: translateX(-50%) translateY(-50%);
 	transform: translateX(-50%) translateY(-50%);
 	background: rgba(255, 255, 255, .925);
-	padding: 2em;
+	padding: 50px;
 	z-index: 11; /* 1 higher than the overlay wrapper layer */
-}
 
-/* @TODO Replace css generated close 'x' with an SVG file */
-.fm-overlay-close {
-	cursor: pointer;
-	position: absolute;
-	z-index: 12;
-	display: inline-block;
-	overflow: hidden;
-	width: 17px;
-	height: 17px;
-	right: 5px;
-	top: 5px;
-	text-indent: -9999pt;
-}
+	.fm-overlay-close {
+		padding: 0;
+		cursor: pointer;
+		position: absolute;
+		z-index: 12;
+		display: inline-block;
+		overflow: hidden;
+		right: 12px;
+		top: 12px;
+		background: none;
 
-.fm-overlay-close::before,
-.fm-overlay-close::after {
-	content: '';
-	position: absolute;
-	height: 1px;
-	width: 100%;
-	top: 50%;
-	left: 0;
-	background: #000000;
-}
+		&.icon {
+			svg {
+				display: block;
+				width: 20px;
+				height: 22px;
+			}
+		}
 
-.fm-overlay-close::before {
-	transform: rotate(45deg);
-}
+		&.text {
+			.close-text {
+				color: #000;
+				display: block;
+			}
+		}
 
-.fm-overlay-close::after {
-	margin-top: -1px;
-	transform: rotate(-45deg);
+		&.text.icon {
+			.close-text, svg {
+				display: inline-block;
+			}
+			.close-text {
+				vertical-align: top;
+			}
+		}
+
+		.close-text, svg {
+			display: none;
+		}
+	}
+
+	.fm-overlay-title {
+		margin-bottom: 15px;
+	}
+
+	.fm-overlay-content {
+		// Strip out any bottom margins on last element for style reasons
+		*:last-child {
+			margin-bottom: 0;
+		}
+	}
 }

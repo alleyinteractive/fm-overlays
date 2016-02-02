@@ -81,7 +81,7 @@
 	  const overlayWrapper = overlay.children('.fm-overlay-wrapper');
 	  const timer = 500; // matches css transition duration
 	  const activeClass = 'visible';
-	  const closeButton = overlayWrapper.children('a.fm-overlay-close');
+	  const closeButton = overlayWrapper.children('button.fm-overlay-close');
 	
 	  /**
 	   * Hide overlay after fading out
@@ -100,6 +100,10 @@
 	
 	    /**
 	     * Exit strategies
+	     * Escape (keyCode 27)
+	     * Close Button
+	     * Click Overlay
+	     *
 	     */
 	    $(document).keyup(e => {
 	      if (e.keyCode === 27) {
