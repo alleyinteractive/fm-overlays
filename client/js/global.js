@@ -1,74 +1,60 @@
+require('../css/global.scss');
+const $ = require('jQuery');
+
 /**
- * fm-overlays-global.js
+* fm-overlays-global.js
+*
+* @created 1/15/16 5:33 PM
+* @author Alley Interactive
+* @package fm-overlays
+* @description Front-end JS for fm-overlays.
+*
+*/
+
+/**
+ * Very simple overlay event handler.
  *
- * @created 1/15/16 5:33 PM
- * @author Alley Interactive
- * @package fm-overlays
- * @description Front-end JS for fm-overlays.
- *
+ * @returns {fmOverlay}
  */
+function fmOverlay() {
+  const overlay = $('#fm-overlay');
+  const overlayWrapper = overlay.children('.fm-overlay-wrapper');
+  const timer = 500; // matches css transition duration
+  const activeClass = 'visible';
+  const closeButton = overlayWrapper.children('a.fm-overlay-close');
 
-(function( $ ) {
-	'use strict';
+  /**
+   * Hide overlay after fading out
+   */
+  function hideOverlay() {
+    overlay.removeClass(activeClass);
 
-	/**
-	 * Very simple overlay event handler.
-	 *
-	 * @returns {fmOverlay}
-	 */
-	function fmOverlay() {
+    setTimeout(() => overlay.hide(), timer);
+  }
 
-		var overlay = $( '#fm-overlay' ),
-			overlayWrapper = overlay.children( '.fm-overlay-wrapper' ),
-			timer = 500, // matches css transition duration
-			activeClass = 'visible',
-			closeButton = overlayWrapper.children( 'a.fm-overlay-close' );
+  if (overlay.length) {
+    /**
+     * Display the overlay
+     */
+    setTimeout(() => overlay.show().addClass(activeClass), timer);
 
-		/**
-		 * Hide overlay after fading out
-		 */
-		function hideOverlay() {
-			overlay.removeClass( activeClass );
+    /**
+     * Exit strategies
+     */
+    $(document).keyup((e) => {
+      if (e.keyCode === 27) {
+        hideOverlay();
+      }
+    });
 
-			setTimeout( function() {
-				overlay.hide();
-			}, timer );
-		}
+    closeButton.click(() => hideOverlay());
 
-		if ( overlay.length ) {
+    // close the overlay when a click occurs outside of the overlay content
+    overlay.children('.fm-overlay-fade').click(() => hideOverlay());
+  }
+}
 
-			/**
-			 * Display the overlay
-			 */
-			setTimeout( function() {
-				overlay.show().addClass( activeClass );
-			}, timer );
-
-			/**
-			 * Exit strategies
-			 */
-			$( document ).keyup( function( e ) {
-				if ( e.keyCode == 27 ) {
-					hideOverlay();
-				}
-			} );
-
-			closeButton.click( function() {
-				hideOverlay();
-			} );
-
-			// close the overlay when a click occurs outside of the overlay content
-			overlay.children( '.fm-overlay-fade' ).click( function() {
-				hideOverlay();
-			} );
-		}
-	}
-
-	/**
-	 * Initialize
-	 */
-	$( document ).ready( function() {
-		fmOverlay();
-	} );
-
-})( jQuery );
+/**
+ * Initialize
+ */
+$(document).ready(() => fmOverlay());

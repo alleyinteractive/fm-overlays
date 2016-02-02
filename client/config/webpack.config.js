@@ -10,21 +10,21 @@ var LiveReloadPlugin = require('webpack-livereload-plugin');
 var buildRoot = path.resolve(__dirname, '../../');
 var appRoot = path.join(buildRoot, 'client/js/app');
 
-// Theme namespace
-var themename = path.join(__dirname, '../../').match(/([^\/]*)\/*$/)[1];
+// Plugin namespace
+var pluginName = path.join(__dirname, '../../').match(/([^\/]*)\/*$/)[1];
 
 module.exports = {
   // Two discrete module entry points
   entry: {
-    global: 'client/js/app/app.js',
-    admin: 'client/js/admin/admin.js'
+    global: 'client/js/global.js',
+    admin: 'client/js/admin.js'
   },
 
   // Define module outputs
   output: {
     path: 'static',
-    publicPath: '/wp-content/themes/' + themename + '/static/',
-    filename: 'js/[name].bundle.js'
+    publicPath: '/wp-content/plugins/' + pluginName + '/static/',
+    filename: 'js/fm-overlays-[name].js'
   },
 
   // So we can put config files in config/
@@ -42,11 +42,11 @@ module.exports = {
 
   // Enable require('jquery') where jquery is already a global
   externals: {
-    'jquery': 'jQuery'
+    'jQuery': 'jQuery'
   },
 
   plugins: [
-    new ExtractTextPlugin('css/[name].css'),
+    new ExtractTextPlugin('css/fm-overlays-[name].css'),
     new LiveReloadPlugin({ appendScriptTag: true }),
     new webpack.NoErrorsPlugin()
   ],

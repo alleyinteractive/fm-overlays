@@ -1,0 +1,18 @@
+.fm-overlay { transition: opacity .5s ease-in-out; opacity: 0; }
+
+.fm-overlay.visible { opacity: 1; }
+
+.fm-overlay-fade { position: fixed; top: 0; left: 0; height: 100%; width: 100%; z-index: 10; background-color: rgba(0, 0, 0, 0.75); }
+
+.fm-overlay-wrapper { position: fixed; top: 50%; left: 50%; width: auto; height: auto; -webkit-transform: translateX(-50%) translateY(-50%); -ms-transform: translateX(-50%) translateY(-50%); transform: translateX(-50%) translateY(-50%); background: rgba(255, 255, 255, 0.925); padding: 2em; z-index: 11; /* 1 higher than the overlay wrapper layer */ }
+
+/* @TODO Replace css generated close 'x' with an SVG file */
+.fm-overlay-close { cursor: pointer; position: absolute; z-index: 12; display: inline-block; overflow: hidden; width: 17px; height: 17px; right: 5px; top: 5px; text-indent: -9999pt; }
+
+.fm-overlay-close::before, .fm-overlay-close::after { content: ''; position: absolute; height: 1px; width: 100%; top: 50%; left: 0; background: #000000; }
+
+.fm-overlay-close::before { -webkit-transform: rotate(45deg); -ms-transform: rotate(45deg); transform: rotate(45deg); }
+
+.fm-overlay-close::after { margin-top: -1px; -webkit-transform: rotate(-45deg); -ms-transform: rotate(-45deg); transform: rotate(-45deg); }
+
+/*# sourceMappingURL=fm-overlays-global.css.map*/

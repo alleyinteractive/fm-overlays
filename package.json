@@ -4,7 +4,8 @@
   "description": "A Fieldmanager extension to render dynamic content in modal boxes/overlays on a site.",
   "private": true,
   "scripts": {
-    "start": "webpack --config client/config/wepback.config.js -d --watch --colors",
+    "watch": "npm run start",
+    "start": "webpack --config client/config/webpack.config.js -d --watch --colors",
     "build": "webpack --config client/config/webpack.config.js -p"
   },
   "repository": {
