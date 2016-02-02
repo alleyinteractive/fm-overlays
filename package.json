@@ -1,0 +1,39 @@
+{
+  "name": "fm-overlays",
+  "version": "0.0.3",
+  "description": "A Fieldmanager extension to render dynamic content in modal boxes/overlays on a site.",
+  "private": true,
+  "scripts": {
+    "start": "webpack --config client/config/wepback.config.js -d --watch --colors",
+    "build": "webpack --config client/config/webpack.config.js -p"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alleyinteractive/fm-overlays.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alleyinteractive/fm-overlays/issues"
+  },
+  "homepage": "https://github.com/alleyinteractive/fm-overlays#readme",
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "devDependencies": {
+    "autoprefixer-loader": "^3.2.0",
+    "babel-core": "^6.4.5",
+    "babel-eslint": "^4.1.8",
+    "babel-loader": "^6.2.1",
+    "css-loader": "^0.23.1",
+    "eslint": "^1.10.3",
+    "eslint-config-airbnb": "^4.0.0",
+    "eslint-loader": "^1.2.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.8.5",
+    "node-sass": "^3.4.2",
+    "sass-loader": "^3.1.2",
+    "style-loader": "^0.13.0",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.12.12",
+    "webpack-livereload-plugin": "^0.5.2"
+  }
+}
