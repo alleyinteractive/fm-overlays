@@ -12,6 +12,7 @@ if ( empty( $overlay ) ) {
 }
 ?>
 
+<!-- @TODO: we should have a dynamic class and/or ID generated for styling purposes -->
 <div id="fm-overlay" class="fm-overlay">
 	<div class="fm-overlay-wrapper">
 		<!-- @TODO: classes can be `.icon`, `.text`, or `.icon.text` -->
