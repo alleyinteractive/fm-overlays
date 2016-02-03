@@ -1,0 +1,87 @@
+$overlay-index: 5000;
+
+.fm-overlay {
+	transition: opacity .5s ease-in-out;
+	opacity: 0;
+
+	&.visible {
+		opacity: 1;
+	}
+
+}
+
+.fm-overlay-fade {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	z-index: $overlay-index;
+	background-color: rgba(0, 0, 0, 0.75);
+}
+
+.fm-overlay-wrapper {
+	border-radius: 5px;
+	box-shadow: 5px 5px 15px -3px #000;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	width: 75%;
+	height: auto;
+	max-height: 75%;
+	transform: translateX(-50%) translateY(-50%);
+	background: rgba(255, 255, 255, .925);
+	padding: 50px;
+	z-index: $overlay-index + 2;
+
+	.fm-overlay-close {
+		padding: 0;
+		cursor: pointer;
+		position: absolute;
+		z-index: 12;
+		display: inline-block;
+		overflow: hidden;
+		right: 12px;
+		top: 12px;
+		background: none;
+
+		&.icon {
+			svg {
+				display: block;
+				width: 20px;
+				height: 22px;
+			}
+		}
+
+		&.text {
+			.close-text {
+				color: #000;
+				display: block;
+			}
+		}
+
+		&.text.icon {
+			.close-text, svg {
+				display: inline-block;
+			}
+			.close-text {
+				vertical-align: top;
+			}
+		}
+
+		.close-text, svg {
+			display: none;
+		}
+	}
+
+	.fm-overlay-title {
+		margin-bottom: 15px;
+	}
+
+	.fm-overlay-content {
+		// Strip out any bottom margins on last element for style reasons
+		*:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
