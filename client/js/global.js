@@ -17,26 +17,26 @@ const $ = require('jQuery');
  * @returns {fmOverlay}
  */
 function fmOverlay() {
-  const overlay = $('#fm-overlay');
-  const overlayWrapper = overlay.children('.fm-overlay-wrapper');
+  const $overlay = $('#fm-overlay');
+  const $overlayWrapper = $overlay.children('.fm-overlay-wrapper');
   const timer = 500; // matches css transition duration
   const activeClass = 'visible';
-  const closeButton = overlayWrapper.children('button.fm-overlay-close');
+  const $closeButton = $overlayWrapper.children('button.fm-overlay-close');
 
   /**
    * Hide overlay after fading out
    */
   function hideOverlay() {
-    overlay.removeClass(activeClass);
+    $overlay.removeClass(activeClass);
 
-    setTimeout(() => overlay.hide(), timer);
+    setTimeout(() => $overlay.hide(), timer);
   }
 
-  if (overlay.length) {
+  if ($overlay.length) {
     /**
      * Display the overlay
      */
-    setTimeout(() => overlay.show().addClass(activeClass), timer);
+    setTimeout(() => $overlay.show().addClass(activeClass), timer);
 
     /**
      * Exit strategies
@@ -51,10 +51,10 @@ function fmOverlay() {
       }
     });
 
-    closeButton.click(() => hideOverlay());
+    $closeButton.click(() => hideOverlay());
 
     // close the overlay when a click occurs outside of the overlay content
-    overlay.children('.fm-overlay-fade').click(() => hideOverlay());
+    $overlayWrapper.click(() => hideOverlay());
   }
 }
 

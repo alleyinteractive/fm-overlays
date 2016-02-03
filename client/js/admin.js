@@ -18,13 +18,13 @@ const $ = require('jQuery');
 function conditionFieldLabelLoader() {
   // When a select field is updated, also update the label
   $('body').on('change', 'select[conditional="labels"]', () => {
-    const selectField = $(this);
-    let selectVal = selectField.val();
+    const $selectField = $(this);
+    let selectVal = $selectField.val();
     let separator = ' - ';
-    const labelSelector = selectField
-                          .closest('.fm-fm_overlays_conditionals')
-                          .find('.fm-label-fm_overlays_conditionals');
-    let labelText = labelSelector.text();
+    const $labelSelector = $selectField
+                            .closest('.fm-fm_overlays_conditionals')
+                            .find('.fm-label-fm_overlays_conditionals');
+    let labelText = $labelSelector.text();
 
     if (!selectVal) {
       selectVal = '';
@@ -35,7 +35,7 @@ function conditionFieldLabelLoader() {
     labelText = labelText.split(' ', 1) + separator + selectVal;
 
     // replace the label
-    labelSelector.text(labelText);
+    $labelSelector.text(labelText);
   });
 
   // trigger a change for the select fields
