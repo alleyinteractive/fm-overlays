@@ -24,14 +24,17 @@ if ( empty( $overlay ) ) {
 				</g>
 			</svg>
 		</button>
-		<?php if ( '' != ( $overlay_content = get_post_meta( $overlay->ID, 'fm_overlays_content', true ) ) ) : ?>
-			<?php
-			if (  ) {
-
-			}
-			?>
+		<?php
+		$overlay_content = get_post_meta( $overlay->ID, 'fm_overlays_content', true );
+		if ( ! empty( $overlay_content['content_type_select'] ) ) : ?>
 			<div class="fm-overlay-content">
-				<?php echo wp_kses_post( $overlay_content ); ?>
+				<?php
+				if ( 'image' === $overlay_content['content_type_select'] ) {
+					echo wp_get_attachment_image( absint( $overlay_content['image_id'] ), 'full' );
+				} elseif ( 'richtext' === $overlay_content['content_type_select'] ) {
+					echo ( ! empty( $overlay_content['richtext_content'] ) ) ? wp_kses_post( $overlay_content['richtext_content'] ) : '';
+				}
+				?>
 			</div>
 		<?php endif; ?>
 	</div>

@@ -89,15 +89,10 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 		// Main Content
 		$fm = new Fieldmanager_Group( array(
 			'name' => 'fm_overlays_content',
-			'collapsible' => true,
-			'sortable' => true,
-			'limit' => 0,
-			'label' => __( 'Condition', 'fm-overlays' ),
-			'add_more_label' => __( 'Add another condition', 'fm-overlays' ),
-			'extra_elements' => 0,
 			'children' => array(
 				'content_type_select' => new Fieldmanager_Select( array(
 					'label' => __( 'Select content type', 'fm-overlays' ),
+					'first_empty' => true,
 					'options' => array(
 						'richtext' => __( 'Rich Text Editor' ),
 						'image' => __( 'Image', 'fm-overlays' ),
@@ -110,7 +105,7 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 						'value' => 'richtext',
 					),
 				) ),
-				'image_content' => new Fieldmanager_Media( array(
+				'image_id' => new Fieldmanager_Media( array(
 					'label' => __( 'Image Content', 'fm-overlays' ),
 					'display_if' => array(
 						'src' => 'content_type_select',
