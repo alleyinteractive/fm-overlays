@@ -24,10 +24,12 @@ if ( empty( $overlay ) ) {
 				</g>
 			</svg>
 		</button>
-		<div class="fm-overlay-title">
-			<h1><?php echo esc_html( $overlay->post_title ); ?></h1>
-		</div>
 		<?php if ( '' != ( $overlay_content = get_post_meta( $overlay->ID, 'fm_overlays_content', true ) ) ) : ?>
+			<?php
+			if (  ) {
+
+			}
+			?>
 			<div class="fm-overlay-content">
 				<?php echo wp_kses_post( $overlay_content ); ?>
 			</div>
