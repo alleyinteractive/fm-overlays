@@ -105,6 +105,13 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 						'value' => 'richtext',
 					),
 				) ),
+				'image_link' => new Fieldmanager_Link( array(
+					'label' => __( 'Image Link', 'fm-overlays' ),
+					'display_if' => array(
+						'src' => 'content_type_select',
+						'value' => 'image',
+					),
+				) ),
 				'image_id' => new Fieldmanager_Media( array(
 					'label' => __( 'Image Content', 'fm-overlays' ),
 					'display_if' => array(
