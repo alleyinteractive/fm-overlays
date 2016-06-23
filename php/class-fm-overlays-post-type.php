@@ -112,6 +112,13 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 						'value' => 'image',
 					),
 				) ),
+				'image_link_target' => new Fieldmanager_Checkbox( array(
+					'label' => __( 'Open in New Window', 'fm-overlays' ),
+					'display_if' => array(
+						'src' => 'content_type_select',
+						'value' => 'image',
+					),
+				) ),
 				'image_id' => new Fieldmanager_Media( array(
 					'label' => __( 'Image Content', 'fm-overlays' ),
 					'display_if' => array(
