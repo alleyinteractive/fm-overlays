@@ -32,6 +32,36 @@ function fmOverlay() {
     setTimeout(() => $overlay.hide(), timer);
   }
 
+  const wrapper = $(window);
+  const image = new Image();
+  const overlayImage = $overlay.find('.entry-thumbnail');
+
+  image.src = overlayImage.children().first().attr('srcset');
+
+  const wrapperWidth = wrapper.width() * 0.25;
+  const wrapperHeight = wrapper.height() * 0.25;
+  const imgWidth = image.naturalWidth;
+  const imgHeight = image.naturalHeight;
+
+  const imgRatio = imgWidth / imgHeight;
+  const wrapperRatio = wrapperWidth / wrapperHeight;
+
+  console.log(imgRatio, wrapperRatio);
+
+  if (wrapperRatio > imgRatio) {
+    overlayImage.css({
+      height: '100%',
+      width: 'auto',
+    })
+    .data('orientation', 'height');
+  } else {
+    overlayImage.css({
+      height: 'auto',
+      width: '100%',
+    })
+    .data('orientation', 'width');
+  }
+
   if ($overlay.length) {
     /**
      * Display the overlay

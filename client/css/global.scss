@@ -10,6 +10,7 @@ $overlay-index: 5000;
 
 }
 
+
 .fm-overlay-fade {
 	position: fixed;
 	top: 0;
@@ -20,6 +21,7 @@ $overlay-index: 5000;
 	background-color: rgba(0, 0, 0, 0.75);
 }
 
+.fm-overlay-richtext .fm-overlay-wrapper { padding: 50px; }
 .fm-overlay-wrapper {
 	border-radius: 5px;
 	box-shadow: 5px 5px 15px -3px #000;
@@ -31,7 +33,6 @@ $overlay-index: 5000;
 	max-height: 75%;
 	transform: translateX(-50%) translateY(-50%);
 	background: rgba(255, 255, 255, .925);
-	padding: 50px;
 	z-index: $overlay-index + 2;
 
 	.fm-overlay-close {
@@ -83,5 +84,9 @@ $overlay-index: 5000;
 		*:last-child {
 			margin-bottom: 0;
 		}
+	}
+
+	.fm-image-link {
+		display: block;
 	}
 }
