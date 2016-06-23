@@ -7,13 +7,18 @@
  * @package     fm-overlays
  * @description Basic template for displaying fm-overlay
  */
+
 if ( empty( $overlay ) ) {
 	return;
 }
+
+// include( FM_OVERLAYS_PATH . 'templates/partials/partial-overlay-image.php' );
+
+$fm_overlay_classes = Fm_Overlays_Helpers::instance()->get_overlay_classes( $overlay );
 ?>
 
 <!-- @TODO: we should have a dynamic class and/or ID generated for styling purposes -->
-<div id="fm-overlay" class="fm-overlay">
+<div id="fm-overlay" class="<?php echo esc_attr( $fm_overlay_classes ) ?>">
 	<div class="fm-overlay-wrapper">
 		<!-- @TODO: classes can be `.icon`, `.text`, or `.icon.text` -->
 		<button aria-label="Close Overlay" class="fm-overlay-close icon">
@@ -25,16 +30,17 @@ if ( empty( $overlay ) ) {
 			</svg>
 		</button>
 		<?php
-		$overlay_content = get_post_meta( $overlay->ID, 'fm_overlays_content', true );
-		if ( ! empty( $overlay_content['content_type_select'] ) ) : ?>
-			<div class="fm-overlay-content">
-				<?php
-				if ( 'image' === $overlay_content['content_type_select'] ) {
-					echo wp_get_attachment_image( absint( $overlay_content['image_id'] ), 'full' );
-				} elseif ( 'richtext' === $overlay_content['content_type_select'] ) {
-					echo ( ! empty( $overlay_content['richtext_content'] ) ) ? wp_kses_post( $overlay_content['richtext_content'] ) : '';
-				}
-				?>
+		if ( ! empty( $overlay->overlay_content['content_type_select'] ) ) : ?>
+			<div class="fm-overlay-content <?php echo esc_attr( $overlay->overlay_content['content_type_select'] ); ?>">
+				<?php if ( 'image' === $overlay->overlay_content['content_type_select'] ): ?>
+					<a href="<?php echo ( ! empty( $overlay->overlay_content['image_link'] ) ? $overlay->overlay_content['image_link'] : '' ); ?>"
+						target="<?php echo ( ! empty( $overlay->overlay_content['image_link_target'] ) ? '_blank' : '' ); ?>"
+						alt="<?php echo esc_attr( $overlay->post_title ); ?>">
+						<?php include( FM_OVERLAYS_PATH . 'templates/partials/partial-overlay-image.php' ); ?>
+					</a>
+				<?php elseif ( 'richtext' === $overlay->overlay_content['content_type_select'] ) : ?>
+					<?php echo ( ! empty( $overlay->overlay_content['richtext_content'] ) ) ? wp_kses_post( $overlay->overlay_content['richtext_content'] ) : ''; ?>
+				<?php endif; ?>
 			</div>
 		<?php endif; ?>
 	</div>
