@@ -12,8 +12,6 @@ if ( empty( $overlay ) ) {
 	return;
 }
 
-// include( FM_OVERLAYS_PATH . 'templates/partials/partial-overlay-image.php' );
-
 $fm_overlay_classes = Fm_Overlays_Helpers::instance()->get_overlay_classes( $overlay );
 ?>
 
