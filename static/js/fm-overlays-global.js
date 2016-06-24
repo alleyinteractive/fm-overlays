@@ -132,14 +132,15 @@
 	     * Display the overlay
 	     */
 	    setTimeout(function () {
-	      return $overlay.show().addClass(activeClass);
+	      // resize image to fit container on load
+	      resizeOverlayImage();
+	      $overlay.show().addClass(activeClass);
 	    }, timer);
 	
 	    /**
 	     * Handle Image Overlays
 	     */
 	    if ($overlay.hasClass('fm-overlay-image')) {
-	      resizeOverlayImage();
 	      // handle image overlay resizing
 	      $window.resize(function () {
 	        return resizeOverlayImage();

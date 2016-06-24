@@ -67,13 +67,16 @@ function fmOverlay() {
     /**
      * Display the overlay
      */
-    setTimeout(() => $overlay.show().addClass(activeClass), timer);
+    setTimeout(() => {
+      // resize image to fit container on load
+      resizeOverlayImage();
+      $overlay.show().addClass(activeClass);
+    }, timer);
 
     /**
      * Handle Image Overlays
      */
     if ($overlay.hasClass('fm-overlay-image')) {
-      resizeOverlayImage();
       // handle image overlay resizing
       $window.resize(() => resizeOverlayImage());
     }
