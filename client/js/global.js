@@ -32,35 +32,52 @@ function fmOverlay() {
     setTimeout(() => $overlay.hide(), timer);
   }
 
-  const wrapper = $(window);
+  const $window = $(window);
   const image = new Image();
-  const overlayImage = $overlay.find('.entry-thumbnail');
+  const $overlayImage = $overlay.find('img', '.fm-image');
 
-  image.src = overlayImage.children().first().attr('srcset');
+  image.src = $overlay.find('.fm-image').children().first().attr('srcset');
 
-  const wrapperWidth = wrapper.width() * 0.25;
-  const wrapperHeight = wrapper.height() * 0.25;
+  let wrapperWidth = $window.innerWidth() * 0.75;
+  let wrapperHeight = $window.innerHeight() * 0.75;
   const imgWidth = image.naturalWidth;
   const imgHeight = image.naturalHeight;
 
-  const imgRatio = imgWidth / imgHeight;
-  const wrapperRatio = wrapperWidth / wrapperHeight;
+  let imgRatio = imgWidth / imgHeight;
+  let wrapperRatio = wrapperWidth / wrapperHeight;
 
-  console.log(imgRatio, wrapperRatio);
+  console.log('image natural width & height', imgWidth, imgHeight);
+  console.log('wrapper width & height', wrapperWidth, wrapperHeight);
+  console.log('imgRatio: ', imgRatio, wrapperRatio);
 
-  if (wrapperRatio > imgRatio) {
-    overlayImage.css({
-      height: '100%',
-      width: 'auto',
-    })
-    .data('orientation', 'height');
-  } else {
-    overlayImage.css({
-      height: 'auto',
-      width: '100%',
-    })
-    .data('orientation', 'width');
+  function resizeOverlayImage() {
+    wrapperWidth = $window.innerWidth() * 0.75;
+    wrapperHeight = $window.innerHeight() * 0.75;
+    imgRatio = $overlayImage.width() / $overlayImage.height();
+    wrapperRatio = wrapperWidth / wrapperHeight;
+
+    if (wrapperRatio >= imgRatio) {
+      $overlayImage.css({
+        width: 'auto',
+        'max-height': wrapperHeight,
+      });
+
+      if ($overlayImage.width() < $overlayWrapper.width()) {
+        $overlayWrapper.css('width', 'auto');
+      }
+    } else {
+      $overlayWrapper.css('width', '75%');
+
+      $overlayImage.css({
+        width: '100%',
+        'max-height': 'auto',
+      });
+    }
   }
+
+  resizeOverlayImage();
+
+  $(window).resize(() => resizeOverlayImage());
 
   if ($overlay.length) {
     /**

@@ -96,33 +96,54 @@
 	    }, timer);
 	  }
 	
-	  var wrapper = $(window);
+	  var $window = $(window);
 	  var image = new Image();
-	  var overlayImage = $overlay.find('.entry-thumbnail');
+	  var $overlayImage = $overlay.find('img', '.fm-image');
 	
-	  image.src = overlayImage.children().first().attr('srcset');
+	  image.src = $overlay.find('.fm-image').children().first().attr('srcset');
 	
-	  var wrapperWidth = wrapper.width() * 0.25;
-	  var wrapperHeight = wrapper.height() * 0.25;
+	  var wrapperWidth = $window.innerWidth() * 0.75;
+	  var wrapperHeight = $window.innerHeight() * 0.75;
 	  var imgWidth = image.naturalWidth;
 	  var imgHeight = image.naturalHeight;
 	
 	  var imgRatio = imgWidth / imgHeight;
 	  var wrapperRatio = wrapperWidth / wrapperHeight;
 	
-	  console.log(imgRatio, wrapperRatio);
+	  console.log('image natural width & height', imgWidth, imgHeight);
+	  console.log('wrapper width & height', wrapperWidth, wrapperHeight);
+	  console.log('imgRatio: ', imgRatio, wrapperRatio);
 	
-	  if (wrapperRatio > imgRatio) {
-	    overlayImage.css({
-	      height: '100%',
-	      width: 'auto'
-	    }).data('orientation', 'height');
-	  } else {
-	    overlayImage.css({
-	      height: 'auto',
-	      width: '100%'
-	    }).data('orientation', 'width');
+	  function resizeOverlayImage() {
+	    wrapperWidth = $window.innerWidth() * 0.75;
+	    wrapperHeight = $window.innerHeight() * 0.75;
+	    imgRatio = $overlayImage.width() / $overlayImage.height();
+	    wrapperRatio = wrapperWidth / wrapperHeight;
+	
+	    if (wrapperRatio >= imgRatio) {
+	      $overlayImage.css({
+	        width: 'auto',
+	        'max-height': wrapperHeight
+	      });
+	
+	      if ($overlayImage.width() < $overlayWrapper.width()) {
+	        $overlayWrapper.css('width', 'auto');
+	      }
+	    } else {
+	      $overlayWrapper.css('width', '75%');
+	
+	      $overlayImage.css({
+	        width: '100%',
+	        'max-height': 'auto'
+	      });
+	    }
 	  }
+	
+	  resizeOverlayImage();
+	
+	  $(window).resize(function () {
+	    return resizeOverlayImage();
+	  });
 	
 	  if ($overlay.length) {
 	    /**
