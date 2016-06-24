@@ -183,7 +183,10 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	 */
 	public function set_overlay_cookie( $overlay_id ) {
 		$cookie_name = $this->get_overlay_cookie_name( $overlay_id );
-		setcookie($cookie_name, true, time()+60*60*20);
+		/**
+		 * Cookie will expire in 20 Hours
+		 */
+		setcookie($cookie_name, true, time() + 60 * 60 * 20 );
 	}
 
 	/**

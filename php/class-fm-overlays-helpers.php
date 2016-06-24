@@ -13,12 +13,10 @@ class Fm_Overlays_Helpers extends Fm_Overlays_Singleton {
 
 	/**
 	 * Setup.
+	 *
+	 * currently not being used by overlay helpers class
 	 */
-	public function setup() {
-
-
-	}
-
+	public function setup() {}
 
 	/**
 	 * Generates Overlay Classes
@@ -76,7 +74,6 @@ class Fm_Overlays_Helpers extends Fm_Overlays_Singleton {
 		// }
 		return $image_sizes;
 	}
-
 }
 
 Fm_Overlays_Helpers::instance();
