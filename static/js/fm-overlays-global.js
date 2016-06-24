@@ -79,8 +79,11 @@
 	 * @returns {fmOverlay}
 	 */
 	function fmOverlay() {
+	  var $window = $(window);
 	  var $overlay = $('#fm-overlay');
 	  var $overlayWrapper = $overlay.children('.fm-overlay-wrapper');
+	  var $overlayFade = $overlay.children('.fm-overlay-fade');
+	  var $overlayImage = $overlay.find('img', '.fm-image');
 	  var timer = 500; // matches css transition duration
 	  var activeClass = 'visible';
 	  var $closeButton = $overlayWrapper.children('button.fm-overlay-close');
@@ -96,54 +99,33 @@
 	    }, timer);
 	  }
 	
-	  var $window = $(window);
-	  var image = new Image();
-	  var $overlayImage = $overlay.find('img', '.fm-image');
-	
-	  image.src = $overlay.find('.fm-image').children().first().attr('srcset');
-	
-	  var wrapperWidth = $window.innerWidth() * 0.75;
-	  var wrapperHeight = $window.innerHeight() * 0.75;
-	  var imgWidth = image.naturalWidth;
-	  var imgHeight = image.naturalHeight;
-	
-	  var imgRatio = imgWidth / imgHeight;
-	  var wrapperRatio = wrapperWidth / wrapperHeight;
-	
-	  console.log('image natural width & height', imgWidth, imgHeight);
-	  console.log('wrapper width & height', wrapperWidth, wrapperHeight);
-	  console.log('imgRatio: ', imgRatio, wrapperRatio);
-	
+	  /**
+	   * Resizing image to fill overlay wrapper
+	   * while maintaining aspect ratio
+	   */
 	  function resizeOverlayImage() {
-	    wrapperWidth = $window.innerWidth() * 0.75;
-	    wrapperHeight = $window.innerHeight() * 0.75;
-	    imgRatio = $overlayImage.width() / $overlayImage.height();
-	    wrapperRatio = wrapperWidth / wrapperHeight;
+	    var wrapperWidth = $window.innerWidth() * 0.75;
+	    var wrapperHeight = $window.innerHeight() * 0.75;
+	    var imgRatio = $overlayImage.width() / $overlayImage.height();
+	    var wrapperRatio = wrapperWidth / wrapperHeight;
 	
 	    if (wrapperRatio >= imgRatio) {
 	      $overlayImage.css({
 	        width: 'auto',
 	        'max-height': wrapperHeight
 	      });
-	
+	      // shrink overlay wrapper width if image height is maxed out
 	      if ($overlayImage.width() < $overlayWrapper.width()) {
 	        $overlayWrapper.css('width', 'auto');
 	      }
 	    } else {
 	      $overlayWrapper.css('width', '75%');
-	
 	      $overlayImage.css({
 	        width: '100%',
 	        'max-height': 'auto'
 	      });
 	    }
 	  }
-	
-	  resizeOverlayImage();
-	
-	  $(window).resize(function () {
-	    return resizeOverlayImage();
-	  });
 	
 	  if ($overlay.length) {
 	    /**
@@ -152,6 +134,17 @@
 	    setTimeout(function () {
 	      return $overlay.show().addClass(activeClass);
 	    }, timer);
+	
+	    /**
+	     * Handle Image Overlays
+	     */
+	    if ($overlay.hasClass('fm-overlay-image')) {
+	      resizeOverlayImage();
+	      // handle image overlay resizing
+	      $window.resize(function () {
+	        return resizeOverlayImage();
+	      });
+	    }
 	
 	    /**
 	     * Exit strategies
@@ -171,7 +164,7 @@
 	    });
 	
 	    // close the overlay when a click occurs outside of the overlay content
-	    $overlayWrapper.click(function () {
+	    $overlayFade.click(function () {
 	      return hideOverlay();
 	    });
 	  }

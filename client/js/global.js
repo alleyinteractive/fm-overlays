@@ -17,8 +17,11 @@ const $ = require('jQuery');
  * @returns {fmOverlay}
  */
 function fmOverlay() {
+  const $window = $(window);
   const $overlay = $('#fm-overlay');
   const $overlayWrapper = $overlay.children('.fm-overlay-wrapper');
+  const $overlayFade = $overlay.children('.fm-overlay-fade');
+  const $overlayImage = $overlay.find('img', '.fm-image');
   const timer = 500; // matches css transition duration
   const activeClass = 'visible';
   const $closeButton = $overlayWrapper.children('button.fm-overlay-close');
@@ -32,42 +35,27 @@ function fmOverlay() {
     setTimeout(() => $overlay.hide(), timer);
   }
 
-  const $window = $(window);
-  const image = new Image();
-  const $overlayImage = $overlay.find('img', '.fm-image');
-
-  image.src = $overlay.find('.fm-image').children().first().attr('srcset');
-
-  let wrapperWidth = $window.innerWidth() * 0.75;
-  let wrapperHeight = $window.innerHeight() * 0.75;
-  const imgWidth = image.naturalWidth;
-  const imgHeight = image.naturalHeight;
-
-  let imgRatio = imgWidth / imgHeight;
-  let wrapperRatio = wrapperWidth / wrapperHeight;
-
-  console.log('image natural width & height', imgWidth, imgHeight);
-  console.log('wrapper width & height', wrapperWidth, wrapperHeight);
-  console.log('imgRatio: ', imgRatio, wrapperRatio);
-
+  /**
+   * Resizing image to fill overlay wrapper
+   * while maintaining aspect ratio
+   */
   function resizeOverlayImage() {
-    wrapperWidth = $window.innerWidth() * 0.75;
-    wrapperHeight = $window.innerHeight() * 0.75;
-    imgRatio = $overlayImage.width() / $overlayImage.height();
-    wrapperRatio = wrapperWidth / wrapperHeight;
+    const wrapperWidth = $window.innerWidth() * 0.75;
+    const wrapperHeight = $window.innerHeight() * 0.75;
+    const imgRatio = $overlayImage.width() / $overlayImage.height();
+    const wrapperRatio = wrapperWidth / wrapperHeight;
 
     if (wrapperRatio >= imgRatio) {
       $overlayImage.css({
         width: 'auto',
         'max-height': wrapperHeight,
       });
-
+      // shrink overlay wrapper width if image height is maxed out
       if ($overlayImage.width() < $overlayWrapper.width()) {
         $overlayWrapper.css('width', 'auto');
       }
     } else {
       $overlayWrapper.css('width', '75%');
-
       $overlayImage.css({
         width: '100%',
         'max-height': 'auto',
@@ -75,15 +63,20 @@ function fmOverlay() {
     }
   }
 
-  resizeOverlayImage();
-
-  $(window).resize(() => resizeOverlayImage());
-
   if ($overlay.length) {
     /**
      * Display the overlay
      */
     setTimeout(() => $overlay.show().addClass(activeClass), timer);
+
+    /**
+     * Handle Image Overlays
+     */
+    if ($overlay.hasClass('fm-overlay-image')) {
+      resizeOverlayImage();
+      // handle image overlay resizing
+      $window.resize(() => resizeOverlayImage());
+    }
 
     /**
      * Exit strategies
@@ -101,7 +94,7 @@ function fmOverlay() {
     $closeButton.click(() => hideOverlay());
 
     // close the overlay when a click occurs outside of the overlay content
-    $overlayWrapper.click(() => hideOverlay());
+    $overlayFade.click(() => hideOverlay());
   }
 }
 
