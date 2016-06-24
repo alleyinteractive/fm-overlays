@@ -39,15 +39,6 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	}
 
 	/**
-	 * Load FM Overlays Helper Class
-	 *
-	 * @param null $overlay_id
-	 */
-	public function load_helper_class() {
-		include( FM_OVERLAYS_PATH . 'php/class-fm-overlays-helpers.php' );
-	}
-
-	/**
 	 * Get untargeted, unprioritized overlays
 	 *
 	 * @return array|bool|mixed
@@ -312,11 +303,6 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 		$overlay->overlay_content = get_post_meta( $overlay->ID, 'fm_overlays_content', true );
 
 		if ( ! empty( $overlay ) ) {
-
-			var_dump($overlay);
-
-			// load helper class for use within templates
-			$this->load_helper_class();
 			// include overlay-basic in site footer
 			include( FM_OVERLAYS_PATH . 'templates/fm-overlay-basic.php' );
 		}

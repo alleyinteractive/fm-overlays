@@ -71,6 +71,12 @@ function fm_overlays_setup_files() {
 	 */
 	require_once( FM_OVERLAYS_PATH . 'php/class-fm-overlays-post-type.php' );
 
+
+	/**
+	 * Require helper class
+	 */
+	require_once( FM_OVERLAYS_PATH . 'php/class-fm-overlays-helpers.php' );
+
 	/**
 	 * Main plugin functionality
 	 */
