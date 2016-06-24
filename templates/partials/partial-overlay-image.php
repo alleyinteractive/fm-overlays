@@ -10,7 +10,7 @@
 $image_sizes = Fm_Overlays_Helpers::instance()->get_overlay_image_sizes( $overlay->overlay_content['image_id'] );
 
 
-$classes = 'entry-thumbnail';
+$classes = 'entry-thumbnail fm-image';
 $alt_text = the_title_attribute( array( 'echo' => false ) );
 
 ?>
