@@ -21,7 +21,9 @@ $overlay-index: 5000;
 	background-color: rgba(0, 0, 0, 0.75);
 }
 
+// only add padding if overlay contains richtext
 .fm-overlay-richtext .fm-overlay-wrapper { padding: 50px; }
+
 .fm-overlay-wrapper {
 	border-radius: 5px;
 	box-shadow: 5px 5px 15px -3px #000;
@@ -46,6 +48,13 @@ $overlay-index: 5000;
 		right: 12px;
 		top: 12px;
 		background: none;
+
+		// removes default outline glow on click
+		&:focus,
+		&:active {
+			outline: none;
+			opacity: 0.45;
+		}
 
 		&.icon {
 			svg {

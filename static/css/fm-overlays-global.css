@@ -10,6 +10,8 @@
 
 .fm-overlay-wrapper .fm-overlay-close { padding: 0; cursor: pointer; position: absolute; z-index: 12; display: inline-block; overflow: hidden; right: 12px; top: 12px; background: none; }
 
+.fm-overlay-wrapper .fm-overlay-close:focus, .fm-overlay-wrapper .fm-overlay-close:active { outline: none; opacity: 0.45; }
+
 .fm-overlay-wrapper .fm-overlay-close.icon svg { display: block; width: 20px; height: 22px; }
 
 .fm-overlay-wrapper .fm-overlay-close.text .close-text { color: #000; display: block; }
