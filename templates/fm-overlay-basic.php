@@ -30,7 +30,7 @@ $fm_overlay_classes = Fm_Overlays_Helpers::instance()->get_overlay_classes( $ove
 		<?php
 		if ( ! empty( $overlay->overlay_content['content_type_select'] ) ) : ?>
 			<div class="fm-overlay-content <?php echo esc_attr( $overlay->overlay_content['content_type_select'] ); ?>">
-				<?php if ( 'image' === $overlay->overlay_content['content_type_select'] ): ?>
+				<?php if ( 'image' === $overlay->overlay_content['content_type_select'] ) : ?>
 					<a href="<?php echo ( ! empty( $overlay->overlay_content['image_link'] ) ? $overlay->overlay_content['image_link'] : '' ); ?>"
 						target="<?php echo ( ! empty( $overlay->overlay_content['image_link_target'] ) ? '_blank' : '' ); ?>"
 						alt="<?php echo esc_attr( $overlay->post_title ); ?>"
