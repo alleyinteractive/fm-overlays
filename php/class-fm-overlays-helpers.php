@@ -67,7 +67,7 @@ class Fm_Overlays_Helpers extends Fm_Overlays_Singleton {
 			$image_sizes = array(
 				'desktop_src' => $this->get_image_src( $attachment_id, 'full' ),
 				'tablet_src' => $this->get_image_src( $attachment_id, 'large' ),
-				'mobile_src' => $this->get_image_src( $attachment_id, 'medium_large' ),
+				'mobile_src' => $this->get_image_src( $attachment_id, 'medium' ),
 			);
 
 			// set_transient( $transient_slug, $image_sizes );
