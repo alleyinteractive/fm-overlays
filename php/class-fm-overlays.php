@@ -192,6 +192,8 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	/**
 	 * Get Overlay Cookie Name
 	 *
+	 * @todo use fm-overlay class variables to construct cookie name instead of static string (?)
+	 *
 	 * @param int $overlay_id
 	 */
 	public function get_overlay_cookie_name( $overlay_id ) {
@@ -203,7 +205,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	/**
 	 * Logic for including overlays based on their conditionals.
 	 *
-	 * @TODO Perform further testing on the various combinations of conditions with and without args.
+	 * @todo Perform further testing on the various combinations of conditions with and without args.
 	 *
 	 * @param array $overlay
 	 *
@@ -302,7 +304,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	/**
 	 * Display overlay markup in footer
 	 *
-	 * @TODO Add caching to this function
+	 * @todo Add caching to this function
 	 *
 	 * @param null $overlay_id
 	 */
@@ -314,9 +316,9 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 		}
 
 		/**
-		 * we don't want to display same overlay more
-		 * than once in a day so we set a cookie on the
-		 * client for 20 hours after initial display
+		 * we don't want to display same overlay more than once in a day
+		 * so we set a cookie on the client for 20 hours after initial
+		 * render of each overlay.
 		 */
 		$overlay_cookie_name = $this->get_overlay_cookie_name( $overlay->ID );
 

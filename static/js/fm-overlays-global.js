@@ -87,13 +87,17 @@
 	  var timer = 500; // matches css transition duration
 	  var activeClass = 'visible';
 	  var $closeButton = $overlayWrapper.children('button.fm-overlay-close');
+	  // Image Overlay Variables
+	  var wrapperWidth = $window.innerWidth() * 0.75;
+	  var wrapperHeight = $window.innerHeight() * 0.75;
+	  var imgRatio = $overlayImage.width() / $overlayImage.height();
+	  var wrapperRatio = wrapperWidth / wrapperHeight;
 	
 	  /**
 	   * Hide overlay after fading out
 	   */
 	  function hideOverlay() {
 	    $overlay.removeClass(activeClass);
-	
 	    setTimeout(function () {
 	      return $overlay.hide();
 	    }, timer);
@@ -104,10 +108,10 @@
 	   * while maintaining aspect ratio
 	   */
 	  function resizeOverlayImage() {
-	    var wrapperWidth = $window.innerWidth() * 0.75;
-	    var wrapperHeight = $window.innerHeight() * 0.75;
-	    var imgRatio = $overlayImage.width() / $overlayImage.height();
-	    var wrapperRatio = wrapperWidth / wrapperHeight;
+	    wrapperWidth = $window.innerWidth() * 0.75;
+	    wrapperHeight = $window.innerHeight() * 0.75;
+	    imgRatio = $overlayImage.width() / $overlayImage.height();
+	    wrapperRatio = wrapperWidth / wrapperHeight;
 	
 	    if (wrapperRatio >= imgRatio) {
 	      $overlayImage.css({
@@ -127,25 +131,27 @@
 	    }
 	  }
 	
+	  /**
+	   * Display the overlay
+	   */
 	  if ($overlay.length) {
-	    /**
-	     * Display the overlay
-	     */
 	    setTimeout(function () {
-	      // resize image to fit container on load
-	      resizeOverlayImage();
+	      /**
+	       * Check & Handle Image Overlays
+	       */
+	      if ($overlay.hasClass('fm-overlay-image')) {
+	        // handle image overlay resizing
+	        resizeOverlayImage();
+	        $window.resize(function () {
+	          return resizeOverlayImage();
+	        });
+	      }
+	
+	      /**
+	       * Display Overlay
+	       */
 	      $overlay.show().addClass(activeClass);
 	    }, timer);
-	
-	    /**
-	     * Handle Image Overlays
-	     */
-	    if ($overlay.hasClass('fm-overlay-image')) {
-	      // handle image overlay resizing
-	      $window.resize(function () {
-	        return resizeOverlayImage();
-	      });
-	    }
 	
 	    /**
 	     * Exit strategies

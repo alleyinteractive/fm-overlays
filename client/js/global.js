@@ -25,13 +25,17 @@ function fmOverlay() {
   const timer = 500; // matches css transition duration
   const activeClass = 'visible';
   const $closeButton = $overlayWrapper.children('button.fm-overlay-close');
+  // Image Overlay Variables
+  let wrapperWidth = $window.innerWidth() * 0.75;
+  let wrapperHeight = $window.innerHeight() * 0.75;
+  let imgRatio = $overlayImage.width() / $overlayImage.height();
+  let wrapperRatio = wrapperWidth / wrapperHeight;
 
   /**
    * Hide overlay after fading out
    */
   function hideOverlay() {
     $overlay.removeClass(activeClass);
-
     setTimeout(() => $overlay.hide(), timer);
   }
 
@@ -40,10 +44,10 @@ function fmOverlay() {
    * while maintaining aspect ratio
    */
   function resizeOverlayImage() {
-    const wrapperWidth = $window.innerWidth() * 0.75;
-    const wrapperHeight = $window.innerHeight() * 0.75;
-    const imgRatio = $overlayImage.width() / $overlayImage.height();
-    const wrapperRatio = wrapperWidth / wrapperHeight;
+    wrapperWidth = $window.innerWidth() * 0.75;
+    wrapperHeight = $window.innerHeight() * 0.75;
+    imgRatio = $overlayImage.width() / $overlayImage.height();
+    wrapperRatio = wrapperWidth / wrapperHeight;
 
     if (wrapperRatio >= imgRatio) {
       $overlayImage.css({
@@ -63,23 +67,25 @@ function fmOverlay() {
     }
   }
 
+  /**
+   * Display the overlay
+   */
   if ($overlay.length) {
-    /**
-     * Display the overlay
-     */
     setTimeout(() => {
-      // resize image to fit container on load
-      resizeOverlayImage();
+      /**
+       * Check & Handle Image Overlays
+       */
+      if ($overlay.hasClass('fm-overlay-image')) {
+        // handle image overlay resizing
+        resizeOverlayImage();
+        $window.resize(() => resizeOverlayImage());
+      }
+
+      /**
+       * Display Overlay
+       */
       $overlay.show().addClass(activeClass);
     }, timer);
-
-    /**
-     * Handle Image Overlays
-     */
-    if ($overlay.hasClass('fm-overlay-image')) {
-      // handle image overlay resizing
-      $window.resize(() => resizeOverlayImage());
-    }
 
     /**
      * Exit strategies
