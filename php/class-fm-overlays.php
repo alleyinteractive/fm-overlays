@@ -183,8 +183,8 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	 * @return bool|mixed
 	 */
 	public function get_conditionals( $overlay_id ) {
-	   $conditionals = get_post_meta( $overlay_id, 'fm_overlays_conditionals', true );
-	   return ( empty( $conditionals ) ) ? false : $conditionals;
+		$conditionals = get_post_meta( $overlay_id, 'fm_overlays_conditionals', true );
+		return ( empty( $conditionals ) ) ? false : $conditionals;
 	}
 
 
