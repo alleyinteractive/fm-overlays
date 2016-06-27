@@ -177,6 +177,18 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	}
 
 	/**
+	 * Get the conditional values for an overlay
+	 *
+	 * @param int $overlay_id
+	 * @return bool|mixed
+	 */
+	public function get_conditionals( $overlay_id ) {
+	   $conditionals = get_post_meta( $overlay_id, 'fm_overlays_conditionals', true );
+	   return ( empty( $conditionals ) ) ? false : $conditionals;
+	}
+
+
+	/**
 	 * Sets cookie flagging overlay as viewed by client
 	 *
 	 * @param int $overlay_id
