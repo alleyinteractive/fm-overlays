@@ -22,10 +22,12 @@ $overlay-index: 5000;
 }
 
 // only add padding if overlay contains richtext
-.fm-overlay-richtext .fm-overlay-wrapper { padding: 50px; }
+.fm-overlay-richtext .fm-overlay-wrapper {
+	padding: 50px;
+	border-radius: 5px;
+}
 
 .fm-overlay-wrapper {
-	border-radius: 5px;
 	box-shadow: 5px 5px 15px -3px #000;
 	position: fixed;
 	top: 50%;
@@ -100,6 +102,10 @@ $overlay-index: 5000;
 		display: inline-block;
 		.fm-image {
 			display: block;
+			// prevents weird bug where height calculations using ratio
+			// don't work correctly creating a small 1px white gap
+			// below the overlay image
+			margin-bottom: -1px;
 		}
 	}
 }

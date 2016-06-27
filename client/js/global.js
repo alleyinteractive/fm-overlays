@@ -52,7 +52,7 @@ function fmOverlay() {
     if (wrapperRatio >= imgRatio) {
       $overlayImage.css({
         width: 'auto',
-        'max-height': wrapperHeight,
+        'max-height': Math.ceil(wrapperHeight),
       });
       // shrink overlay wrapper width if image height is maxed out
       if ($overlayImage.width() < $overlayWrapper.width()) {
