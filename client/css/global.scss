@@ -32,7 +32,7 @@ $overlay-index: 5000;
 	position: fixed;
 	top: 50%;
 	left: 50%;
-	width: 75%;
+	width: auto;
 	max-width: 75%;
 	height: auto;
 	max-height: 75%;
@@ -99,7 +99,7 @@ $overlay-index: 5000;
 	}
 
 	.fm-image-link {
-		display: inline-block;
+		display: block;
 		.fm-image {
 			display: block;
 			// prevents weird bug where height calculations using ratio

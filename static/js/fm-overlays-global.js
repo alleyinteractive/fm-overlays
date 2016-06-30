@@ -83,7 +83,7 @@
 	  var $overlay = $('#fm-overlay');
 	  var $overlayWrapper = $overlay.children('.fm-overlay-wrapper');
 	  var $overlayFade = $overlay.children('.fm-overlay-fade');
-	  var $overlayImage = $overlay.find('img', '.fm-image');
+	  var $overlayImage = $overlay.find('img', '.fm-overlay-content.image');
 	  var timer = 500; // matches css transition duration
 	  var activeClass = 'visible';
 	  var $closeButton = $overlayWrapper.children('button.fm-overlay-close');
@@ -98,14 +98,16 @@
 	   */
 	  function hideOverlay() {
 	    $overlay.removeClass(activeClass);
+	    $window.off('resize', resizeOverlayImage);
 	    setTimeout(function () {
 	      return $overlay.hide();
 	    }, timer);
 	  }
 	
 	  /**
-	   * Resizing image to fill overlay wrapper
-	   * while maintaining aspect ratio
+	   * Resize Image Overlay
+	   * image should fill overlay wrapper while
+	   * maintaining aspect ratio
 	   */
 	  function resizeOverlayImage() {
 	    wrapperWidth = $window.innerWidth() * 0.75;
@@ -118,7 +120,9 @@
 	        width: 'auto',
 	        'max-height': Math.ceil(wrapperHeight)
 	      });
-	      // shrink overlay wrapper width if image height is maxed out
+	      /**
+	       * shrink overlay wrapper width if image height is maxed out
+	       */
 	      if ($overlayImage.width() < $overlayWrapper.width()) {
 	        $overlayWrapper.css('width', 'auto');
 	      }
@@ -137,20 +141,18 @@
 	  if ($overlay.length) {
 	    setTimeout(function () {
 	      /**
-	       * Check & Handle Image Overlays
-	       */
-	      if ($overlay.hasClass('fm-overlay-image')) {
-	        // handle image overlay resizing
-	        resizeOverlayImage();
-	        $window.resize(function () {
-	          return resizeOverlayImage();
-	        });
-	      }
-	
-	      /**
 	       * Display Overlay
+	       * adds class to make overlay active then checks
+	       * if overlay is an image type
 	       */
-	      $overlay.show().addClass(activeClass);
+	      if ($overlay.show().addClass(activeClass).hasClass('fm-overlay-image')) {
+	        /**
+	         * handles image resizing based on
+	         * screen v.s. image ratio
+	         */
+	        resizeOverlayImage();
+	        $window.resize(resizeOverlayImage);
+	      }
 	    }, timer);
 	
 	    /**

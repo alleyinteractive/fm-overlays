@@ -21,7 +21,7 @@ function fmOverlay() {
   const $overlay = $('#fm-overlay');
   const $overlayWrapper = $overlay.children('.fm-overlay-wrapper');
   const $overlayFade = $overlay.children('.fm-overlay-fade');
-  const $overlayImage = $overlay.find('img', '.fm-image');
+  const $overlayImage = $overlay.find('img', '.fm-overlay-content.image');
   const timer = 500; // matches css transition duration
   const activeClass = 'visible';
   const $closeButton = $overlayWrapper.children('button.fm-overlay-close');
@@ -36,12 +36,14 @@ function fmOverlay() {
    */
   function hideOverlay() {
     $overlay.removeClass(activeClass);
+    $window.off('resize', resizeOverlayImage);
     setTimeout(() => $overlay.hide(), timer);
   }
 
   /**
-   * Resizing image to fill overlay wrapper
-   * while maintaining aspect ratio
+   * Resize Image Overlay
+   * image should fill overlay wrapper while
+   * maintaining aspect ratio
    */
   function resizeOverlayImage() {
     wrapperWidth = $window.innerWidth() * 0.75;
@@ -54,7 +56,9 @@ function fmOverlay() {
         width: 'auto',
         'max-height': Math.ceil(wrapperHeight),
       });
-      // shrink overlay wrapper width if image height is maxed out
+      /**
+       * shrink overlay wrapper width if image height is maxed out
+       */
       if ($overlayImage.width() < $overlayWrapper.width()) {
         $overlayWrapper.css('width', 'auto');
       }
@@ -73,18 +77,18 @@ function fmOverlay() {
   if ($overlay.length) {
     setTimeout(() => {
       /**
-       * Check & Handle Image Overlays
-       */
-      if ($overlay.hasClass('fm-overlay-image')) {
-        // handle image overlay resizing
-        resizeOverlayImage();
-        $window.resize(() => resizeOverlayImage());
-      }
-
-      /**
        * Display Overlay
+       * adds class to make overlay active then checks
+       * if overlay is an image type
        */
-      $overlay.show().addClass(activeClass);
+      if ($overlay.show().addClass(activeClass).hasClass('fm-overlay-image')) {
+        /**
+         * handles image resizing based on
+         * screen v.s. image ratio
+         */
+        resizeOverlayImage();
+        $window.resize(resizeOverlayImage);
+      }
     }, timer);
 
     /**
