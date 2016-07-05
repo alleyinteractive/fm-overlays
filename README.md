@@ -11,7 +11,7 @@ FM-Overlays use cookies in order to control how frequently they appear for the u
 
 Cookies are set in the `set_overlay_cookie` function inside of `class-fm-overlays.php` using the overlay ID to dynamically generate a name like `fm-overlay-2357`.
 
-*Important:* When implementing on a site visitors *must be notified* cookies are being set [per EU Guidelines](http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm).
+_Important: When implementing on a site visitors *must be notified* cookies are being set [per EU Guidelines](http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm). This plugin does not handle any such notifications._
 
 ### Styling Popup
 
