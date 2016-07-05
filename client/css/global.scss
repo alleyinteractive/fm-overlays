@@ -51,13 +51,6 @@ $overlay-index: 5000;
 		top: 12px;
 		background: none;
 
-		// removes default outline glow on click
-		&:focus,
-		&:active {
-			outline: none;
-			opacity: 0.45;
-		}
-
 		&.icon {
 			svg {
 				display: block;
