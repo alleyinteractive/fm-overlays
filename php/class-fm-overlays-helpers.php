@@ -45,7 +45,12 @@ class Fm_Overlays_Helpers extends Fm_Overlays_Singleton {
 		return implode( ' ', $classes );
 	}
 
-
+	/**
+	 * Retrieve Attachment Image Attributes
+	 *
+	 * @param string $attachment_id the id of the attached image
+	 * @param string $size custom image_size - https://developer.wordpress.org/reference/functions/add_image_size/
+	 */
 	public function get_image_src( $attachment_id, $size = null ) {
 		$default_image_src = wp_get_attachment_image_src( $attachment_id, ( ! empty( $size ) ? $size : 'thumbnail' ) );
 		if ( ! empty( $default_image_src ) ) {
@@ -59,19 +64,19 @@ class Fm_Overlays_Helpers extends Fm_Overlays_Singleton {
 		return false;
 	}
 
-
+	/**
+	 * Get Image Sizes for Overlay
+	 *
+	 * @todo add caching to this function
+	 * @todo create fm-overlay specific image sizes (?)
+	 */
 	public function get_overlay_image_sizes( $attachment_id ) {
-		$transient_slug = 'fm_overlay_image_sizes_' . $attachment_id;
-		// if ( false === ( $image_sizes = get_transient( $transient_slug ) ) ) {
-			// Create an array of all the image sizes required
-			$image_sizes = array(
-				'desktop_src' => $this->get_image_src( $attachment_id, 'full' ),
-				'tablet_src' => $this->get_image_src( $attachment_id, 'large' ),
-				'mobile_src' => $this->get_image_src( $attachment_id, 'medium' ),
-			);
-
-			// set_transient( $transient_slug, $image_sizes );
-		// }
+		// Create an array of all the image sizes required
+		$image_sizes = array(
+			'desktop_src' => $this->get_image_src( $attachment_id, 'full' ),
+			'tablet_src' => $this->get_image_src( $attachment_id, 'large' ),
+			'mobile_src' => $this->get_image_src( $attachment_id, 'medium' ),
+		);
 		return $image_sizes;
 	}
 }

@@ -12,6 +12,7 @@ $image_sizes = Fm_Overlays_Helpers::instance()->get_overlay_image_sizes( $overla
 
 $classes = 'entry-thumbnail fm-image';
 $alt_text = the_title_attribute( array( 'echo' => false ) );
+$id = 'attachment_' . $overlay->overlay_content['image_id'];
 
 ?>
 
