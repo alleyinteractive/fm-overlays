@@ -17,26 +17,79 @@ const $ = require('jQuery');
  * @returns {fmOverlay}
  */
 function fmOverlay() {
+  const $window = $(window);
   const $overlay = $('#fm-overlay');
   const $overlayWrapper = $overlay.children('.fm-overlay-wrapper');
+  const $overlayFade = $overlay.children('.fm-overlay-fade');
+  const $overlayImage = $overlay.find('img', '.fm-overlay-content.image');
   const timer = 500; // matches css transition duration
   const activeClass = 'visible';
   const $closeButton = $overlayWrapper.children('button.fm-overlay-close');
+  // Image Overlay Variables
+  let wrapperWidth = $window.innerWidth() * 0.75;
+  let wrapperHeight = $window.innerHeight() * 0.75;
+  let imgRatio = $overlayImage.width() / $overlayImage.height();
+  let wrapperRatio = wrapperWidth / wrapperHeight;
 
   /**
    * Hide overlay after fading out
    */
   function hideOverlay() {
     $overlay.removeClass(activeClass);
-
+    $window.off('resize', resizeOverlayImage);
     setTimeout(() => $overlay.hide(), timer);
   }
 
+  /**
+   * Resize Image Overlay
+   * image should fill overlay wrapper while
+   * maintaining aspect ratio
+   */
+  function resizeOverlayImage() {
+    wrapperWidth = $window.innerWidth() * 0.75;
+    wrapperHeight = $window.innerHeight() * 0.75;
+    imgRatio = $overlayImage.width() / $overlayImage.height();
+    wrapperRatio = wrapperWidth / wrapperHeight;
+
+    if (wrapperRatio >= imgRatio) {
+      $overlayImage.css({
+        width: 'auto',
+        'max-height': Math.ceil(wrapperHeight),
+      });
+      /**
+       * shrink overlay wrapper width if image height is maxed out
+       */
+      if ($overlayImage.width() < $overlayWrapper.width()) {
+        $overlayWrapper.css('width', 'auto');
+      }
+    } else {
+      $overlayWrapper.css('width', '75%');
+      $overlayImage.css({
+        width: '100%',
+        'max-height': 'auto',
+      });
+    }
+  }
+
+  /**
+   * Display the overlay
+   */
   if ($overlay.length) {
-    /**
-     * Display the overlay
-     */
-    setTimeout(() => $overlay.show().addClass(activeClass), timer);
+    setTimeout(() => {
+      /**
+       * Display Overlay
+       * adds class to make overlay active then checks
+       * if overlay is an image type
+       */
+      if ($overlay.show().addClass(activeClass).hasClass('fm-overlay-image')) {
+        /**
+         * handles image resizing based on
+         * screen v.s. image ratio
+         */
+        resizeOverlayImage();
+        $window.resize(resizeOverlayImage);
+      }
+    }, timer);
 
     /**
      * Exit strategies
@@ -54,7 +107,7 @@ function fmOverlay() {
     $closeButton.click(() => hideOverlay());
 
     // close the overlay when a click occurs outside of the overlay content
-    $overlayWrapper.click(() => hideOverlay());
+    $overlayFade.click(() => hideOverlay());
   }
 }
 

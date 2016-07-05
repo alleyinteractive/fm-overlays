@@ -84,16 +84,53 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 
 	/**
 	 * Adds the meta boxes required to manage an overlay.
-	 *
-	 * @TODO Build out useful content fields for this post type.
 	 */
 	public function add_meta_boxes() {
-		$fm = new Fieldmanager_RichTextArea( array(
-				'name' => 'fm_overlays_content',
-			)
-		);
+		// Main Content
+		$fm = new Fieldmanager_Group( array(
+			'name' => 'fm_overlays_content',
+			'children' => array(
+				'content_type_select' => new Fieldmanager_Select( array(
+					'label' => __( 'Select content type', 'fm-overlays' ),
+					'first_empty' => true,
+					'options' => array(
+						'richtext' => __( 'Rich Text Editor' ),
+						'image' => __( 'Image', 'fm-overlays' ),
+					),
+				) ),
+				'richtext_content' => new Fieldmanager_RichTextArea( array(
+					'label' => __( 'Rich Text Content', 'fm-overlays' ),
+					'display_if' => array(
+						'src' => 'content_type_select',
+						'value' => 'richtext',
+					),
+				) ),
+				'image_link' => new Fieldmanager_Link( array(
+					'label' => __( 'Image Link', 'fm-overlays' ),
+					'display_if' => array(
+						'src' => 'content_type_select',
+						'value' => 'image',
+					),
+				) ),
+				'image_link_target' => new Fieldmanager_Checkbox( array(
+					'label' => __( 'Open in New Window', 'fm-overlays' ),
+					'display_if' => array(
+						'src' => 'content_type_select',
+						'value' => 'image',
+					),
+				) ),
+				'image_id' => new Fieldmanager_Media( array(
+					'label' => __( 'Image Content', 'fm-overlays' ),
+					'display_if' => array(
+						'src' => 'content_type_select',
+						'value' => 'image',
+					),
+				) ),
+			),
+		) );
 		$fm->add_meta_box( __( 'Overlay content', 'fm-overlays' ), $this->post_type, 'normal', 'high' );
 
+		// Conditionals
 		$fm = new Fieldmanager_Group( array(
 			'name' => 'fm_overlays_conditionals',
 			'collapsible' => true,

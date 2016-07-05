@@ -10,6 +10,7 @@ $overlay-index: 5000;
 
 }
 
+
 .fm-overlay-fade {
 	position: fixed;
 	top: 0;
@@ -20,18 +21,23 @@ $overlay-index: 5000;
 	background-color: rgba(0, 0, 0, 0.75);
 }
 
-.fm-overlay-wrapper {
+// only add padding if overlay contains richtext
+.fm-overlay-richtext .fm-overlay-wrapper {
+	padding: 50px;
 	border-radius: 5px;
+}
+
+.fm-overlay-wrapper {
 	box-shadow: 5px 5px 15px -3px #000;
 	position: fixed;
 	top: 50%;
 	left: 50%;
-	width: 75%;
+	width: auto;
+	max-width: 75%;
 	height: auto;
 	max-height: 75%;
 	transform: translateX(-50%) translateY(-50%);
 	background: rgba(255, 255, 255, .925);
-	padding: 50px;
 	z-index: $overlay-index + 2;
 
 	.fm-overlay-close {
@@ -82,6 +88,17 @@ $overlay-index: 5000;
 		// Strip out any bottom margins on last element for style reasons
 		*:last-child {
 			margin-bottom: 0;
+		}
+	}
+
+	.fm-image-link {
+		display: block;
+		.fm-image {
+			display: block;
+			// prevents weird bug where height calculations using ratio
+			// don't work correctly creating a small 1px white gap
+			// below the overlay image
+			margin-bottom: -1px;
 		}
 	}
 }

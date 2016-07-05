@@ -81,7 +81,6 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 		}
 
 		wp_reset_query();
-
 		return $fm_overlays;
 	}
 
@@ -181,7 +180,6 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	 * Get the conditional values for an overlay
 	 *
 	 * @param int $overlay_id
-	 *
 	 * @return bool|mixed
 	 */
 	public function get_conditionals( $overlay_id ) {
@@ -189,10 +187,37 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 		return ( empty( $conditionals ) ) ? false : $conditionals;
 	}
 
+
+	/**
+	 * Sets cookie flagging overlay as viewed by client
+	 *
+	 * @param int $overlay_id
+	 */
+	public function set_overlay_cookie( $overlay_id ) {
+		$cookie_name = $this->get_overlay_cookie_name( $overlay_id );
+		/**
+		 * Cookie will expire in 20 Hours
+		 */
+		setcookie( $cookie_name, true, time() + 60 * 60 * 20 );
+	}
+
+	/**
+	 * Get Overlay Cookie Name
+	 *
+	 * @todo use fm-overlay class variables to construct cookie name instead of static string (?)
+	 *
+	 * @param int $overlay_id
+	 */
+	public function get_overlay_cookie_name( $overlay_id ) {
+		$cookie_name = 'fm-overlay-' . $overlay_id;
+		return $cookie_name;
+	}
+
+
 	/**
 	 * Logic for including overlays based on their conditionals.
 	 *
-	 * @TODO Perform further testing on the various combinations of conditions with and without args.
+	 * @todo Perform further testing on the various combinations of conditions with and without args.
 	 *
 	 * @param array $overlay
 	 *
@@ -291,6 +316,8 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	/**
 	 * Display overlay markup in footer
 	 *
+	 * @todo Add caching to this function
+	 *
 	 * @param null $overlay_id
 	 */
 	public function display_overlay( $overlay_id = null ) {
@@ -300,8 +327,27 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 			$overlay = get_post( absint( $overlay_id ) );
 		}
 
-		if ( ! empty( $overlay ) ) {
+		/**
+		 * we don't want to display same overlay more than once in a day
+		 * so we set a cookie on the client for 20 hours after initial
+		 * render of each overlay.
+		 */
+		$overlay_cookie_name = $this->get_overlay_cookie_name( $overlay->ID );
+
+		if ( ! empty( $overlay ) && empty( $_COOKIE[ $overlay_cookie_name ] ) ) {
+
+			/**
+			 * Enhance overlay post object with additional post meta
+			 * to be used in templating.
+			 */
+			$overlay->overlay_content = get_post_meta( $overlay->ID, 'fm_overlays_content', true );
+
+			// include overlay-basic in site footer
 			include( FM_OVERLAYS_PATH . 'templates/fm-overlay-basic.php' );
+
+			// set cookie to prevent overlay from displaying for another 20 hours
+			$this->set_overlay_cookie( $overlay->ID );
+
 		}
 	}
 }
