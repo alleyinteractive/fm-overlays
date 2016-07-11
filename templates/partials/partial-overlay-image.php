@@ -23,7 +23,7 @@ $id = 'attachment_' . $overlay->overlay_content['image_id'];
 					<?php echo ( ! empty( $image_sizes['tablet_src'] ) ? esc_url( $image_sizes['tablet_src']['src'] ) . ' ' . esc_attr( $image_sizes['tablet_src']['width'] ) . 'w, ' : '' ); ?>
 					<?php echo ( ! empty( $image_sizes['mobile_src'] ) ? esc_url( $image_sizes['mobile_src']['src'] ) . ' ' . esc_attr( $image_sizes['mobile_src']['width'] ) . 'w, ' : '' ); ?>"
 			alt="<?php echo esc_attr( $alt_text ); ?>"
-			sizes="(min-width: 36em) calc(.666 * (100vw - s8em)),
+			sizes="(min-width: 36em) calc(.666 * (100vw - 8em)),
 			   100vw"
 			src="<?php echo esc_url( $image_sizes['mobile_src']['src'] ); ?>"
 		/>
