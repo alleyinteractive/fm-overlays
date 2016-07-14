@@ -7,6 +7,9 @@
 
 class Overlay_Richtext extends FM_Overlays_UnitTest {
 
+	/**
+	 * Richtext content to be used in overlay creation
+	 */
 	protected $overlay_content = array(
 		'content_type_select' => 'richtext',
 		'richtext_content' => '<h1>This is a header tag</h1><p>paragraph tag</p><div class="container-div"><p>paragraph inside a div</p></div><article>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</article>'

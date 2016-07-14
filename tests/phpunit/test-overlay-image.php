@@ -2,14 +2,19 @@
 /**
  * Image Overlay Unit Testing.
  *
- * @package fm-overlays
- *
  * @todo Verify that 'richtext_content' isn't rendered despite being populated if originally a richtext overlay
+ * @todo Check image_link_target is correctly passed into anchor target attribute
+ * @todo Check image_id was stored / exists in media library (?)
+ *
+ * @package fm-overlays
  */
 
 
 class Overlay_Image extends FM_Overlays_UnitTest {
 
+	/**
+	 * Image content to be used in overlay creation
+	 */
 	protected $overlay_content = array(
 		'content_type_select' => 'image',
 		'image_link' => '',
@@ -26,4 +31,5 @@ class Overlay_Image extends FM_Overlays_UnitTest {
 		$this->assertNotEmpty( $generated_overlay_id, 'Checking FM-Overlay Image Creation' );
 		$this->assertSame( 'image', $overlay_content['content_type_select'], 'Checking FM-Overlay Content Type Image' );
 	}
+
 }
