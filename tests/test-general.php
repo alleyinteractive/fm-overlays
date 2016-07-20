@@ -23,4 +23,12 @@ class Test_General extends WP_UnitTestCase {
 		do_action( 'wp_footer' );
 		return ob_get_clean();
 	}
+
+	public function test_cookie_name() {
+		$cookie_name = Fm_Overlays::instance()->get_overlay_cookie_name( $this->overlay_post->ID );
+
+		$this->go_to( '/' );
+		$footer = $this->get_wp_footer();
+		$this->assertContains( 'data-cookiename="' . $cookie_name . '"', $footer );
+	}
 }
