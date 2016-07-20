@@ -11,6 +11,11 @@
 
 class Fm_Overlays extends Fm_Overlays_Singleton {
 	/**
+	 * @var array targeted conditions.
+	 */
+	public $targeted_conditions = [];
+
+	/**
 	 * Set up
 	 */
 	public function setup() {
@@ -80,7 +85,6 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 			set_transient( 'fm_overlays', $fm_overlays, 60 * MINUTE_IN_SECONDS );
 		}
 
-		wp_reset_query();
 		return $fm_overlays;
 	}
 
@@ -182,34 +186,20 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	 * @param int $overlay_id
 	 * @return bool|mixed
 	 */
-	public function get_conditionals( $overlay_id ) {
+	public static function get_conditionals( $overlay_id ) {
 		$conditionals = get_post_meta( $overlay_id, 'fm_overlays_conditionals', true );
 		return ( empty( $conditionals ) ) ? false : $conditionals;
 	}
 
-
-	/**
-	 * Sets cookie flagging overlay as viewed by client
-	 *
-	 * @param int $overlay_id
-	 */
-	public function set_overlay_cookie( $overlay_id ) {
-		$cookie_name = $this->get_overlay_cookie_name( $overlay_id );
-		/**
-		 * Cookie will expire in 20 Hours
-		 */
-		setcookie( $cookie_name, true, time() + 60 * 60 * 20 );
-	}
-
 	/**
 	 * Get Overlay Cookie Name
-	 *
-	 * @todo use fm-overlay class variables to construct cookie name instead of static string (?)
+	 * See global.js for cookie name
 	 *
 	 * @param int $overlay_id
+	 * @return string
 	 */
-	public function get_overlay_cookie_name( $overlay_id ) {
-		$cookie_name = 'fm-overlay-' . $overlay_id;
+	public static function get_overlay_cookie_name( $overlay_id ) {
+		$cookie_name = Fm_Overlays_Post_Type::instance()->post_type . '-' . $overlay_id;
 		return $cookie_name;
 	}
 
@@ -227,10 +217,16 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 		// include if the conditionals are empty
 		$include = true;
 
+		// reset for each overlay
+		$this->targeted_conditions = [];
+
 		if ( ! empty( $overlay['conditionals'] ) ) {
 			foreach ( $overlay['conditionals'] as $condition ) {
 				// Begin with the faith that this condition is false.
 				$result = false;
+
+				// used to pass targeted conditions to class var
+				$cond_str_prefix = '';
 
 				// start with the assumption that that the condition is affirmative
 				// (i.e. that the condition is not negated)
@@ -246,6 +242,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 				// If the condition is negated, then we need to skip the condition.
 				if ( isset( $condition['condition_negation'] ) && 'negated' === $condition['condition_negation'] ) {
 					$affirmative_condition = false;
+					$cond_str_prefix = 'not-';
 				}
 
 				/**
@@ -264,6 +261,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 				 */
 				if ( $affirmative_condition === $result ) {
 					$include = true;
+					$this->targeted_conditions[] = $cond_str_prefix . $cond_func;
 				} else {
 					$include = false;
 				}
@@ -344,10 +342,6 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 
 			// include overlay-basic in site footer
 			include( FM_OVERLAYS_PATH . 'templates/fm-overlay-basic.php' );
-
-			// set cookie to prevent overlay from displaying for another 20 hours
-			$this->set_overlay_cookie( $overlay->ID );
-
 		}
 	}
 }
