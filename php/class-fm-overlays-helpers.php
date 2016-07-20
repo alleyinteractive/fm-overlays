@@ -39,7 +39,7 @@ class Fm_Overlays_Helpers extends Fm_Overlays_Singleton {
 
 		// add content type class
 		if ( ! empty( $overlay->overlay_content['content_type_select'] ) ) {
-			$classes[] = 'fm-overlay-' . $overlay->overlay_content['content_type_select'];
+			$classes[] = $this->namespace_classes( $overlay->overlay_content['content_type_select'] );
 		}
 
 		return implode( ' ', $classes );
@@ -78,6 +78,21 @@ class Fm_Overlays_Helpers extends Fm_Overlays_Singleton {
 			'mobile_src' => $this->get_image_src( $attachment_id, 'medium' ),
 		);
 		return $image_sizes;
+	}
+
+	/**
+	 * Namespace class
+	 * @param $classes
+	 *
+	 * @return array
+	 */
+	public function namespace_classes( $classes ) {
+		$formatted_classes = [];
+
+		foreach ( $classes as $class ) {
+			$formatted_classes[] = 'fm-overlay-' . $class;
+		}
+		return array_unique( $formatted_classes );
 	}
 }
 
