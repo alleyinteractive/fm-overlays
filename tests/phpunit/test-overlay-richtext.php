@@ -17,21 +17,11 @@ class Overlay_Richtext extends FM_Overlays_UnitTest {
 	);
 
 	/**
-	 * Tests Overlay Post Creation
-	 */
-	function test_basic_overlay_creation() {
-		// Generate Overlay
-		$factory_overlay = $this->create_overlay( true );
-		$generated_overlay_id = $factory_overlay->ID;
-
-		$this->assertNotEmpty( $generated_overlay_id, 'Checking FM-Overlay Post Creation' );
-	}
-
-	/**
 	 * Tests Richtext Overlay Creation / Verify richtext_content is stored correctly into post meta
 	 */
-	function test_richtext_overlay_content() {
+	public function test_richtext_overlay_content() {
 		// Generate Overlay
+		$this->overlay_title = 'Richtext Test';
 		$overlay_post = $this->create_overlay( true );
 		$generated_overlay_id = $overlay_post->ID;
 		// Retrieve overlay content post meta
