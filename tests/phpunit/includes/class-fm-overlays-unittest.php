@@ -24,20 +24,33 @@ class FM_Overlays_UnitTest extends WP_UnitTestCase {
 	protected $overlay_conditionals;
 
 	/**
+	 * Get Wordpress Footer
+	 *
+	 * @return string returns entire wp_footer object
+	 */
+	protected function get_wp_footer() {
+		ob_start();
+		do_action( 'wp_footer' );
+		return ob_get_clean();
+	}
+
+	/**
 	 * Create new Overlay using the Factory
 	 *
 	 * @param boolean $return_object change to true to return the post object instead of the post ID
-	 * @param array $overlay_content defaults to protected var, can be overrided by passing content meta array
-	 * @param array $overlay_conditionals defaults to protected var, can be overrided by passing conditional meta array
+	 * @param array $content_override defaults to protected var, can be overridden by passing content meta array
+	 * @param array $conditional_override defaults to protected var, can be overridden by passing conditional meta array
 	 * @return string|object defaults to returning a string containing the ID of the post created.  Will return an object if $return_object is set to true
 	 */
-	function create_overlay( $return_object = false, $overlay_content = null, $overlay_conditionals = null) {
+	protected function create_overlay( $return_object = false, $content_override = null, $conditional_override = null) {
 		$overlay_config = array(
+			'post_status' => 'publish',
+			'post_date' => '2016-04-01 00:00:00',
 			'post_type'  => 'fm-overlay',
-			'post_title' => 'UnitTest Overlay',
+			'post_title' => $this->overlay_title,
 			'meta_input' => array(
-				'fm_overlays_content' => ( ! empty( $overlay_content ) ? $overlay_content : $this->overlay_content ),
-				'fm_overlays_conditionals' => ( ! empty( $overlay_conditionals ) ? $overlay_conditionals : $this->overlay_conditionals ),
+				'fm_overlays_content' => ( ! empty( $content_override ) ? $content_override : $this->overlay_content ),
+				'fm_overlays_conditionals' => ( ! empty( $conditional_override ) ? $conditional_override : $this->overlay_conditionals ),
 			)
 		);
 		// determine return type & generate post
