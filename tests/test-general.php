@@ -7,28 +7,28 @@
  *
  */
 
-class Test_General extends WP_UnitTestCase {
-	public function setUp() {
-		parent::setUp();
+// class Test_General extends WP_UnitTestCase {
+// 	public function setUp() {
+// 		parent::setUp();
 
-		// use an overlay targeted to the homepage for all of the general test
-		$overlay_id = $this->factory->post->create( [ 'post_title' => 'has-cat', 'post_status' => 'publish', 'post_date' => '2016-04-01 00:00:00', 'post_type' => 'fm-overlay' ] );
-		update_post_meta( $overlay_id, 'fm_overlays_conditionals', array( array( 'condition_select' => 'is_front_page' ), array( 'condition_select' => 'is_home' ) ) );
+// 		// use an overlay targeted to the homepage for all of the general test
+// 		$overlay_id = $this->factory->post->create( [ 'post_title' => 'has-cat', 'post_status' => 'publish', 'post_date' => '2016-04-01 00:00:00', 'post_type' => 'fm-overlay' ] );
+// 		update_post_meta( $overlay_id, 'fm_overlays_conditionals', array( array( 'condition_select' => 'is_front_page' ), array( 'condition_select' => 'is_home' ) ) );
 
-		$this->overlay_post = get_post( $overlay_id );
-	}
+// 		$this->overlay_post = get_post( $overlay_id );
+// 	}
 
-	protected function get_wp_footer() {
-		ob_start();
-		do_action( 'wp_footer' );
-		return ob_get_clean();
-	}
+// 	protected function get_wp_footer() {
+// 		ob_start();
+// 		do_action( 'wp_footer' );
+// 		return ob_get_clean();
+// 	}
 
-	public function test_cookie_name() {
-		$cookie_name = Fm_Overlays::instance()->get_overlay_cookie_name( $this->overlay_post->ID );
+// 	public function test_cookie_name() {
+// 		$cookie_name = Fm_Overlays::instance()->get_overlay_cookie_name( $this->overlay_post->ID );
 
-		$this->go_to( '/' );
-		$footer = $this->get_wp_footer();
-		$this->assertContains( 'data-cookiename="' . $cookie_name . '"', $footer );
-	}
-}
+// 		$this->go_to( '/' );
+// 		$footer = $this->get_wp_footer();
+// 		$this->assertContains( 'data-cookiename="' . $cookie_name . '"', $footer );
+// 	}
+// }
