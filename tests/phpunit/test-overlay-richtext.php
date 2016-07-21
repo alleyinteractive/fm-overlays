@@ -2,7 +2,8 @@
 /**
  * RichText Overlay Unit Testing.
  *
- * @package fm-overlays
+ * @author 		Alley Interactive
+ * @package 	fm-overlays
  */
 
 class Overlay_Richtext extends FM_Overlays_UnitTest {

@@ -2,10 +2,16 @@
 /**
  * Base Class for FM-Overlays Unit Testing.
  *
- * @package fm-overlays
+ * @author 		Alley Interactive
+ * @package 	fm-overlays
  */
 
 class FM_Overlays_UnitTest extends WP_UnitTestCase {
+
+	/**
+	 *  Default Title of Overlay
+	 */
+	protected $overlay_title = 'Overlay UnitTest';
 
 	/**
 	 *  Array containing overlay content type and content
