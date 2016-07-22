@@ -22,13 +22,6 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 		)
 	);
 
-	/**
-	 * Parse through overlay conditionals
-	 */
-	function _parse_conditional( $args ) {
-
-	}
-
 	public function test_homepage() {
 		$this->title = 'is-home';
 		$overlay_id = $this->create_overlay( false );
@@ -42,16 +35,15 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 	}
 
 	public function test_has_cat() {
-		$this->title = 'has-cat';
-		$this->overlay_conditionals = array();
-		$overlay_id = $this->create_overlay( false );
-
+		// Generate Category & Post for Test
 		$cat_id = $this->factory->category->create( [ 'name' => 'cat' ] );
-		// $overlay_id = $this->factory->post->create( [ 'post_title' => 'has-cat', 'post_status' => 'publish', 'post_date' => '2016-04-01 00:00:00', 'post_type' => 'fm-overlay' ] );
 		$post_id = $this->factory->post->create( [ 'post_title' => 'has-cat-post', 'post_status' => 'publish', 'post_date' => '2016-04-01 00:00:00', 'post_type' => 'post' ] );
-
-		update_post_meta( $overlay_id, 'fm_overlays_conditionals', [ [ 'condition_select' => 'has_category', 'condition_argument_category' => $cat_id ] ] );
 		wp_set_object_terms( $post_id, [ $cat_id ], 'category' );
+
+		// Generate Overlay and pass a $conditional_override
+		$this->title = 'has-cat';
+		$overlay_id = $this->create_overlay( false, null, array( array( 'condition_select' => 'has_category', 'condition_argument_category' => $cat_id ) ) );
+
 
 		$this->go_to( get_permalink( $post_id ) );
 		$contents = $this->get_wp_footer();
@@ -62,12 +54,14 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 	}
 
 	public function test_is_cat() {
+		// Generate Category & Post for Test
 		$cat_id = $this->factory->category->create( [ 'name' => 'cat' ] );
-		$overlay_id = $this->factory->post->create( [ 'post_title' => 'is-cat', 'post_status' => 'publish', 'post_date' => '2016-04-01 00:00:00', 'post_type' => 'fm-overlay' ] );
 		$post_id = $this->factory->post->create( [ 'post_title' => 'is-cat-post', 'post_status' => 'publish', 'post_date' => '2016-04-01 00:00:00', 'post_type' => 'post' ] );
-
-		update_post_meta( $overlay_id, 'fm_overlays_conditionals', [ [ 'condition_select' => 'is_category', 'condition_argument_category' => $cat_id ] ] );
 		wp_set_object_terms( $post_id, [ $cat_id ], 'category' );
+
+		// Generate Overlay and pass a $conditional_override
+		$this->title = 'is-cat';
+		$overlay_id = $this->create_overlay( false, null, array( array( 'condition_select' => 'is_category', 'condition_argument_category' => $cat_id  ) ) );
 
 		$this->go_to( get_term_link( $cat_id, 'category' ) );
 		$contents = $this->get_wp_footer();
