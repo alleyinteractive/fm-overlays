@@ -16,7 +16,6 @@ $fm_overlay_classes = Fm_Overlays_Helpers::instance()->get_overlay_classes( $ove
 $targeted_conditions = Fm_Overlays::instance()->targeted_conditions;
 ?>
 
-<!-- @TODO: we should have a dynamic class and/or ID generated for styling purposes -->
 <div
 	id="fm-overlay"
 	class="<?php echo esc_attr( $fm_overlay_classes ) ?>"
