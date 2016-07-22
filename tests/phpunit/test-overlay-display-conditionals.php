@@ -30,12 +30,12 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 		$overlay_id = $this->create_overlay( false );
 
 		$this->go_to( '/' );
-		$contents = $this->get_wp_footer();
+		$footer = $this->get_wp_footer();
 		// check for overlay
-		$this->assertContains( '<div class="fm-overlay-wrapper">', $contents );
+		$this->assertContains( '<div class="fm-overlay-wrapper">', $footer );
 		// check for condition
-		$this->assertContains( 'fm-overlay-is_home', $contents );
-		$this->assertContains( 'fm-overlay-is_front_page', $contents );
+		$this->assertContains( 'fm-overlay-is_home', $footer );
+		$this->assertContains( 'fm-overlay-is_front_page', $footer );
 	}
 
 	/**
@@ -53,11 +53,11 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 
 
 		$this->go_to( get_permalink( $post_id ) );
-		$contents = $this->get_wp_footer();
+		$footer = $this->get_wp_footer();
 		// check for overlay
-		$this->assertContains( '<div class="fm-overlay-wrapper">', $contents );
+		$this->assertContains( '<div class="fm-overlay-wrapper">', $footer );
 		// check for condition
-		$this->assertContains( 'fm-overlay-has_category', $contents );
+		$this->assertContains( 'fm-overlay-has_category', $footer );
 	}
 
 	/**
@@ -74,11 +74,11 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 		$overlay_id = $this->create_overlay( false, null, array( array( 'condition_select' => 'is_category', 'condition_argument_category' => $cat_id  ) ) );
 
 		$this->go_to( get_term_link( $cat_id, 'category' ) );
-		$contents = $this->get_wp_footer();
+		$footer = $this->get_wp_footer();
 		// check for overlay
-		$this->assertContains( '<div class="fm-overlay-wrapper">', $contents );
+		$this->assertContains( '<div class="fm-overlay-wrapper">', $footer );
 		// check for condition
-		$this->assertContains( 'fm-overlay-is_category', $contents );
+		$this->assertContains( 'fm-overlay-is_category', $footer );
 	}
 
 	/**
@@ -95,11 +95,11 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 		$overlay_id = $this->create_overlay( false, null, array( array( 'condition_select' => 'has_tag', 'condition_argument_category' => $tag_id  ) ) );
 
 		$this->go_to( get_term_link( $tag_id, 'post_tag' ) );
-		$contents = $this->get_wp_footer();
+		$footer = $this->get_wp_footer();
 		// check for overlay
-		$this->assertContains( '<div class="fm-overlay-wrapper">', $contents );
+		$this->assertContains( '<div class="fm-overlay-wrapper">', $footer );
 		// check for condition
-		$this->assertContains( 'fm-overlay-has_tag', $contents );
+		$this->assertContains( 'fm-overlay-has_tag', $footer );
 	}
 
 	/**
@@ -116,11 +116,11 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 		$overlay_id = $this->create_overlay( false, null, array( array( 'condition_select' => 'is_tag', 'condition_argument_category' => $tag_id  ) ) );
 
 		$this->go_to( get_term_link( $tag_id, 'post_tag' ) );
-		$contents = $this->get_wp_footer();
+		$footer = $this->get_wp_footer();
 		// check for overlay
-		$this->assertContains( '<div class="fm-overlay-wrapper">', $contents );
+		$this->assertContains( '<div class="fm-overlay-wrapper">', $footer );
 		// check for condition
-		$this->assertContains( 'fm-overlay-is_tag', $contents );
+		$this->assertContains( 'fm-overlay-is_tag', $footer );
 	}
 
 	/**
@@ -135,12 +135,12 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 		$overlay_id = $this->create_overlay( false, null, array( array( 'condition_select' => 'is_page', 'condition_argument_category' => $page_id  ) ) );
 
 		$this->go_to( get_page_link( $page_id ) );
-		$contents = $this->get_wp_footer();
+		$footer = $this->get_wp_footer();
 
 		// check for overlay
-		$this->assertContains( '<div class="fm-overlay-wrapper">', $contents );
+		$this->assertContains( '<div class="fm-overlay-wrapper">', $footer );
 		// check for condition
-		$this->assertContains( 'fm-overlay-is_page', $contents );
+		$this->assertContains( 'fm-overlay-is_page', $footer );
 	}
 
 	/**
@@ -155,11 +155,11 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 		$overlay_id = $this->create_overlay( false, null, array( array( 'condition_select' => 'is_single', 'condition_argument_category' => $post_id  ) ) );
 
 		$this->go_to( get_permalink( $post_id ) );
-		$contents = $this->get_wp_footer();
+		$footer = $this->get_wp_footer();
 
 		// check for overlay
-		$this->assertContains( '<div class="fm-overlay-wrapper">', $contents );
+		$this->assertContains( '<div class="fm-overlay-wrapper">', $footer );
 		// check for condition
-		$this->assertContains( 'fm-overlay-is_single', $contents );
+		$this->assertContains( 'fm-overlay-is_single', $footer );
 	}
 }

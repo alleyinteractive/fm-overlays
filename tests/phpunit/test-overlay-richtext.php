@@ -29,6 +29,15 @@ class Overlay_Richtext extends FM_Overlays_UnitTest {
 
 		$this->assertSame( 'richtext', $overlay_content['content_type_select'], 'Checking FM-Overlay Content Type Text' );
 		$this->assertSame( $this->overlay_content['richtext_content'], $overlay_content['richtext_content'], 'Checking FM-Overlay Text Content' );
+
+		$this->go_to( '/' );
+		$footer = $this->get_wp_footer();
+		// check for overlay
+		$this->assertContains( '<div class="fm-overlay-wrapper">', $footer );
+		// check for richtext class
+		$this->assertContains( 'fm-overlay-richtext', $footer );
+		// check for richtext content
+		$this->assertContains( $this->overlay_content['richtext_content'], $footer );
 	}
 
 }

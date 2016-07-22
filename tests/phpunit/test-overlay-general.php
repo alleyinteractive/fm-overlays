@@ -32,6 +32,7 @@ class Overlay_General extends FM_Overlays_UnitTest {
 
 		$this->go_to( '/' );
 		$footer = $this->get_wp_footer();
+		$this->assertContains( '<div class="fm-overlay-wrapper">', $footer );
 		$this->assertContains( 'data-cookiename="' . $cookie_name . '"', $footer );
 	}
 

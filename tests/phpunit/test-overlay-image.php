@@ -30,6 +30,15 @@ class Overlay_Image extends FM_Overlays_UnitTest {
 
 		$this->assertNotEmpty( $generated_overlay_id, 'Checking FM-Overlay Image Creation' );
 		$this->assertSame( 'image', $overlay_content['content_type_select'], 'Checking FM-Overlay Content Type Image' );
+
+		$this->go_to( '/' );
+		$footer = $this->get_wp_footer();
+		// check for overlay
+		$this->assertContains( '<div class="fm-overlay-wrapper">', $footer );
+		// check for richtext class
+		$this->assertContains( 'fm-overlay-image', $footer );
+		// check for fm-image
+		$this->assertContains( 'fm-image', $footer );
 	}
 
 }
