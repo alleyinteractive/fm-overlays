@@ -81,18 +81,24 @@ class Fm_Overlays_Helpers extends Fm_Overlays_Singleton {
 	}
 
 	/**
-	 * Namespace class
-	 * @param $classes
+	 * Namespace single or collection of Class(es)
 	 *
-	 * @return array
+	 * @param string/array $classes either a string or array of classes to be namespaced
+	 * @return string/array namespaced single class or array of namespace classes
 	 */
 	public function namespace_classes( $classes ) {
-		$formatted_classes = [];
 
-		foreach ( $classes as $class ) {
-			$formatted_classes[] = 'fm-overlay-' . $class;
+		if ( is_array( $classes ) ) {
+			$formatted_classes = [];
+			foreach ( $classes as $class ) {
+				$formatted_classes[] = 'fm-overlay-' . $class;
+			}
+			$formatted_classes = array_unique( $formatted_classes );
+		} else {
+			$formatted_classes = 'fm-overlay-' . $classes;
 		}
-		return array_unique( $formatted_classes );
+
+		return $formatted_classes;
 	}
 }
 
