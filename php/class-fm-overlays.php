@@ -13,7 +13,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	/**
 	 * @var array targeted conditions.
 	 */
-	public $targeted_conditions = [];
+	public $targeted_conditions = array();
 
 	/**
 	 * Set up
@@ -218,7 +218,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 		$include = true;
 
 		// reset for each overlay
-		$this->targeted_conditions = [];
+		$this->targeted_conditions = array();
 
 		if ( ! empty( $overlay['conditionals'] ) ) {
 			foreach ( $overlay['conditionals'] as $condition ) {
