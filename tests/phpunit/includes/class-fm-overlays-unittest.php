@@ -60,5 +60,4 @@ class FM_Overlays_UnitTest extends WP_UnitTestCase {
 			return $this->factory->post->create_and_get( $overlay_config );
 		}
 	}
-
 }

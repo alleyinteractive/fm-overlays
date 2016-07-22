@@ -11,7 +11,7 @@
 class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 
 	/**
-	 * array of conditionals controlling overlay display
+	 * default array of overlay display conditionals used by create_overlay() function
 	 */
 	protected $overlay_conditionals = array(
 		array(
@@ -22,6 +22,9 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 		)
 	);
 
+	/**
+	 * Tests 'is_home' conditional class
+	 */
 	public function test_homepage() {
 		$this->title = 'is-home';
 		$overlay_id = $this->create_overlay( false );
@@ -32,8 +35,12 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 		$this->assertContains( '<div class="fm-overlay-wrapper">', $contents );
 		// check for condition
 		$this->assertContains( 'fm-overlay-is_home', $contents );
+		$this->assertContains( 'fm-overlay-is_front_page', $contents );
 	}
 
+	/**
+	 * Tests 'has_cat' conditional class
+	 */
 	public function test_has_cat() {
 		// Generate Category & Post for Test
 		$cat_id = $this->factory->category->create( [ 'name' => 'cat' ] );
@@ -53,6 +60,9 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 		$this->assertContains( 'fm-overlay-has_category', $contents );
 	}
 
+	/**
+	 * Tests 'is_cat' conditional class
+	 */
 	public function test_is_cat() {
 		// Generate Category & Post for Test
 		$cat_id = $this->factory->category->create( [ 'name' => 'cat' ] );
@@ -69,5 +79,87 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 		$this->assertContains( '<div class="fm-overlay-wrapper">', $contents );
 		// check for condition
 		$this->assertContains( 'fm-overlay-is_category', $contents );
+	}
+
+	/**
+	 * Tests 'has_tag' conditional class
+	 */
+	public function test_has_tag() {
+		// Generate Tag & Post for Test
+		$tag_id = $this->factory->tag->create( [ 'name' => 'tag' ] );
+		$post_id = $this->factory->post->create( [ 'post_title' => 'has-tag-post', 'post_status' => 'publish', 'post_date' => '2016-04-01 00:00:00', 'post_type' => 'post' ] );
+		wp_set_object_terms( $post_id, [ $tag_id ], 'post_tag' );
+
+		// Generate Overlay and pass a $conditional_override
+		$this->title = 'is-tag';
+		$overlay_id = $this->create_overlay( false, null, array( array( 'condition_select' => 'has_tag', 'condition_argument_category' => $tag_id  ) ) );
+
+		$this->go_to( get_term_link( $tag_id, 'post_tag' ) );
+		$contents = $this->get_wp_footer();
+		// check for overlay
+		$this->assertContains( '<div class="fm-overlay-wrapper">', $contents );
+		// check for condition
+		$this->assertContains( 'fm-overlay-has_tag', $contents );
+	}
+
+	/**
+	 * Tests 'is_tag' conditional class
+	 */
+	public function test_is_tag() {
+		// Generate Tag & Post for Test
+		$tag_id = $this->factory->tag->create( [ 'name' => 'tag' ] );
+		$post_id = $this->factory->post->create( [ 'post_title' => 'is-tag-post', 'post_status' => 'publish', 'post_date' => '2016-04-01 00:00:00', 'post_type' => 'post' ] );
+		wp_set_object_terms( $post_id, [ $tag_id ], 'post_tag' );
+
+		// Generate Overlay and pass a $conditional_override
+		$this->title = 'is-tag';
+		$overlay_id = $this->create_overlay( false, null, array( array( 'condition_select' => 'is_tag', 'condition_argument_category' => $tag_id  ) ) );
+
+		$this->go_to( get_term_link( $tag_id, 'post_tag' ) );
+		$contents = $this->get_wp_footer();
+		// check for overlay
+		$this->assertContains( '<div class="fm-overlay-wrapper">', $contents );
+		// check for condition
+		$this->assertContains( 'fm-overlay-is_tag', $contents );
+	}
+
+	/**
+	 * Tests 'is_page' conditional class
+	 */
+	public function test_is_page() {
+		// Generate Page for Test
+		$page_id = $this->factory->post->create( [ 'post_type' => 'page', 'name' => 'is_page' ] );
+
+		// Generate Overlay and pass a $conditional_override
+		$this->title = 'is-page';
+		$overlay_id = $this->create_overlay( false, null, array( array( 'condition_select' => 'is_page', 'condition_argument_category' => $page_id  ) ) );
+
+		$this->go_to( get_page_link( $page_id ) );
+		$contents = $this->get_wp_footer();
+
+		// check for overlay
+		$this->assertContains( '<div class="fm-overlay-wrapper">', $contents );
+		// check for condition
+		$this->assertContains( 'fm-overlay-is_page', $contents );
+	}
+
+	/**
+	 * Tests 'is_single' conditional class
+	 */
+	public function test_is_single() {
+		// Generate Page for Test
+		$post_id = $this->factory->post->create( [ 'name' => 'is_single' ] );
+
+		// Generate Overlay and pass a $conditional_override
+		$this->title = 'is-single';
+		$overlay_id = $this->create_overlay( false, null, array( array( 'condition_select' => 'is_single', 'condition_argument_category' => $post_id  ) ) );
+
+		$this->go_to( get_permalink( $post_id ) );
+		$contents = $this->get_wp_footer();
+
+		// check for overlay
+		$this->assertContains( '<div class="fm-overlay-wrapper">', $contents );
+		// check for condition
+		$this->assertContains( 'fm-overlay-is_single', $contents );
 	}
 }
