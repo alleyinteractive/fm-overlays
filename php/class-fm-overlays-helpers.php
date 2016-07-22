@@ -89,7 +89,7 @@ class Fm_Overlays_Helpers extends Fm_Overlays_Singleton {
 	public function namespace_classes( $classes ) {
 
 		if ( is_array( $classes ) ) {
-			$formatted_classes = [];
+			$formatted_classes = array();
 			foreach ( $classes as $class ) {
 				$formatted_classes[] = 'fm-overlay-' . $class;
 			}
