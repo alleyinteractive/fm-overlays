@@ -43,9 +43,9 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 	 */
 	public function test_has_cat() {
 		// Generate Category & Post for Test
-		$cat_id = $this->factory->category->create( [ 'name' => 'cat' ] );
-		$post_id = $this->factory->post->create( [ 'post_title' => 'has-cat-post', 'post_status' => 'publish', 'post_date' => '2016-04-01 00:00:00', 'post_type' => 'post' ] );
-		wp_set_object_terms( $post_id, [ $cat_id ], 'category' );
+		$cat_id = $this->factory->category->create( array( 'name' => 'cat' ) );
+		$post_id = $this->factory->post->create( array( 'post_title' => 'has-cat-post', 'post_status' => 'publish', 'post_date' => '2016-04-01 00:00:00', 'post_type' => 'post' ) );
+		wp_set_object_terms( $post_id, array( $cat_id ), 'category' );
 
 		// Generate Overlay and pass a $conditional_override
 		$this->title = 'has-cat';
@@ -65,9 +65,9 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 	 */
 	public function test_is_cat() {
 		// Generate Category & Post for Test
-		$cat_id = $this->factory->category->create( [ 'name' => 'cat' ] );
-		$post_id = $this->factory->post->create( [ 'post_title' => 'is-cat-post', 'post_status' => 'publish', 'post_date' => '2016-04-01 00:00:00', 'post_type' => 'post' ] );
-		wp_set_object_terms( $post_id, [ $cat_id ], 'category' );
+		$cat_id = $this->factory->category->create( array( 'name' => 'cat' ) );
+		$post_id = $this->factory->post->create( array( 'post_title' => 'is-cat-post', 'post_status' => 'publish', 'post_date' => '2016-04-01 00:00:00', 'post_type' => 'post' ) );
+		wp_set_object_terms( $post_id, array( $cat_id ), 'category' );
 
 		// Generate Overlay and pass a $conditional_override
 		$this->title = 'is-cat';
@@ -86,9 +86,9 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 	 */
 	public function test_has_tag() {
 		// Generate Tag & Post for Test
-		$tag_id = $this->factory->tag->create( [ 'name' => 'tag' ] );
-		$post_id = $this->factory->post->create( [ 'post_title' => 'has-tag-post', 'post_status' => 'publish', 'post_date' => '2016-04-01 00:00:00', 'post_type' => 'post' ] );
-		wp_set_object_terms( $post_id, [ $tag_id ], 'post_tag' );
+		$tag_id = $this->factory->tag->create( array( 'name' => 'tag' ) );
+		$post_id = $this->factory->post->create( array( 'post_title' => 'has-tag-post', 'post_status' => 'publish', 'post_date' => '2016-04-01 00:00:00', 'post_type' => 'post' ) );
+		wp_set_object_terms( $post_id, array( $tag_id ), 'post_tag' );
 
 		// Generate Overlay and pass a $conditional_override
 		$this->title = 'is-tag';
@@ -107,9 +107,9 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 	 */
 	public function test_is_tag() {
 		// Generate Tag & Post for Test
-		$tag_id = $this->factory->tag->create( [ 'name' => 'tag' ] );
-		$post_id = $this->factory->post->create( [ 'post_title' => 'is-tag-post', 'post_status' => 'publish', 'post_date' => '2016-04-01 00:00:00', 'post_type' => 'post' ] );
-		wp_set_object_terms( $post_id, [ $tag_id ], 'post_tag' );
+		$tag_id = $this->factory->tag->create( array( 'name' => 'tag' ) );
+		$post_id = $this->factory->post->create( array( 'post_title' => 'is-tag-post', 'post_status' => 'publish', 'post_date' => '2016-04-01 00:00:00', 'post_type' => 'post' ) );
+		wp_set_object_terms( $post_id, array( $tag_id ), 'post_tag' );
 
 		// Generate Overlay and pass a $conditional_override
 		$this->title = 'is-tag';
@@ -128,7 +128,7 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 	 */
 	public function test_is_page() {
 		// Generate Page for Test
-		$page_id = $this->factory->post->create( [ 'post_type' => 'page', 'name' => 'is_page' ] );
+		$page_id = $this->factory->post->create( array( 'post_type' => 'page', 'name' => 'is_page' ) );
 
 		// Generate Overlay and pass a $conditional_override
 		$this->title = 'is-page';
@@ -148,7 +148,7 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 	 */
 	public function test_is_single() {
 		// Generate Page for Test
-		$post_id = $this->factory->post->create( [ 'name' => 'is_single' ] );
+		$post_id = $this->factory->post->create( array( 'name' => 'is_single' ) );
 
 		// Generate Overlay and pass a $conditional_override
 		$this->title = 'is-single';
