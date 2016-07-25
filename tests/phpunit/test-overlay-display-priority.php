@@ -41,7 +41,7 @@ class Overlay_Display_Priority extends FM_Overlays_UnitTest {
 		$this->go_to( '/' );
 		$footer = $this->get_wp_footer();
 		// check we don't display low priority overlay
-		$this->assertNotContains( $low_priority_id, $footer );
+		$this->assertNotContains( 'fm-overlay-' . $low_priority_id, $footer );
 		$this->assertNotContains( 'fm-overlay-richtext', $footer );
 
 		// check for correct overlay type & higher priority overlay id
