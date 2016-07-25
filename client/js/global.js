@@ -91,19 +91,17 @@ function fmOverlay() {
    */
   if ($overlay.length) {
     setTimeout(() => {
-      /**
-       * Display Overlay
-       * adds class to make overlay active then checks
-       * if overlay is an image type
-       */
-      if ($overlay.show().addClass(activeClass).hasClass('fm-overlay-image')) {
+      // Display Overlay
+      $overlay.show().addClass(activeClass);
+      setCookie();
+      // checks if we need to listen for image resizing events
+      if ($overlay.hasClass('fm-overlay-image')) {
         /**
          * handles image resizing based on
          * screen v.s. image ratio
          */
         resizeOverlayImage();
         $window.resize(resizeOverlayImage);
-        setCookie();
       }
     }, timer);
 
