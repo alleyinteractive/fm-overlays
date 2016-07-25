@@ -24,6 +24,7 @@ class Overlay_Image extends FM_Overlays_UnitTest {
 
 	function test_image_overlay_content() {
 		// Generate Overlay
+		$this->overlay_title = 'Image Overlay';
 		$factory_overlay = $this->create_overlay( true );
 		$generated_overlay_id = $factory_overlay->ID;
 		$overlay_content = get_post_meta( $generated_overlay_id, 'fm_overlays_content', true );

@@ -2,8 +2,6 @@
 /**
  * Overlay Conditional Display Unit Testing.
  *
- * @todo create overlay conditional checks using wp_footer() to verify they are loaded in on the appropriate pages
- *
  * @author 		Alley Interactive
  * @package 	fm-overlays
  */
@@ -26,7 +24,7 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 	 * Tests 'is_home' conditional class
 	 */
 	public function test_homepage() {
-		$this->title = 'is-home';
+		$this->overlay_title = 'is-home';
 		$overlay_id = $this->create_overlay( false );
 
 		$this->go_to( '/' );
@@ -48,9 +46,12 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 		wp_set_object_terms( $post_id, array( $cat_id ), 'category' );
 
 		// Generate Overlay and pass a $conditional_override
-		$this->title = 'has-cat';
-		$overlay_id = $this->create_overlay( false, null, array( array( 'condition_select' => 'has_category', 'condition_argument_category' => $cat_id ) ) );
-
+		$this->overlay_title = 'has-cat';
+		$overlay_id = $this->create_overlay( false, array(
+			'conditionals' => array(
+				array( 'condition_select' => 'has_category', 'condition_argument_category' => $cat_id )
+			)
+		) );
 
 		$this->go_to( get_permalink( $post_id ) );
 		$footer = $this->get_wp_footer();
@@ -70,8 +71,12 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 		wp_set_object_terms( $post_id, array( $cat_id ), 'category' );
 
 		// Generate Overlay and pass a $conditional_override
-		$this->title = 'is-cat';
-		$overlay_id = $this->create_overlay( false, null, array( array( 'condition_select' => 'is_category', 'condition_argument_category' => $cat_id  ) ) );
+		$this->overlay_title = 'is-cat';
+		$overlay_id = $this->create_overlay( false, array(
+			'conditionals' => array(
+				array( 'condition_select' => 'is_category', 'condition_argument_category' => $cat_id )
+			)
+		) );
 
 		$this->go_to( get_term_link( $cat_id, 'category' ) );
 		$footer = $this->get_wp_footer();
@@ -91,8 +96,12 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 		wp_set_object_terms( $post_id, array( $tag_id ), 'post_tag' );
 
 		// Generate Overlay and pass a $conditional_override
-		$this->title = 'is-tag';
-		$overlay_id = $this->create_overlay( false, null, array( array( 'condition_select' => 'has_tag', 'condition_argument_category' => $tag_id  ) ) );
+		$this->overlay_title = 'is-tag';
+		$overlay_id = $this->create_overlay( false, array(
+			'conditionals' => array(
+				array( 'condition_select' => 'has_tag', 'condition_argument_category' => $tag_id  )
+			)
+		) );
 
 		$this->go_to( get_term_link( $tag_id, 'post_tag' ) );
 		$footer = $this->get_wp_footer();
@@ -112,8 +121,12 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 		wp_set_object_terms( $post_id, array( $tag_id ), 'post_tag' );
 
 		// Generate Overlay and pass a $conditional_override
-		$this->title = 'is-tag';
-		$overlay_id = $this->create_overlay( false, null, array( array( 'condition_select' => 'is_tag', 'condition_argument_category' => $tag_id  ) ) );
+		$this->overlay_title = 'is-tag';
+		$overlay_id = $this->create_overlay( false, array(
+			'conditionals' => array(
+				array( 'condition_select' => 'is_tag', 'condition_argument_category' => $tag_id  )
+			)
+		) );
 
 		$this->go_to( get_term_link( $tag_id, 'post_tag' ) );
 		$footer = $this->get_wp_footer();
@@ -131,8 +144,12 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 		$page_id = $this->factory->post->create( array( 'post_type' => 'page', 'name' => 'is_page' ) );
 
 		// Generate Overlay and pass a $conditional_override
-		$this->title = 'is-page';
-		$overlay_id = $this->create_overlay( false, null, array( array( 'condition_select' => 'is_page', 'condition_argument_category' => $page_id  ) ) );
+		$this->overlay_title = 'is-page';
+		$overlay_id = $this->create_overlay( false, array(
+			'conditionals' => array(
+				array( 'condition_select' => 'is_page', 'condition_argument_category' => $page_id  )
+			)
+		) );
 
 		$this->go_to( get_page_link( $page_id ) );
 		$footer = $this->get_wp_footer();
@@ -151,8 +168,12 @@ class Overlay_Display_Conditionals extends FM_Overlays_UnitTest {
 		$post_id = $this->factory->post->create( array( 'name' => 'is_single' ) );
 
 		// Generate Overlay and pass a $conditional_override
-		$this->title = 'is-single';
-		$overlay_id = $this->create_overlay( false, null, array( array( 'condition_select' => 'is_single', 'condition_argument_category' => $post_id  ) ) );
+		$this->overlay_title = 'is-single';
+		$overlay_id = $this->create_overlay( false, array(
+			'conditionals' => array(
+				array( 'condition_select' => 'is_single', 'condition_argument_category' => $post_id  )
+			)
+		) );
 
 		$this->go_to( get_permalink( $post_id ) );
 		$footer = $this->get_wp_footer();
