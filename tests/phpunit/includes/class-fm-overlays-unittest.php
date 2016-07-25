@@ -60,14 +60,10 @@ class FM_Overlays_UnitTest extends WP_UnitTestCase {
 			unset( $args['conditionals'] );
 		}
 
-		var_dump($args);
-
 		// Check for remaining arguments and merge em in
 		if ( ! empty( $args ) && is_array( $args ) ) {
 			$overlay_config = array_merge( $overlay_config, $args );
 		}
-
-		// var_dump($overlay_config);
 
 		// determine return type & generate post
 		if ( ! $return_object ) {

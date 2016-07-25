@@ -20,24 +20,33 @@ class Overlay_Display_Priority extends FM_Overlays_UnitTest {
 	 * Tests basic menu order priority
 	 */
 	public function test_basic_priority() {
-		$this->post_title = 'Low Priority';
-		$hidden_overlay_id = $this->create_overlay( false, array(
-			'menu_order' => 0
+		// Generate overlay with lower priority
+		$low_priority_id = $this->create_overlay( false, array(
+			'post_title' => 'Low Priority',
+			'menu_order' => 1
 		) );
 
-		$this->post_title = 'High Priority';
-		$target_overlay = $this->create_overlay( true, array(
+		// Generate overlay with higher priority
+		$high_priority_id = $this->create_overlay( false, array(
+			'post_title' => 'High Priority',
 			'menu_order' => 5,
 			'content' => array(
 				'content_type_select' => 'image',
-			)
+				'image_link' => '',
+				'image_link_target' => '',
+				'image_id' => ''
+			),
 		) );
 
 		$this->go_to( '/' );
 		$footer = $this->get_wp_footer();
-		// check for overlay
-		$this->assertNotContains( $hidden_overlay_id, $footer );
-		// check for condition
+		// check we don't display low priority overlay
+		$this->assertNotContains( $low_priority_id, $footer );
+		$this->assertNotContains( 'fm-overlay-richtext', $footer );
+
+		// check for correct overlay type & higher priority overlay id
 		$this->assertContains( 'fm-overlay-image', $footer );
+		$this->assertContains( 'fm-overlay-' . $high_priority_id, $footer );
 	}
+
 }
