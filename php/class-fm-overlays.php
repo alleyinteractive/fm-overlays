@@ -325,23 +325,31 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 			$overlay = get_post( absint( $overlay_id ) );
 		}
 
+
+		/**
+		 * make sure we were able to populate $overlay before trying
+		 * to find a cookie using its ID
+		 */
+		if ( ! empty( $overlay ) ) {
+
 		/**
 		 * we don't want to display same overlay more than once in a day
 		 * so we set a cookie on the client for 20 hours after initial
 		 * render of each overlay.
 		 */
-		$overlay_cookie_name = $this->get_overlay_cookie_name( $overlay->ID );
+			$overlay_cookie_name = $this->get_overlay_cookie_name( $overlay->ID );
 
-		if ( ! empty( $overlay ) && empty( $_COOKIE[ $overlay_cookie_name ] ) ) {
+			if ( empty( $_COOKIE[ $overlay_cookie_name ] ) ) {
 
-			/**
-			 * Enhance overlay post object with additional post meta
-			 * to be used in templating.
-			 */
-			$overlay->overlay_content = get_post_meta( $overlay->ID, 'fm_overlays_content', true );
+				/**
+				 * Enhance overlay post object with additional post meta
+				 * to be used in templating.
+				 */
+				$overlay->overlay_content = get_post_meta( $overlay->ID, 'fm_overlays_content', true );
 
-			// include overlay-basic in site footer
-			include( FM_OVERLAYS_PATH . 'templates/fm-overlay-basic.php' );
+				// include overlay-basic in site footer
+				include( FM_OVERLAYS_PATH . 'templates/fm-overlay-basic.php' );
+			}
 		}
 	}
 }
