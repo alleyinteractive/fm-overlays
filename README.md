@@ -5,6 +5,12 @@ A Fieldmanager extension to render dynamic content in modal boxes/overlays on a 
 
 Requires [Fieldmanager](https://github.com/alleyinteractive/wordpress-fieldmanager) to be installed and activated.
 
+### Overlay Types
+fm-overlays currently supports two types of content; either a single **Image** or the contents of the **WYSIWYG editor**.
+
+### Overlay Priority
+Each overlay has a display priority.  Use the `menu_order` attribute to set an overlay's priority.  The larger the `menu_order` the higher the display priority.  If no priorities have been set then *post date* is used instead.
+
 ### Cookies
 
 FM-Overlays use cookies in order to control how frequently they appear for the user.  Currently the cookie expiration time is set to expire after 20 hours.
