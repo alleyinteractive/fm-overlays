@@ -45,14 +45,13 @@ function fmOverlay() {
    * Set Overlay cookies.
    */
   function setCookie() {
-    const name = cookieName;
     const date = new Date();
 
     // set cookie for 2 hours
     date.setTime(date.getTime() + (2 * 60 * 60 * 1000));
 
     const expires = `; expires=' + ${date.toGMTString()}`;
-    document.cookie = `${name} = ${true} ${expires}; path=/`;
+    document.cookie = `${cookieName} = ${true} ${expires}; path=/`;
   }
 
   /**
