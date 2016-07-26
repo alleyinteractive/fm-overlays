@@ -13,10 +13,14 @@ if ( empty( $overlay ) ) {
 }
 
 $fm_overlay_classes = Fm_Overlays_Helpers::instance()->get_overlay_classes( $overlay );
+$targeted_conditions = Fm_Overlays::instance()->targeted_conditions;
 ?>
 
-<!-- @TODO: we should have a dynamic class and/or ID generated for styling purposes -->
-<div id="fm-overlay" class="<?php echo esc_attr( $fm_overlay_classes ) ?>">
+<div
+	id="fm-overlay"
+	class="<?php echo esc_attr( $fm_overlay_classes ) ?>"
+	data-cookiename="<?php echo esc_attr( Fm_Overlays::instance()->get_overlay_cookie_name( $overlay->ID ) ); ?>"
+	data-condition="<?php echo esc_attr( implode( ' ', Fm_Overlays_Helpers::instance()->namespace_classes( $targeted_conditions ) ) ); ?>">
 	<div class="fm-overlay-wrapper">
 		<!-- @TODO: classes can be `.icon`, `.text`, or `.icon.text` -->
 		<button aria-label="Close Overlay" class="fm-overlay-close icon">
@@ -31,7 +35,7 @@ $fm_overlay_classes = Fm_Overlays_Helpers::instance()->get_overlay_classes( $ove
 		if ( ! empty( $overlay->overlay_content['content_type_select'] ) ) : ?>
 			<div class="fm-overlay-content <?php echo esc_attr( $overlay->overlay_content['content_type_select'] ); ?>">
 				<?php if ( 'image' === $overlay->overlay_content['content_type_select'] ) : ?>
-					<a href="<?php echo ( ! empty( $overlay->overlay_content['image_link'] ) ? $overlay->overlay_content['image_link'] : '' ); ?>"
+					<a href="<?php echo ( ! empty( $overlay->overlay_content['image_link'] ) ? esc_url( $overlay->overlay_content['image_link'] ) : '' ); ?>"
 						target="<?php echo ( ! empty( $overlay->overlay_content['image_link_target'] ) ? '_blank' : '' ); ?>"
 						alt="<?php echo esc_attr( $overlay->post_title ); ?>"
 						class="fm-image-link">
