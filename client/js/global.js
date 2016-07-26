@@ -22,9 +22,10 @@ function fmOverlay() {
   const $overlayWrapper = $overlay.children('.fm-overlay-wrapper');
   const $overlayFade = $overlay.children('.fm-overlay-fade');
   const $overlayImage = $overlay.find('img', '.fm-overlay-content.image');
+  const $closeButton = $overlayWrapper.children('button.fm-overlay-close');
   const timer = 500; // matches css transition duration
   const activeClass = 'visible';
-  const $closeButton = $overlayWrapper.children('button.fm-overlay-close');
+  const cookieName = $overlay.data('cookiename');
   // Image Overlay Variables
   let wrapperWidth = $window.innerWidth() * 0.75;
   let wrapperHeight = $window.innerHeight() * 0.75;
@@ -38,6 +39,19 @@ function fmOverlay() {
     $overlay.removeClass(activeClass);
     $window.off('resize', resizeOverlayImage);
     setTimeout(() => $overlay.hide(), timer);
+  }
+
+  /**
+   * Set Overlay cookies.
+   */
+  function setCookie() {
+    const date = new Date();
+
+    // set cookie for 2 hours
+    date.setTime(date.getTime() + (2 * 60 * 60 * 1000));
+
+    const expires = `; expires=' + ${date.toGMTString()}`;
+    document.cookie = `${cookieName} = ${true} ${expires}; path=/`;
   }
 
   /**
@@ -76,12 +90,11 @@ function fmOverlay() {
    */
   if ($overlay.length) {
     setTimeout(() => {
-      /**
-       * Display Overlay
-       * adds class to make overlay active then checks
-       * if overlay is an image type
-       */
-      if ($overlay.show().addClass(activeClass).hasClass('fm-overlay-image')) {
+      // Display Overlay
+      $overlay.show().addClass(activeClass);
+      setCookie();
+      // checks if we need to listen for image resizing events
+      if ($overlay.hasClass('fm-overlay-image')) {
         /**
          * handles image resizing based on
          * screen v.s. image ratio
