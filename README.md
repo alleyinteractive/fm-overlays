@@ -44,9 +44,9 @@ Each overlay has a display priority that can be set using the `menu_order` attri
 
 
 
-### Specificity > Priority
+### Specificity is prioritized over Menu Order
 
-Additional specificity within display conditionals will always override a priority.
+Conditionals that target specific posts and terms operate on a higher priority than those that target generally.
 
 
 
