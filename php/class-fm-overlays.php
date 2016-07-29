@@ -118,7 +118,6 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 				 */
 				$targeted_conditionals = $this->process_overlay_conditions( $overlay );
 
-
 				/**
 				 * Verify the validity of the condition based on the function call result
 				 * and the affirmation/negation of the condition.
@@ -251,7 +250,6 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 					$cond_arg = isset( $conditional_meta[ $key ][ $cond_arg_key ] ) ? $conditional_meta[ $key ][ $cond_arg_key ] : '';
 				}
 
-
 				// If the condition is negated, then we need to skip the condition.
 				if ( isset( $condition['condition_negation'] ) && 'negated' === $condition['condition_negation'] ) {
 					$affirmative_condition = false;
@@ -337,7 +335,6 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 			$priority += ( ! empty( $overlay['priority'] ) ) ? $overlay['priority'] : 0;
 
 			$prioritized_overlays[ $priority ][] = $overlay;
-
 
 			// if there is a set menu order, then base the prioritization
 			// on menu_order instead of post date.
