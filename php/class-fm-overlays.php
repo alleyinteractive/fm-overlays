@@ -229,8 +229,6 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 		// pull in conditional meta array
 		$conditional_meta = get_post_meta( $overlay['post_id'], 'fm_overlays_conditionals', true );
 
-		// var_dump( $conditional_meta );
-
 		if ( ! empty( $overlay['conditionals'] ) ) {
 			foreach ( $overlay['conditionals'] as $key => $condition ) {
 				// Begin with the faith that this condition is false.
@@ -247,8 +245,6 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 				// note: this will always be set as long as $overlay['conditionals'] is not empty
 				$cond_func = $condition['condition_select'];
 
-				// var_dump( $condition,  $key );
-
 				// get the associated arguments meta field
 				$cond_arg_key = $this->_get_associated_conditional_arg( $condition );
 				if ( ! empty( $cond_arg_key ) ) {
@@ -262,9 +258,6 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 					$cond_str_prefix = 'not-';
 				}
 
-
-				var_dump( $cond_func, $cond_arg );
-
 				/**
 				 * Run conditional function that is passed
 				 * from the Fieldmanager select options.
@@ -274,8 +267,6 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 				} elseif ( ! empty( $cond_arg ) && true === $affirmative_condition ) {
 					$result = call_user_func( $cond_func, $cond_arg );
 				}
-
-				var_dump( $result );
 
 				/**
 				 * Verify the validity of the condition based on the function call result
@@ -311,8 +302,6 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 		// Begin by assuming there are no specially prioritized overlays.
 		$prioritization_basis = 'date';
 		$prioritized_overlays = array();
-
-		var_dump($unprioritized_overlays);
 
 		foreach ( $unprioritized_overlays as $overlay ) {
 
