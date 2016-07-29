@@ -113,15 +113,21 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 				}
 
 				/**
-				 * Is this overly targeted as a result of this condition?
+				 * Check if overlay is targeted via conditionals
+				 * returns count of all positive matches
 				 */
-				$is_targeted = $this->process_overlay_conditions( $overlay );
+				$targeted_conditionals = $this->process_overlay_conditions( $overlay );
+
 
 				/**
 				 * Verify the validity of the condition based on the function call result
 				 * and the affirmation/negation of the condition.
 				 */
-				if ( true === $is_targeted ) {
+				if ( $targeted_conditionals > 0 ) {
+					/**
+					 * Add a key to conditional array if it was targeted then add to collection
+					 */
+					$overlay['conditionals_matched'] = $targeted_conditionals;
 					$targeted_overlays[] = $overlay;
 				}
 			}
@@ -215,13 +221,18 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	 */
 	public function process_overlay_conditions( $overlay ) {
 		// include if the conditionals are empty
-		$include = true;
+		$include = 0;
 
 		// reset for each overlay
 		$this->targeted_conditions = array();
 
+		// pull in conditional meta array
+		$conditional_meta = get_post_meta( $overlay['post_id'], 'fm_overlays_conditionals', true );
+
+		// var_dump( $conditional_meta );
+
 		if ( ! empty( $overlay['conditionals'] ) ) {
-			foreach ( $overlay['conditionals'] as $condition ) {
+			foreach ( $overlay['conditionals'] as $key => $condition ) {
 				// Begin with the faith that this condition is false.
 				$result = false;
 
@@ -236,14 +247,23 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 				// note: this will always be set as long as $overlay['conditionals'] is not empty
 				$cond_func = $condition['condition_select'];
 
+				// var_dump( $condition,  $key );
+
 				// get the associated arguments meta field
-				$cond_arg = get_post_meta( $overlay['post_id'], $this->_get_associated_conditional_arg( $condition ), true );
+				$cond_arg_key = $this->_get_associated_conditional_arg( $condition );
+				if ( ! empty( $cond_arg_key ) ) {
+					$cond_arg = isset( $conditional_meta[ $key ][ $cond_arg_key ] ) ? $conditional_meta[ $key ][ $cond_arg_key ] : '';
+				}
+
 
 				// If the condition is negated, then we need to skip the condition.
 				if ( isset( $condition['condition_negation'] ) && 'negated' === $condition['condition_negation'] ) {
 					$affirmative_condition = false;
 					$cond_str_prefix = 'not-';
 				}
+
+
+				var_dump( $cond_func, $cond_arg );
 
 				/**
 				 * Run conditional function that is passed
@@ -255,15 +275,15 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 					$result = call_user_func( $cond_func, $cond_arg );
 				}
 
+				var_dump( $result );
+
 				/**
 				 * Verify the validity of the condition based on the function call result
 				 * and the affirmation/negation of the condition.
 				 */
 				if ( $affirmative_condition === $result ) {
-					$include = true;
+					$include += 1;
 					$this->targeted_conditions[] = $cond_str_prefix . $cond_func;
-				} else {
-					$include = false;
 				}
 			}
 		}
@@ -272,8 +292,16 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	}
 
 	/**
-	 * Prioritize the display of the overlays based on
-	 * the priority (menu order) of the overlays
+	 * Prioritize the display of the Overlays
+	 *
+	 * To prioritize overlays a point value is associated
+	 * with various overlay configuration settings.
+	 *
+	 * Prioritization Point System:
+	 *
+	 * 200	Conditional Specificity
+	 * 50	Conditioanl Match
+	 * +   	Menu Order Value
 	 *
 	 * @param array $unprioritized_overlays
 	 *
@@ -284,9 +312,43 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 		$prioritization_basis = 'date';
 		$prioritized_overlays = array();
 
+		var_dump($unprioritized_overlays);
+
 		foreach ( $unprioritized_overlays as $overlay ) {
-			$priority = ( ! empty( $overlay['priority'] ) ) ? $overlay['priority'] : 0;
+
+			/**
+			 * Check for Conditional Specificity
+			 *
+			 * Find out if the conditionals contain a target, and
+			 * adjust its priority weight accordingly
+			 */
+			$is_specific = false;
+			$priority = 0;
+
+			// loop through each conditional attached to the overlay
+			foreach ( $overlay['conditionals'] as $condition ) {
+				$cond_arg_key = $this->_get_associated_conditional_arg( $condition );
+				// check if condition contains target specificity
+				if ( isset( $condition[ $cond_arg_key ] ) ) {
+					$is_specific = true;
+ 				}
+			}
+
+			// specificity adds 200 to the priority weight of the overlay
+			if ( $is_specific ) {
+				$priority += '200';
+			}
+
+			// each matching conditionals adds 50 to the priority weight
+			if ( ! empty( $condition['conditionals_matched'] ) && is_int( $condition['conditionals_matched'] ) ) {
+				$priority += $condition['conditionals_matched'] * 50;
+			}
+
+			// Add in the menu order value to our overall priority
+			$priority += ( ! empty( $overlay['priority'] ) ) ? $overlay['priority'] : 0;
+
 			$prioritized_overlays[ $priority ][] = $overlay;
+
 
 			// if there is a set menu order, then base the prioritization
 			// on menu_order instead of post date.
