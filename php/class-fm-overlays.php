@@ -312,23 +312,26 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 			$is_specific = false;
 			$priority = 0;
 
-			// loop through each conditional attached to the overlay
-			foreach ( $overlay['conditionals'] as $condition ) {
-				$cond_arg_key = $this->_get_associated_conditional_arg( $condition );
-				// check if condition contains target specificity
-				if ( isset( $condition[ $cond_arg_key ] ) ) {
-					$is_specific = true;
+			// act on conditionals if we have them
+			if ( ! empty( $overlay['conditionals'] ) &&  is_array( $overlay['conditionals'] ) ) {
+				// loop through each conditional attached to the overlay
+				foreach ( $overlay['conditionals'] as $condition ) {
+					$cond_arg_key = $this->_get_associated_conditional_arg( $condition );
+					// check if condition contains target specificity
+					if ( isset( $condition[ $cond_arg_key ] ) ) {
+						$is_specific = true;
+					}
 				}
-			}
 
-			// specificity adds 200 to the priority weight of the overlay
-			if ( $is_specific ) {
-				$priority += '200';
-			}
+				// specificity adds 200 to the priority weight of the overlay
+				if ( $is_specific ) {
+					$priority += '200';
+				}
 
-			// each matching conditionals adds 50 to the priority weight
-			if ( ! empty( $condition['conditionals_matched'] ) && is_int( $condition['conditionals_matched'] ) ) {
-				$priority += $condition['conditionals_matched'] * 50;
+				// each matching conditionals adds 50 to the priority weight
+				if ( ! empty( $condition['conditionals_matched'] ) && is_int( $condition['conditionals_matched'] ) ) {
+					$priority += $condition['conditionals_matched'] * 50;
+				}
 			}
 
 			// Add in the menu order value to our overall priority
