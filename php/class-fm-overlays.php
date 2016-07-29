@@ -318,7 +318,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 				// check if condition contains target specificity
 				if ( isset( $condition[ $cond_arg_key ] ) ) {
 					$is_specific = true;
- 				}
+				}
 			}
 
 			// specificity adds 200 to the priority weight of the overlay
