@@ -57,7 +57,9 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 		 * Limit overlays query to 50 posts by default.
 		 * Ideally, any usecase would have far less than 50 active overlays.
 		 *
-		 * At any rate, use this filter to change limit.
+		 * @since 1.0.0
+		 *
+		 * @param int numberposts controls the number of posts retrieved by get_posts
 		 */
 		$args = array(
 			'post_type' => $fm_overlays_post_type,
@@ -323,22 +325,54 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 					}
 				}
 
-				// specificity adds 200 to the priority weight of the overlay
+				// check if the overlay is specifically targeted to a page, tax, term, or tag
 				if ( $is_specific ) {
-					$priority += apply_filters( 'fm_overlays_is_specific_priority', 200 );
+
+					/**
+					 * Filter: fm_overlays_is_specific_priority
+					 *
+					 * Edit the value applied to priority when an overlay is specifically targeted.
+					 * Defaults to 200.
+					 *
+					 * @since 1.0.0
+					 *
+					 * @param float $priority 	weight of targeted overlays.
+					 */
+					$priority += floatval( apply_filters( 'fm_overlays_is_specific_priority', 200 ) );
 				}
 
 				// each matching conditionals adds 50 to the priority weight
 				if ( ! empty( $condition['conditionals_matched'] ) && is_int( $condition['conditionals_matched'] ) ) {
-					$priority += $condition['conditionals_matched'] * apply_filters( 'fm_overlays_conditional_matched_priority', 50 );
+
+					/**
+					 * Filter: fm_overlays_conditional_matched_priority
+					 *
+					 * Edit the value addded to priority for each overlay conditional that returns true.
+					 * Defaults to 50.
+					 *
+					 * @since 1.0.0
+					 *
+					 * @param float $priority 	weight of matched conditionals.
+					 */
+					$priority += $condition['conditionals_matched'] * floatval( apply_filters( 'fm_overlays_conditional_matched_priority', 50 ) );
 				}
 			}
 
 			// Add in the menu order value to our overall priority
 			$priority += ( ! empty( $overlay['priority'] ) ) ? $overlay['priority'] : 0;
 
-			// Add a filter to override priority of any overlay
-			$priority = apply_filters( 'fm_overlays_priority_override', $priority, $overlay );
+			/**
+			 * Filter: fm_overlays_priority_override
+			 *
+			 * Completely override the priority value of a specific overlay.
+			 * The current overlay is passed as the second argument.
+			 *
+			 * @since 1.0.0
+			 *
+			 * @param float $priority  	current priority value after calculating conditionals and menu order.
+			 * @param object $overlay 	Instance of overlay post object being prioritized
+			 */
+			$priority = floatval( apply_filters( 'fm_overlays_priority_override', $priority, $overlay ) );
 
 			$prioritized_overlays[ $priority ][] = $overlay;
 
