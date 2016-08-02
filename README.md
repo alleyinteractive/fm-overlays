@@ -42,14 +42,14 @@ Overlay conditionals allow the user to target where on the site the overlay will
 
 #### Targeting
 
-Targeting allows the user to target an overlay to a specific page, taxonomy or tag.  Targeting an overlay drastically increases it's priority, explained in detail within [priority systems](### Priority Sytems).
+Targeting allows the user to target an overlay to a specific page, taxonomy or tag.  Targeting an overlay drastically increases its priority, explained in detail within [priority systems](### Priority Sytems).
 
 
 
 
 ### Priority System
 
-Each overlay has a display priority point value calculated from it's conditional settings and menu order.  Each Overlay Priorities are used to determine what overlay should display when more than one is found targeting the current screen.  Each overlay's priority is tallied up and the one with the highest value is then displayed.
+Each overlay has a display priority point value calculated from its conditional settings and menu order.  Each Overlay Priorities are used to determine what overlay should display when more than one is found targeting the current screen.  Each overlay's priority is tallied up and the one with the highest value is then displayed.
 
 #### Point Breakdown
 
@@ -61,13 +61,27 @@ Each overlay has a display priority point value calculated from it's conditional
 
 #### Specificity is prioritized over Menu Order
 
-Conditionals that target specific posts and terms operate on a higher priority than those that target generally.  This is why whenver a targeted conditional is found it's priority is bumped by 200 points.
+Conditionals that target specific posts and terms operate on a higher priority than those that target generally.  This is why whenver a targeted conditional is found its priority is bumped by 200 points.
 
 #### Menu Order
 
 The `menu_order` attribute is utilized in two common scenarios.  The first is to determine priority when a targeted conditional can't be found.    The second is to provide additional specificity and override capabilities to non-targeted overlays.  If no priorities or conditionals have been set on the overlay the *published date* is used as a fallback.
 
+#### Priority Filters
 
+Given that these values will likely need to be changed at some point in time, there are a few filters available to make this easy.
+
+
+#### `fm_overlays_is_specific_priority`
+Used to override the default ***targeted conditional*** value of 200
+
+
+#### `fm_overlays_conditional_matched_priority`
+Used to override the default ***matched conditional*** value of 50
+
+
+#### `fm_overlays_priority_override`
+This filter allows you to completely override the priority of any overlay, ignoring all previous values and conditionals.  It passes two arguments; the current priority `$value` and the instance of the `$overlay`.
 
 
 
