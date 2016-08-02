@@ -325,17 +325,20 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 
 				// specificity adds 200 to the priority weight of the overlay
 				if ( $is_specific ) {
-					$priority += '200';
+					$priority += apply_filters( 'fm_overlays_is_specific_priority', 200 );
 				}
 
 				// each matching conditionals adds 50 to the priority weight
 				if ( ! empty( $condition['conditionals_matched'] ) && is_int( $condition['conditionals_matched'] ) ) {
-					$priority += $condition['conditionals_matched'] * 50;
+					$priority += $condition['conditionals_matched'] * apply_filters( 'fm_overlays_conditional_matched_priority', 50 );
 				}
 			}
 
 			// Add in the menu order value to our overall priority
 			$priority += ( ! empty( $overlay['priority'] ) ) ? $overlay['priority'] : 0;
+
+			// Add a filter to override priority of any overlay
+			$priority = apply_filters( 'fm_overlays_priority_override', $priority, $overlay );
 
 			$prioritized_overlays[ $priority ][] = $overlay;
 
