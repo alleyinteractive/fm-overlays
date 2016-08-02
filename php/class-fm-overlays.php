@@ -57,7 +57,9 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 		 * Limit overlays query to 50 posts by default.
 		 * Ideally, any usecase would have far less than 50 active overlays.
 		 *
-		 * At any rate, use this filter to change limit.
+		 * @since 1.0.0
+		 *
+		 * @param int numberposts controls the number of posts retrieved by get_posts
 		 */
 		$args = array(
 			'post_type' => $fm_overlays_post_type,
@@ -113,15 +115,20 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 				}
 
 				/**
-				 * Is this overly targeted as a result of this condition?
+				 * Check if overlay is targeted via conditionals
+				 * returns count of all positive matches
 				 */
-				$is_targeted = $this->process_overlay_conditions( $overlay );
+				$targeted_conditionals = $this->process_overlay_conditions( $overlay );
 
 				/**
 				 * Verify the validity of the condition based on the function call result
 				 * and the affirmation/negation of the condition.
 				 */
-				if ( true === $is_targeted ) {
+				if ( $targeted_conditionals > 0 ) {
+					/**
+					 * Add a key to conditional array if it was targeted then add to collection
+					 */
+					$overlay['conditionals_matched'] = $targeted_conditionals;
 					$targeted_overlays[] = $overlay;
 				}
 			}
@@ -215,13 +222,16 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	 */
 	public function process_overlay_conditions( $overlay ) {
 		// include if the conditionals are empty
-		$include = true;
+		$include = 0;
 
 		// reset for each overlay
 		$this->targeted_conditions = array();
 
+		// pull in conditional meta array
+		$conditional_meta = get_post_meta( $overlay['post_id'], 'fm_overlays_conditionals', true );
+
 		if ( ! empty( $overlay['conditionals'] ) ) {
-			foreach ( $overlay['conditionals'] as $condition ) {
+			foreach ( $overlay['conditionals'] as $key => $condition ) {
 				// Begin with the faith that this condition is false.
 				$result = false;
 
@@ -237,7 +247,10 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 				$cond_func = $condition['condition_select'];
 
 				// get the associated arguments meta field
-				$cond_arg = get_post_meta( $overlay['post_id'], $this->_get_associated_conditional_arg( $condition ), true );
+				$cond_arg_key = $this->_get_associated_conditional_arg( $condition );
+				if ( ! empty( $cond_arg_key ) ) {
+					$cond_arg = isset( $conditional_meta[ $key ][ $cond_arg_key ] ) ? $conditional_meta[ $key ][ $cond_arg_key ] : '';
+				}
 
 				// If the condition is negated, then we need to skip the condition.
 				if ( isset( $condition['condition_negation'] ) && 'negated' === $condition['condition_negation'] ) {
@@ -260,10 +273,8 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 				 * and the affirmation/negation of the condition.
 				 */
 				if ( $affirmative_condition === $result ) {
-					$include = true;
+					$include += 1;
 					$this->targeted_conditions[] = $cond_str_prefix . $cond_func;
-				} else {
-					$include = false;
 				}
 			}
 		}
@@ -272,8 +283,16 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	}
 
 	/**
-	 * Prioritize the display of the overlays based on
-	 * the priority (menu order) of the overlays
+	 * Prioritize the display of the Overlays
+	 *
+	 * To prioritize overlays a point value is associated
+	 * with various overlay configuration settings.
+	 *
+	 * Prioritization Point System:
+	 *
+	 * 200	Conditional Specificity
+	 * 50	Conditioanl Match
+	 * +   	Menu Order Value
 	 *
 	 * @param array $unprioritized_overlays
 	 *
@@ -285,7 +304,76 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 		$prioritized_overlays = array();
 
 		foreach ( $unprioritized_overlays as $overlay ) {
-			$priority = ( ! empty( $overlay['priority'] ) ) ? $overlay['priority'] : 0;
+
+			/**
+			 * Check for Conditional Specificity
+			 *
+			 * Find out if the conditionals contain a target, and
+			 * adjust its priority weight accordingly
+			 */
+			$is_specific = false;
+			$priority = 0;
+
+			// act on conditionals if we have them
+			if ( ! empty( $overlay['conditionals'] ) &&  is_array( $overlay['conditionals'] ) ) {
+				// loop through each conditional attached to the overlay
+				foreach ( $overlay['conditionals'] as $condition ) {
+					$cond_arg_key = $this->_get_associated_conditional_arg( $condition );
+					// check if condition contains target specificity
+					if ( isset( $condition[ $cond_arg_key ] ) ) {
+						$is_specific = true;
+					}
+				}
+
+				// check if the overlay is specifically targeted to a page, tax, term, or tag
+				if ( $is_specific ) {
+
+					/**
+					 * Filter: fm_overlays_is_specific_priority
+					 *
+					 * Edit the value applied to priority when an overlay is specifically targeted.
+					 * Defaults to 200.
+					 *
+					 * @since 1.0.0
+					 *
+					 * @param float $priority 	weight of targeted overlays.
+					 */
+					$priority += floatval( apply_filters( 'fm_overlays_is_specific_priority', 200 ) );
+				}
+
+				// each matching conditionals adds 50 to the priority weight
+				if ( ! empty( $condition['conditionals_matched'] ) && is_int( $condition['conditionals_matched'] ) ) {
+
+					/**
+					 * Filter: fm_overlays_conditional_matched_priority
+					 *
+					 * Edit the value addded to priority for each overlay conditional that returns true.
+					 * Defaults to 50.
+					 *
+					 * @since 1.0.0
+					 *
+					 * @param float $priority 	weight of matched conditionals.
+					 */
+					$priority += $condition['conditionals_matched'] * floatval( apply_filters( 'fm_overlays_conditional_matched_priority', 50 ) );
+				}
+			}
+
+			// Add in the menu order value to our overall priority
+			$priority += ( ! empty( $overlay['priority'] ) ) ? $overlay['priority'] : 0;
+
+			/**
+			 * Filter: fm_overlays_priority_override
+			 *
+			 * Completely override the priority value of a specific overlay.
+			 * The current overlay is passed as the second argument.
+			 *
+			 * @since 1.0.0
+			 *
+			 * @param float $priority  	current priority value after calculating conditionals and menu order.
+			 * @param object $overlay 	Instance of overlay post object being prioritized
+			 */
+			$priority = floatval( apply_filters( 'fm_overlays_priority_override', $priority, $overlay ) );
+
 			$prioritized_overlays[ $priority ][] = $overlay;
 
 			// if there is a set menu order, then base the prioritization

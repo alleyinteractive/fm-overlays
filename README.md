@@ -9,6 +9,7 @@ Requires [Fieldmanager](https://github.com/alleyinteractive/wordpress-fieldmanag
 
 
 
+
 ### Types
 
 fm-overlays currently supports two types of content; either a single **Image** or Rich Text.
@@ -21,33 +22,66 @@ Image overlays utilize both the `srcset` attribute and the js `window.resize` ev
 
 Rich Text overlays are created using the classic **WYSIWYG editor**.
 
+
+
+
 ### Conditionals
 
 Overlay conditionals allow the user to target where on the site the overlay will display.  The following conditionals are currently supported:
 
-- is_home
-- is_front_page
-- *is_category*
-- *has_category*
-- is_single
-- *is_page*
-- *is_tag*
-- *has_tag*
+| Conditional   	| Supports Targeting 	| WP Function     	|
+|---------------	|--------------------	|-----------------	|
+| is_home       	| n/a                	| is_home()       	|
+| is_front_page 	| n/a                	| is_front_page() 	|
+| is_page       	| ✓                  	| is_page()       	|
+| is_single     	| n/a                	| is_single()     	|
+| is_tag        	| ✓                  	| is_tag()        	|
+| has_tag       	| ✓                  	| has_tag()       	|
+| is_category   	| ✓                  	| is_category()   	|
+| has_category  	| ✓                  	| has_category()  	|
 
-Conditionals marked with *italics* allow the user to specifically target a page, category, or tag.
+#### Targeting
 
-
-
-### Priorities
-
-Each overlay has a display priority that can be set using the `menu_order` attribute.  The larger the `menu_order` the higher the display priority.  If no priorities have been set the *published date* is used as a fallback.
+Targeting allows the user to target an overlay to a specific page, taxonomy or tag.  Targeting an overlay drastically increases its priority, explained in detail within [priority systems](### Priority Sytems).
 
 
 
-### Specificity is prioritized over Menu Order
 
-Conditionals that target specific posts and terms operate on a higher priority than those that target generally.
+### Priority System
 
+Each overlay has a display priority point value calculated from its conditional settings and menu order.  Each Overlay Priorities are used to determine what overlay should display when more than one is found targeting the current screen.  Each overlay's priority is tallied up and the one with the highest value is then displayed.
+
+#### Point Breakdown
+
+| Condition            |                         Description                         | Operator | Value | Frequency       |
+|----------------------|:-----------------------------------------------------------:|:--------:|:-----:|-----------------|
+| targeted conditional | If an overlay is targeting a specific page, taxonomy or tag |     +    |  200  | per conditional |
+| matched conditional  | If an overlay conditional positively matches current screen |     +    |   50  | per conditional |
+| menu order           | used for manual overrides and additional specificity        |     +    |   X   | per overlay     |
+
+#### Specificity is prioritized over Menu Order
+
+Conditionals that target specific posts and terms operate on a higher priority than those that target generally.  This is why whenver a targeted conditional is found its priority is bumped by 200 points.
+
+#### Menu Order
+
+The `menu_order` attribute is utilized in two common scenarios.  The first is to determine priority when a targeted conditional can't be found.    The second is to provide additional specificity and override capabilities to non-targeted overlays.  If no priorities or conditionals have been set on the overlay the *published date* is used as a fallback.
+
+#### Priority Filters
+
+Given that these values will likely need to be changed at some point in time, there are a few filters available to make this easy.
+
+
+#### `fm_overlays_is_specific_priority`
+Used to override the default ***targeted conditional*** value of 200
+
+
+#### `fm_overlays_conditional_matched_priority`
+Used to override the default ***matched conditional*** value of 50
+
+
+#### `fm_overlays_priority_override`
+This filter allows you to completely override the priority of any overlay, ignoring all previous values and conditionals.  It passes two arguments; the current priority `$value` and the instance of the `$overlay`.
 
 
 
