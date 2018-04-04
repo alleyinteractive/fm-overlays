@@ -17,6 +17,9 @@ abstract class Fm_Overlays_Singleton {
 	 */
 	private static $instances;
 
+	/**
+	 * Fm_Overlays_Singleton constructor.
+	 */
 	protected function __construct() {
 		/*
 		 * Silence is golden - intentionally left blank
@@ -25,8 +28,7 @@ abstract class Fm_Overlays_Singleton {
 
 	/**
 	 * Method to get an instance.
-	 *
-	 * @return Fm_Overlays_Singleton
+	 * @return $this
 	 */
 	public static function instance() {
 		$class_name = get_called_class();

@@ -49,7 +49,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	 * @return array|bool|mixed
 	 */
 	public function get_overlays() {
-		$fm_overlays_post_type = Fm_Overlays_Post_Type::instance()->get_post_type();
+		$fm_overlays_post_type = Fm_Overlays_Post_Type()->get_post_type();
 
 		/**
 		 * Filter: fm_overlays_post_count
@@ -180,7 +180,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 		// see final line of function
 		remove_action( 'save_post', 'destroy_transient' );
 
-		if ( Fm_Overlays_Post_Type::instance()->get_post_type() === get_post_type( $post_id ) ) {
+		if ( Fm_Overlays_Post_Type()->get_post_type() === get_post_type( $post_id ) ) {
 			delete_transient( 'fm_overlays' );
 		}
 
@@ -206,10 +206,21 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	 * @return string
 	 */
 	public static function get_overlay_cookie_name( $overlay_id ) {
-		$cookie_name = Fm_Overlays_Post_Type::instance()->post_type . '-' . $overlay_id;
+		$cookie_name = Fm_Overlays_Post_Type()->post_type . '-' . $overlay_id;
 		return $cookie_name;
 	}
 
+	/**
+	 * Get overlay cookie expiration time in hours.
+	 * Defaults to 24 hours.
+	 *
+	 * @param int $overlay_id
+	 * @return string
+	 */
+	public static function get_overlay_expiration( $overlay_id ) {
+		$expiration = get_post_meta( $overlay_id, 'fm_overlays_config_expiration', true );
+		return ( empty( $expiration ) ) ? apply_filters( 'fm_overlays_default_expiration', 24 ) : $expiration;
+	}
 
 	/**
 	 * Logic for including overlays based on their conditionals.
@@ -218,7 +229,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	 *
 	 * @param array $overlay
 	 *
-	 * @return array
+	 * @return int
 	 */
 	public function process_overlay_conditions( $overlay ) {
 		// include if the conditionals are empty
@@ -369,10 +380,10 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 			 *
 			 * @since 1.0.0
 			 *
-			 * @param float $priority  	current priority value after calculating conditionals and menu order.
+			 * @param int $priority  	current priority value after calculating conditionals and menu order.
 			 * @param object $overlay 	Instance of overlay post object being prioritized
 			 */
-			$priority = floatval( apply_filters( 'fm_overlays_priority_override', $priority, $overlay ) );
+			$priority = absint( apply_filters( 'fm_overlays_priority_override', $priority, $overlay ) );
 
 			$prioritized_overlays[ $priority ][] = $overlay;
 
@@ -441,4 +452,10 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	}
 }
 
-Fm_Overlays::instance();
+/**
+ * @return Fm_Overlays
+ */
+function FM_Overlays() {
+	return Fm_Overlays::instance();
+}
+FM_Overlays();
