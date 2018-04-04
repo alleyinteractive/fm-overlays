@@ -301,9 +301,9 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	 *
 	 * Prioritization Point System:
 	 *
-	 * 200	Conditional Specificity
-	 * 50	Conditioanl Match
-	 * +   	Menu Order Value
+	 * 200 Conditional Specificity
+	 * 50  Conditioanl Match
+	 * +   Menu Order Value
 	 *
 	 * @param array $unprioritized_overlays
 	 *
@@ -326,7 +326,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 			$priority = 0;
 
 			// act on conditionals if we have them
-			if ( ! empty( $overlay['conditionals'] ) &&  is_array( $overlay['conditionals'] ) ) {
+			if ( ! empty( $overlay['conditionals'] ) && is_array( $overlay['conditionals'] ) ) {
 				// loop through each conditional attached to the overlay
 				foreach ( $overlay['conditionals'] as $condition ) {
 					$cond_arg_key = $this->_get_associated_conditional_arg( $condition );
@@ -347,7 +347,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 					 *
 					 * @since 1.0.0
 					 *
-					 * @param float $priority 	weight of targeted overlays.
+					 * @param float $priority weight of targeted overlays.
 					 */
 					$priority += floatval( apply_filters( 'fm_overlays_is_specific_priority', 200 ) );
 				}
@@ -363,7 +363,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 					 *
 					 * @since 1.0.0
 					 *
-					 * @param float $priority 	weight of matched conditionals.
+					 * @param float $priority weight of matched conditionals.
 					 */
 					$priority += $condition['conditionals_matched'] * floatval( apply_filters( 'fm_overlays_conditional_matched_priority', 50 ) );
 				}
@@ -380,8 +380,8 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 			 *
 			 * @since 1.0.0
 			 *
-			 * @param int $priority  	current priority value after calculating conditionals and menu order.
-			 * @param object $overlay 	Instance of overlay post object being prioritized
+			 * @param int    $priority current priority value after calculating conditionals and menu order.
+			 * @param object $overlay  Instance of overlay post object being prioritized
 			 */
 			$priority = absint( apply_filters( 'fm_overlays_priority_override', $priority, $overlay ) );
 
@@ -389,7 +389,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 
 			// if there is a set menu order, then base the prioritization
 			// on menu_order instead of post date.
-			$prioritization_basis = ( $priority > 0  ) ? 'menu_order' : $prioritization_basis;
+			$prioritization_basis = ( $priority > 0 ) ? 'menu_order' : $prioritization_basis;
 		}
 
 		if ( 'menu_order' === $prioritization_basis ) {

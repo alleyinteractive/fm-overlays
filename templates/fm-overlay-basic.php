@@ -18,7 +18,7 @@ $targeted_conditions = Fm_Overlays()->targeted_conditions;
 
 <div
 	id="fm-overlay"
-	class="<?php echo esc_attr( $fm_overlay_classes ) ?>"
+	class="<?php echo esc_attr( $fm_overlay_classes ); ?>"
 	data-cookiename="<?php echo esc_attr( Fm_Overlays()->get_overlay_cookie_name( $overlay->ID ) ); ?>"
 	data-expiration="<?php echo esc_attr( Fm_Overlays()->get_overlay_expiration( $overlay->ID ) ); ?>"
 	data-condition="<?php echo esc_attr( implode( ' ', Fm_Overlays_Helpers()->namespace_classes( $targeted_conditions ) ) ); ?>">
@@ -32,18 +32,17 @@ $targeted_conditions = Fm_Overlays()->targeted_conditions;
 				</g>
 			</svg>
 		</button>
-		<?php
-		if ( ! empty( $overlay->overlay_content['content_type_select'] ) ) : ?>
+		<?php if ( ! empty( $overlay->overlay_content['content_type_select'] ) ) : ?>
 			<div class="fm-overlay-content <?php echo esc_attr( $overlay->overlay_content['content_type_select'] ); ?>">
 				<?php if ( 'image' === $overlay->overlay_content['content_type_select'] ) : ?>
-					<a href="<?php echo ( ! empty( $overlay->overlay_content['image_link'] ) ? esc_url( $overlay->overlay_content['image_link'] ) : '' ); ?>"
-						target="<?php echo ( ! empty( $overlay->overlay_content['image_link_target'] ) ? '_blank' : '' ); ?>"
-						alt="<?php echo esc_attr( $overlay->post_title ); ?>"
-						class="fm-image-link">
+					<a href="<?php echo( ! empty( $overlay->overlay_content['image_link'] ) ? esc_url( $overlay->overlay_content['image_link'] ) : '' ); ?>"
+					   target="<?php echo( ! empty( $overlay->overlay_content['image_link_target'] ) ? '_blank' : '' ); ?>"
+					   alt="<?php echo esc_attr( $overlay->post_title ); ?>"
+					   class="fm-image-link">
 						<?php include( FM_OVERLAYS_PATH . 'templates/partials/partial-overlay-image.php' ); ?>
 					</a>
 				<?php elseif ( 'richtext' === $overlay->overlay_content['content_type_select'] ) : ?>
-					<?php echo ( ! empty( $overlay->overlay_content['richtext_content'] ) ) ? apply_filters('the_content', wp_kses_post( $overlay->overlay_content['richtext_content'] ) ) : ''; ?>
+					<?php echo ( ! empty( $overlay->overlay_content['richtext_content'] ) ) ? apply_filters( 'the_content', wp_kses_post( $overlay->overlay_content['richtext_content'] ) ) : ''; // @codingStandardsIgnoreLine ?>
 				<?php endif; ?>
 			</div>
 		<?php endif; ?>

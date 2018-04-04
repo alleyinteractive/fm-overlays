@@ -260,7 +260,7 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 		switch ( $name ) {
 			case 'menu_order':
 				$order = $post->menu_order;
-				echo (int) $order ;
+				echo (int) $order;
 				break;
 			default:
 				break;

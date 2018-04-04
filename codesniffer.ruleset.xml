@@ -9,7 +9,8 @@
 	<rule ref="WordPress-VIP">
 		<!-- These may need to be excluded if they throw too many false positives -->
 		<!-- <exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect" /> -->
-		<!-- <exclude name="Generic.WhiteSpace.ScopeIndent.IncorrectExact" /> -->
+		<exclude name="Squiz.PHP.EmbeddedPhp.ContentAfterOpen" />
+		<exclude name="WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid" />
 		<exclude name="PEAR.Functions.FunctionCallSignature.Indent" />
 	</rule>
 
