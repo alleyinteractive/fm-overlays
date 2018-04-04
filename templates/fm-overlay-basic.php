@@ -43,7 +43,7 @@ $targeted_conditions = Fm_Overlays()->targeted_conditions;
 						<?php include( FM_OVERLAYS_PATH . 'templates/partials/partial-overlay-image.php' ); ?>
 					</a>
 				<?php elseif ( 'richtext' === $overlay->overlay_content['content_type_select'] ) : ?>
-					<?php echo ( ! empty( $overlay->overlay_content['richtext_content'] ) ) ? wp_kses_post( apply_filters('the_content', $overlay->overlay_content['richtext_content'] ) ) : ''; ?>
+					<?php echo ( ! empty( $overlay->overlay_content['richtext_content'] ) ) ? apply_filters('the_content', wp_kses_post( $overlay->overlay_content['richtext_content'] ) ) : ''; ?>
 				<?php endif; ?>
 			</div>
 		<?php endif; ?>
