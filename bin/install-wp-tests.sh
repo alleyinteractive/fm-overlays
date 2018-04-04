@@ -114,7 +114,7 @@ install_db() {
 }
 
 install_wp_fm() {
-	git clone git@github.com:alleyinteractive/wordpress-fieldmanager.git $WP_CORE_DIR/wp-content/plugins
+	git clone git@github.com:alleyinteractive/wordpress-fieldmanager.git $WP_CORE_DIR/wp-content/plugins/
 }
 
 install_wp
