@@ -113,6 +113,11 @@ install_db() {
 	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
 }
 
+install_wp_fm() {
+	git clone git@github.com:alleyinteractive/wordpress-fieldmanager.git $WP_CORE_DIR/wp-content/plugins
+}
+
 install_wp
 install_test_suite
 install_db
+install_wp_fm
