@@ -46,11 +46,6 @@ before_script:
 script:
   - find . -path ./vendor -prune -o -type "f" -iname "*.php" | xargs -L "1" php -l
   - |
-    if [[ ! -z "$WP_VERSION" ]] ; then
-      phpunit
-      phpunit -c multisite.xml
-    fi
-  - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
       grunt phpcs
     fi
