@@ -28,7 +28,7 @@ class Overlay_General extends FM_Overlays_UnitTest {
 	public function test_cookie_name() {
 		$this->overlay_title = 'Cookie Test';
 		$overlay_post = $this->create_overlay( true );
-		$cookie_name = Fm_Overlays::instance()->get_overlay_cookie_name( $overlay_post->ID );
+		$cookie_name = Fm_Overlays()->get_overlay_cookie_name( $overlay_post->ID );
 
 		$this->go_to( '/' );
 		$footer = $this->get_wp_footer();
