@@ -5,8 +5,11 @@
  * implements the srcset attribute in the <img> tag
  */
 
+if ( empty( $overlay ) ) {
+	return;
+}
 
-$image_sizes = Fm_Overlays_Helpers::instance()->get_overlay_image_sizes( $overlay->overlay_content['image_id'] );
+$image_sizes = Fm_Overlays_Helpers()->get_overlay_image_sizes( $overlay->overlay_content['image_id'] );
 $classes = 'entry-thumbnail fm-image';
 $alt_text = the_title_attribute( array( 'echo' => false ) );
 $id = 'attachment_' . $overlay->overlay_content['image_id'];
@@ -28,4 +31,4 @@ $id = 'attachment_' . $overlay->overlay_content['image_id'];
 			src="<?php echo esc_url( $image_sizes['mobile_src']['src'] ); ?>"
 		/>
 	</div>
-<?php endif; ?>
+<?php endif;

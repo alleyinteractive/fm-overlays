@@ -130,6 +130,30 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 		) );
 		$fm->add_meta_box( __( 'Overlay content', 'fm-overlays' ), $this->post_type, 'normal', 'high' );
 
+		// Config
+		$fm = new Fieldmanager_Group( array(
+			'name' => 'fm_overlays_config',
+			'serialize_data' => false,
+			'children'       => array(
+				'expiration' => new Fieldmanager_TextField( array(
+					'escape'        => array( 'description' => 'wp_kses_post' ),
+					'sanitize'      => function ( $val ) {
+						if ( ! empty( $val ) || '0' === $val ) {
+							return absint( $val );
+						} else {
+							return '';
+						}
+					},
+					'label'         => __( 'Cookie expiration in hours (defaults to 24 hours)', 'fm-overlays' ),
+					'description'   => __( '24 = 1 day<br>48 = 2 days<br>72 = 3 days<br>168 = 1 weeks<br>336 = 2 weeks', 'fm-overlays' ),
+					'attributes'    => array(
+						'style' => 'width:60px',
+					),
+				) ),
+			),
+		) );
+		$fm->add_meta_box( __( 'Overlay config', 'fm-overlays' ), $this->post_type, 'normal', 'high' );
+
 		// Conditionals
 		$fm = new Fieldmanager_Group( array(
 			'name' => 'fm_overlays_conditionals',
@@ -236,7 +260,7 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 		switch ( $name ) {
 			case 'menu_order':
 				$order = $post->menu_order;
-				echo (int) $order ;
+				echo (int) $order;
 				break;
 			default:
 				break;
@@ -282,4 +306,10 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 	}
 }
 
-Fm_Overlays_Post_Type::instance();
+/**
+ * @return Fm_Overlays_Post_Type
+ */
+function Fm_Overlays_Post_Type() {
+	return Fm_Overlays_Post_Type::instance();
+}
+Fm_Overlays_Post_Type();

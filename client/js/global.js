@@ -26,6 +26,7 @@ function fmOverlay() {
   const timer = 500; // matches css transition duration
   const activeClass = 'visible';
   const cookieName = $overlay.data('cookiename');
+  const expiration = $overlay.data('expiration');
   // Image Overlay Variables
   let wrapperWidth = $window.innerWidth() * 0.75;
   let wrapperHeight = $window.innerHeight() * 0.75;
@@ -48,7 +49,7 @@ function fmOverlay() {
     const date = new Date();
 
     // set cookie for 2 hours
-    date.setTime(date.getTime() + (2 * 60 * 60 * 1000));
+    date.setTime(date.getTime() + (expiration * 60 * 60 * 1000));
 
     const expires = `; expires=' + ${date.toGMTString()}`;
     document.cookie = `${cookieName} = ${true} ${expires}; path=/`;

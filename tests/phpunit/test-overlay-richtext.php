@@ -37,7 +37,7 @@ class Overlay_Richtext extends FM_Overlays_UnitTest {
 		// check for richtext class
 		$this->assertContains( 'fm-overlay-richtext', $footer );
 		// check for richtext content
-		$this->assertContains( $this->overlay_content['richtext_content'], $footer );
+		$this->assertContains( apply_filters( 'the_content', wp_kses_post( $this->overlay_content['richtext_content'] ) ), $footer );
 	}
 
 }

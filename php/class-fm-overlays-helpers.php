@@ -102,4 +102,10 @@ class Fm_Overlays_Helpers extends Fm_Overlays_Singleton {
 	}
 }
 
-Fm_Overlays_Helpers::instance();
+/**
+ * @return Fm_Overlays_Helpers
+ */
+function Fm_Overlays_Helpers() {
+	return Fm_Overlays_Helpers::instance();
+}
+Fm_Overlays_Helpers();

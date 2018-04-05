@@ -4,12 +4,14 @@
 	<description>Code standard rules to check against a WordPress Plugin.</description>
 
 	<exclude-pattern>tests/*</exclude-pattern>
+	<exclude-pattern>node_modules/*</exclude-pattern>
 
 	<!-- Include the WordPress ruleset, with exclusions. -->
 	<rule ref="WordPress-VIP">
 		<!-- These may need to be excluded if they throw too many false positives -->
 		<!-- <exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect" /> -->
-		<!-- <exclude name="Generic.WhiteSpace.ScopeIndent.IncorrectExact" /> -->
+		<exclude name="Squiz.PHP.EmbeddedPhp.ContentAfterOpen" />
+		<exclude name="WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid" />
 		<exclude name="PEAR.Functions.FunctionCallSignature.Indent" />
 	</rule>
 
