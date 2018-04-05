@@ -33,19 +33,16 @@ before_script:
     else
       composer global require "phpunit/phpunit=4.8.*"
     fi
-  - chmod +x bin/install-wp-tests.sh
-  - |
-    if [[ ! -z "$WP_VERSION" ]] ; then
-      bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-    fi
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
+      chmod +x bin/setup-codesniffer.sh
+      bash bin/setup-codesniffer.sh
       composer install
-      npm install
+      npm install --silent
     fi
 script:
   - find . -path ./vendor -prune -o -type "f" -iname "*.php" | xargs -L "1" php -l
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
-      phpcs -p -s -v -n . --standard=./codesniffer.ruleset.xml --extensions=php
+      /tmp/wordpress/php-codesniffer/bin/phpcs -p -s -v -n . --standard=./codesniffer.ruleset.xml --extensions=php
     fi
