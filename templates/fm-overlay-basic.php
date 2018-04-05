@@ -20,7 +20,7 @@ $targeted_conditions = Fm_Overlays()->targeted_conditions;
 	id="fm-overlay"
 	class="<?php echo esc_attr( $fm_overlay_classes ); ?>"
 	data-cookiename="<?php echo esc_attr( Fm_Overlays()->get_overlay_cookie_name( $overlay->ID ) ); ?>"
-	data-expiration="<?php echo esc_attr( Fm_Overlays()->get_overlay_expiration( $overlay->ID ) ); ?>"
+	data-expiration="<?php echo esc_attr( absint( Fm_Overlays()->get_overlay_expiration( $overlay->ID ) ) ); ?>"
 	data-condition="<?php echo esc_attr( implode( ' ', Fm_Overlays_Helpers()->namespace_classes( $targeted_conditions ) ) ); ?>">
 	<div class="fm-overlay-wrapper">
 		<!-- @TODO: classes can be `.icon`, `.text`, or `.icon.text` -->
