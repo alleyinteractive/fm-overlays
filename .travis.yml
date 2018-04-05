@@ -47,5 +47,5 @@ script:
   - find . -path ./vendor -prune -o -type "f" -iname "*.php" | xargs -L "1" php -l
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
-      grunt phpcs
+      phpcs -p -s -v -n . --standard=./codesniffer.ruleset.xml --extensions=php
     fi
