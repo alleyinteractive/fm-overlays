@@ -22,7 +22,7 @@ function fmOverlay() {
   const $overlayWrapper = $overlay.children('.fm-overlay-wrapper');
   const $overlayFade = $overlay.children('.fm-overlay-fade');
   const $overlayImage = $overlay.find('img', '.fm-overlay-content.image');
-  const $closeButton = $overlayWrapper.children('button.fm-overlay-close');
+  const $closeButton = $overlayWrapper.find('button.fm-overlay-close');
   const timer = 500; // matches css transition duration
   const activeClass = 'visible';
   const cookieName = $overlay.data('cookiename');
