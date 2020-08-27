@@ -33,7 +33,7 @@ before_script:
       npm install --silent
     fi
 script:
-  - if [[ "$PHP_LINT" == "1" ]]; then find . -type "f" -iname "*.php" | xargs -L "1" php -l; fi
+  - if [[ "$PHP_LINT" == "1" ]]; then  find . -path ./vendor -prune -o -type "f" -iname "*.php" | xargs -L "1" php -l
 
   # WordPress Coding Standards.
   #
