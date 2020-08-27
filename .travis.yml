@@ -14,25 +14,18 @@ branches:
 matrix:
   include:
     - php: 5.6
-      env: WP_VERSION=4.4
-    - php: 7.0
+      env: WP_VERSION=5.0
+    - php: 7.3
+      env: WP_VERSION=5.5 PHP_LINT=1
+    - php: 7.3
       env: WP_VERSION=latest
-    - php: 7.0
-      env: WP_VERSION=nightly
-    - php: 7.2
-      env: WP_VERSION=nightly
-    - php: 7.0
+    - php: 7.3
       env: WP_TRAVISCI=phpcs
   fast_finish: true
 
 before_script:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - |
-    if [[ ${TRAVIS_PHP_VERSION:0:2} == "7." ]]; then
-      composer global require "phpunit/phpunit=5.7.*"
-    else
-      composer global require "phpunit/phpunit=4.8.*"
-    fi
+  - composer global require "phpunit/phpunit=6.1.*"
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
       chmod +x bin/setup-codesniffer.sh
@@ -41,7 +34,7 @@ before_script:
       npm install --silent
     fi
 script:
-  - find . -path ./vendor -prune -o -type "f" -iname "*.php" | xargs -L "1" php -l
+  - if [[ "$PHP_LINT" == "1" ]]; then find . -type "f" -iname "*.php" | xargs -L "1" php -l; fi
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
       /tmp/wordpress/php-codesniffer/bin/phpcs -p -s -v -n . --standard=./codesniffer.ruleset.xml --extensions=php
