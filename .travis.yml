@@ -48,6 +48,8 @@ before_script:
     - |
       if [[ "$WP_PHPCS" == "1" ]] ; then
         composer global require automattic/vipwpcs
+        which phpcs
+        phpcs --version
         phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs,$HOME/.composer/vendor/automattic/vipwpcs
       fi
 
