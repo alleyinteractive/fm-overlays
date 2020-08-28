@@ -1,6 +1,6 @@
 <?php
 /**
- * class-fm-overlays-singleton.php
+ * FM Overlays Singleton
  *
  * Abstract class to be implemented by all other singleton Fm Overlays classes.
  *
@@ -8,6 +8,10 @@
  * @author      Alley Interactive
  * @package     fm-overlays
  * @description Set up the custom post type for the overlays
+ */
+
+/**
+ * Class Fm_Overlays_Singleton
  */
 abstract class Fm_Overlays_Singleton {
 	/**
@@ -28,13 +32,14 @@ abstract class Fm_Overlays_Singleton {
 
 	/**
 	 * Method to get an instance.
+	 *
 	 * @return $this
 	 */
 	public static function instance() {
 		$class_name = get_called_class();
 
 		if ( ! isset( self::$instances[ $class_name ] ) ) {
-			self::$instances[ $class_name ] = new $class_name;
+			self::$instances[ $class_name ] = new $class_name; // phpcs:ignore WordPress.Classes.ClassInstantiation.MissingParenthesis
 			self::$instances[ $class_name ]->setup();
 		}
 
