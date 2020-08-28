@@ -23,11 +23,11 @@ git:
 
 matrix:
   include:
-    - php: 5.6
-      env: WP_VERSION=5.0
     - php: 7.3
-      env: WP_VERSION=5.5 PHP_LINT=1 WP_PHPCS=1
+      env: WP_VERSION=4.9 PHP_LINT=1
     - php: 7.3
+      env: WP_VERSION=5.5 WP_PHPCS=1
+    - php: 7.4
       env: WP_VERSION=latest
   fast_finish: true
 
@@ -35,6 +35,8 @@ before_script:
   # Turn off Xdebug. See https://core.trac.wordpress.org/changeset/40138.
   - phpenv config-rm xdebug.ini || echo "Xdebug not available"
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - composer global require "phpunit/phpunit=6.1.*"
+
   # Set up WordPress.
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
