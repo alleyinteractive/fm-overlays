@@ -1,13 +1,9 @@
 # Travis CI (MIT License) configuration file for WP Starter Theme
 # @link https://travis-ci.org/
 
-# Bionic image has PHP versions 7.1,7.2,7.3 pre-installed
-dist: bionic
-
-# Bionic does not start mysql or memcached by default
+# Xenial does not start mysql or memcached by default
 services:
   - mysql
-  - memcached
 
 # Declare project language.
 # @link http://about.travis-ci.org/docs/user/languages/php/
@@ -23,10 +19,10 @@ git:
 
 matrix:
   include:
+    - php: 7.2
+      env: WP_VERSION=4.9.10 PHP_LINT=1
     - php: 7.3
-      env: WP_VERSION=4.9 PHP_LINT=1
-    - php: 7.3
-      env: WP_VERSION=5.5 WP_PHPCS=1
+      env: WP_VERSION=5.5 PHP_LINT=1 WP_PHPCS=1
   fast_finish: true
 
 before_script:
@@ -46,8 +42,6 @@ before_script:
   - |
     if [[ "$WP_PHPCS" == "1" ]] ; then
       composer global require automattic/vipwpcs
-      which phpcs
-      phpcs --version
       phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs,$HOME/.composer/vendor/automattic/vipwpcs
     fi
 
