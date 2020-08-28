@@ -27,8 +27,6 @@ matrix:
       env: WP_VERSION=4.9 PHP_LINT=1
     - php: 7.3
       env: WP_VERSION=5.5 WP_PHPCS=1
-    - php: 7.4
-      env: WP_VERSION=latest
   fast_finish: true
 
 before_script:
