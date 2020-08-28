@@ -19,19 +19,13 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	 * Set up
 	 */
 	public function setup() {
-		/**
-		 * Handle transient flushing.
-		 */
+		// Handle transient flushing.
 		add_action( 'save_post', array( $this, 'destroy_transient' ) );
 
-		/**
-		 * Load in front end assets
-		 */
+		// Load in front end assets.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_fe_assets' ) );
 
-		/**
-		 * Display the overlay post markup
-		 */
+		// Display the overlay post markup.
 		add_action( 'wp_footer', array( $this, 'display_overlay' ) );
 	}
 
@@ -57,16 +51,16 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 		 * Limit overlays query to 50 posts by default.
 		 * Ideally, any usecase would have far less than 50 active overlays.
 		 *
+		 * @param int numberposts controls the number of posts retrieved by get_posts
 		 * @since 1.0.0
 		 *
-		 * @param int numberposts controls the number of posts retrieved by get_posts
 		 */
 		$args = array(
-			'post_type' => $fm_overlays_post_type,
-			'numberposts' => apply_filters( 'fm_overlays_post_count', 50 ),
+			'post_type'        => $fm_overlays_post_type,
+			'numberposts'      => apply_filters( 'fm_overlays_post_count', 50 ),
 			'suppress_filters' => false,
-			'oderby' => 'menu_order date',
-			'order' => 'DESC',
+			'oderby'           => 'menu_order date',
+			'order'            => 'DESC',
 		);
 
 		$fm_overlays = get_transient( 'fm_overlays' );
@@ -79,8 +73,8 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 
 				$fm_overlays[] = array(
 					'conditionals' => $this->get_conditionals( $_overlay_cpt->ID ),
-					'priority' => $priority,
-					'post_id' => $_overlay_cpt->ID,
+					'priority'     => $priority,
+					'post_id'      => $_overlay_cpt->ID,
 				);
 			}
 
@@ -129,7 +123,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 					 * Add a key to conditional array if it was targeted then add to collection
 					 */
 					$overlay['conditionals_matched'] = $targeted_conditionals;
-					$targeted_overlays[] = $overlay;
+					$targeted_overlays[]             = $overlay;
 				}
 			}
 		}
@@ -139,7 +133,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 			return null;
 		}
 
-		/**
+		/*
 		 * Prioritize the display of the overlays based on
 		 * the priority (menu order) of the overlays
 		 */
@@ -150,8 +144,8 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 
 	/**
 	 * Helper to return the appropriate associated conditional arg meta field.
-	 * @param array $conditional
 	 *
+	 * @param array $conditional
 	 * @return string
 	 */
 	private function _get_associated_conditional_arg( $conditional ) {
@@ -160,7 +154,10 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 		if ( ! empty( $conditional['condition_select'] ) ) {
 			// remove the word is or has from the condition select field
 			// and we are left with the condition_argument_* meta field name we are looking for.
-			$conditional_args = 'condition_argument' . str_replace( array( 'is', 'has' ), '', $conditional['condition_select'] );
+			$conditional_args = 'condition_argument' . str_replace( array(
+					'is',
+					'has'
+				), '', $conditional['condition_select'] );
 		}
 
 		return $conditional_args;
@@ -176,14 +173,14 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 			return;
 		}
 
-		// follow this pattern to prevent infinite loops should something be added that fires `save_post`
-		// see final line of function
+		// Remove action to prevent infinite loops should something be added that fires `save_post`.
 		remove_action( 'save_post', 'destroy_transient' );
 
 		if ( Fm_Overlays_Post_Type()->get_post_type() === get_post_type( $post_id ) ) {
 			delete_transient( 'fm_overlays' );
 		}
 
+		// Re-add removed callback.
 		add_action( 'save_posts', 'destroy_transient' );
 	}
 
@@ -195,6 +192,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	 */
 	public static function get_conditionals( $overlay_id ) {
 		$conditionals = get_post_meta( $overlay_id, 'fm_overlays_conditionals', true );
+
 		return ( empty( $conditionals ) ) ? false : $conditionals;
 	}
 
@@ -207,6 +205,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	 */
 	public static function get_overlay_cookie_name( $overlay_id ) {
 		$cookie_name = Fm_Overlays_Post_Type()->post_type . '-' . $overlay_id;
+
 		return $cookie_name;
 	}
 
@@ -219,26 +218,27 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	 */
 	public static function get_overlay_expiration( $overlay_id ) {
 		$expiration = get_post_meta( $overlay_id, 'fm_overlays_config_expiration', true );
+
 		return ( empty( $expiration ) ) ? apply_filters( 'fm_overlays_default_expiration', 24 ) : $expiration;
 	}
 
 	/**
 	 * Logic for including overlays based on their conditionals.
 	 *
-	 * @todo Perform further testing on the various combinations of conditions with and without args.
-	 *
 	 * @param array $overlay
 	 *
 	 * @return int
+	 * @todo Perform further testing on the various combinations of conditions with and without args.
+	 *
 	 */
 	public function process_overlay_conditions( $overlay ) {
-		// include if the conditionals are empty
+		// include if the conditionals are empty.
 		$include = 0;
 
-		// reset for each overlay
+		// reset for each overlay.
 		$this->targeted_conditions = array();
 
-		// pull in conditional meta array
+		// pull in conditional meta array.
 		$conditional_meta = get_post_meta( $overlay['post_id'], 'fm_overlays_conditionals', true );
 
 		if ( ! empty( $overlay['conditionals'] ) ) {
@@ -246,18 +246,18 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 				// Begin with the faith that this condition is false.
 				$result = false;
 
-				// used to pass targeted conditions to class var
+				// used to pass targeted conditions to class var.
 				$cond_str_prefix = '';
 
-				// start with the assumption that that the condition is affirmative
-				// (i.e. that the condition is not negated)
+				// start with the assumption that that the condition is affirmative.
+				// (i.e. that the condition is not negated).
 				$affirmative_condition = true;
 
 				// The name of the conditional function is the same as the select value.
-				// note: this will always be set as long as $overlay['conditionals'] is not empty
+				// note: this will always be set as long as $overlay['conditionals'] is not empty.
 				$cond_func = $condition['condition_select'];
 
-				// get the associated arguments meta field
+				// get the associated arguments meta field.
 				$cond_arg_key = $this->_get_associated_conditional_arg( $condition );
 				if ( ! empty( $cond_arg_key ) ) {
 					$cond_arg = isset( $conditional_meta[ $key ][ $cond_arg_key ] ) ? $conditional_meta[ $key ][ $cond_arg_key ] : '';
@@ -266,10 +266,10 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 				// If the condition is negated, then we need to skip the condition.
 				if ( isset( $condition['condition_negation'] ) && 'negated' === $condition['condition_negation'] ) {
 					$affirmative_condition = false;
-					$cond_str_prefix = 'not-';
+					$cond_str_prefix       = 'not-';
 				}
 
-				/**
+				/*
 				 * Run conditional function that is passed
 				 * from the Fieldmanager select options.
 				 */
@@ -279,12 +279,12 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 					$result = call_user_func( $cond_func, $cond_arg );
 				}
 
-				/**
+				/*
 				 * Verify the validity of the condition based on the function call result
 				 * and the affirmation/negation of the condition.
 				 */
 				if ( $affirmative_condition === $result ) {
-					$include += 1;
+					$include                     += 1;
 					$this->targeted_conditions[] = $cond_str_prefix . $cond_func;
 				}
 			}
@@ -316,21 +316,21 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 
 		foreach ( $unprioritized_overlays as $overlay ) {
 
-			/**
+			/*
 			 * Check for Conditional Specificity
 			 *
 			 * Find out if the conditionals contain a target, and
 			 * adjust its priority weight accordingly
 			 */
 			$is_specific = false;
-			$priority = 0;
+			$priority    = 0;
 
-			// act on conditionals if we have them
+			// act on conditionals if we have them.
 			if ( ! empty( $overlay['conditionals'] ) && is_array( $overlay['conditionals'] ) ) {
-				// loop through each conditional attached to the overlay
+				// loop through each conditional attached to the overlay.
 				foreach ( $overlay['conditionals'] as $condition ) {
 					$cond_arg_key = $this->_get_associated_conditional_arg( $condition );
-					// check if condition contains target specificity
+					// check if condition contains target specificity.
 					if ( isset( $condition[ $cond_arg_key ] ) ) {
 						$is_specific = true;
 					}
@@ -345,9 +345,9 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 					 * Edit the value applied to priority when an overlay is specifically targeted.
 					 * Defaults to 200.
 					 *
+					 * @param float $priority weight of targeted overlays.
 					 * @since 1.0.0
 					 *
-					 * @param float $priority weight of targeted overlays.
 					 */
 					$priority += floatval( apply_filters( 'fm_overlays_is_specific_priority', 200 ) );
 				}
@@ -361,9 +361,9 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 					 * Edit the value addded to priority for each overlay conditional that returns true.
 					 * Defaults to 50.
 					 *
+					 * @param float $priority weight of matched conditionals.
 					 * @since 1.0.0
 					 *
-					 * @param float $priority weight of matched conditionals.
 					 */
 					$priority += $condition['conditionals_matched'] * floatval( apply_filters( 'fm_overlays_conditional_matched_priority', 50 ) );
 				}
@@ -378,10 +378,10 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 			 * Completely override the priority value of a specific overlay.
 			 * The current overlay is passed as the second argument.
 			 *
-			 * @since 1.0.0
-			 *
 			 * @param int    $priority current priority value after calculating conditionals and menu order.
 			 * @param object $overlay  Instance of overlay post object being prioritized
+			 * @since 1.0.0
+			 *
 			 */
 			$priority = absint( apply_filters( 'fm_overlays_priority_override', $priority, $overlay ) );
 
@@ -394,7 +394,7 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 
 		if ( 'menu_order' === $prioritization_basis ) {
 			// The highest array index value is the highest priority
-			$prioritized_index = max( array_keys( $prioritized_overlays ) );
+			$prioritized_index   = max( array_keys( $prioritized_overlays ) );
 			$prioritized_overlay = $prioritized_overlays[ $prioritized_index ];
 
 			/*
@@ -413,9 +413,9 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	/**
 	 * Display overlay markup in footer
 	 *
+	 * @param null $overlay_id
 	 * @todo Add caching to this function
 	 *
-	 * @param null $overlay_id
 	 */
 	public function display_overlay( $overlay_id = null ) {
 		if ( empty( $overlay_id ) ) {
@@ -458,4 +458,5 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 function FM_Overlays() {
 	return Fm_Overlays::instance();
 }
+
 FM_Overlays();
