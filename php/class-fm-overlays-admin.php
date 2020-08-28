@@ -1,6 +1,6 @@
 <?php
 /**
- * class-fm-overlays-admin.php
+ * FM Overlays Admin screen.
  *
  * @created     1/8/16 2:00 PM
  * @author      Alley Interactive
@@ -9,13 +9,16 @@
  *
  */
 
+/**
+ * Class Fm_Overlays_Admin
+ */
 class Fm_Overlays_Admin extends Fm_Overlays_Singleton {
 
 	/**
 	 * Setup.
 	 */
 	public function setup() {
-		// Load admin styles and scripts
+		// Load admin styles and scripts.
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_assets' ) );
 	}
 
@@ -34,9 +37,11 @@ class Fm_Overlays_Admin extends Fm_Overlays_Singleton {
 }
 
 /**
+ * Define callable
+ *
  * @return Fm_Overlays_Admin
  */
-function Fm_Overlays_Admin() {
+function Fm_Overlays_Admin() { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid
 	return Fm_Overlays_Admin::instance();
 }
 Fm_Overlays_Admin();
