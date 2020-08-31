@@ -1,4 +1,9 @@
 <?php
+/**
+ * Fieldmanager Overlays
+ *
+ * @package fm-overlays
+ */
 
 /*
 	Plugin Name: Fieldmanager Overlays
@@ -9,7 +14,8 @@
 	Author URI: http://www.alleyinteractive.com/
 */
 
-/*  This program is free software; you can redistribute it and/or modify
+/*
+	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation; either version 2 of the License, or
 	(at your option) any later version.
@@ -48,11 +54,14 @@ define( 'FM_OVERLAYS_PATH', plugin_dir_path( __FILE__ ) );
  */
 define( 'FM_OVERLAYS_ASSET_URL', plugin_dir_url( __FILE__ ) );
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	wp_die( esc_html__( 'Denied!', 'fm-overlays' ) );
 }
 
+/**
+ * Ensure FM is active.
+ */
 function fm_overlays_setup_files() {
 	if ( ! defined( 'FM_VERSION' ) ) {
 		// If Fieldmanager is not installed, run away.
@@ -64,29 +73,28 @@ function fm_overlays_setup_files() {
 	 *
 	 * Just kidding, load in singleton base class.
 	 */
-	require_once( FM_OVERLAYS_PATH . 'php/class-fm-overlays-singleton.php' );
+	require_once FM_OVERLAYS_PATH . 'php/class-fm-overlays-singleton.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 
 	/**
 	 * Require post type
 	 */
-	require_once( FM_OVERLAYS_PATH . 'php/class-fm-overlays-post-type.php' );
+	require_once FM_OVERLAYS_PATH . 'php/class-fm-overlays-post-type.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 
 	/**
 	 * Require helper class
 	 */
-	require_once( FM_OVERLAYS_PATH . 'php/class-fm-overlays-helpers.php' );
+	require_once FM_OVERLAYS_PATH . 'php/class-fm-overlays-helpers.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 
 	/**
 	 * Main plugin functionality
 	 */
-	require_once( FM_OVERLAYS_PATH . 'php/class-fm-overlays.php' );
+	require_once FM_OVERLAYS_PATH . 'php/class-fm-overlays.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 
 	/**
 	 * Require admin manipulations
 	 */
 	if ( is_admin() ) {
-		require_once( FM_OVERLAYS_PATH . 'php/class-fm-overlays-admin.php' );
+		require_once FM_OVERLAYS_PATH . 'php/class-fm-overlays-admin.php'; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 	}
 }
-
 add_action( 'after_setup_theme', 'fm_overlays_setup_files' );

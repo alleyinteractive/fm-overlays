@@ -1,48 +1,84 @@
-sudo: false
+# Travis CI (MIT License) configuration file for WP Starter Theme
+# @link https://travis-ci.org/
 
+# Xenial does not start mysql or memcached by default
+services:
+  - mysql
+
+# Declare project language.
+# @link http://about.travis-ci.org/docs/user/languages/php/
 language: php
-
-notifications:
-  email:
-    on_success: never
-    on_failure: change
 
 branches:
   only:
     - master
 
+cache:
+  directories:
+    - $HOME/.composer/cache
+    - $HOME/.config/composer/cache
+
+# Git clone depth.
+git:
+  depth: 1
+
 matrix:
   include:
-    - php: 5.6
-      env: WP_VERSION=4.4
-    - php: 7.0
-      env: WP_VERSION=latest
-    - php: 7.0
-      env: WP_VERSION=nightly
     - php: 7.2
-      env: WP_VERSION=nightly
-    - php: 7.0
-      env: WP_TRAVISCI=phpcs
+      env: WP_VERSION=4.9.10 PHP_LINT=1
+    - php: 7.3
+      env: WP_VERSION=5.5 PHP_LINT=1 WP_PHPCS=1
   fast_finish: true
 
 before_script:
+  # Turn off Xdebug. See https://core.trac.wordpress.org/changeset/40138.
+  - phpenv config-rm xdebug.ini || echo "Xdebug not available"
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - composer global require "phpunit/phpunit=6.1.*"
+
+  # Set up WordPress.
   - |
-    if [[ ${TRAVIS_PHP_VERSION:0:2} == "7." ]]; then
-      composer global require "phpunit/phpunit=5.7.*"
-    else
-      composer global require "phpunit/phpunit=4.8.*"
+    if [[ ! -z "$WP_VERSION" ]] ; then
+      # Set up the WordPress installation.
+      bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
     fi
+
+  # Set up phpcs.
   - |
-    if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
-      chmod +x bin/setup-codesniffer.sh
-      bash bin/setup-codesniffer.sh
-      composer install
-      npm install --silent
+    if [[ "$WP_PHPCS" == "1" ]] ; then
+      composer global require automattic/vipwpcs
+      phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs,$HOME/.composer/vendor/automattic/vipwpcs
     fi
+
+  # For debugging.
+  - which phpunit
+  - phpunit --version
 script:
-  - find . -path ./vendor -prune -o -type "f" -iname "*.php" | xargs -L "1" php -l
+  # Search for PHP syntax errors.
+  #
+  # Only need to run this once per PHP version.
   - |
-    if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
-      /tmp/wordpress/php-codesniffer/bin/phpcs -p -s -v -n . --standard=./codesniffer.ruleset.xml --extensions=php
+    if [[ "$PHP_LINT" == "1" ]] ; then
+      find . -type "f" -iname "*.php" -not -path "./vendor/*" | xargs -L "1" php -l
     fi
+
+  # WordPress Coding Standards.
+  #
+  # These are the same across PHP and WordPress, so we need to run them only once.
+  #
+  # @link https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards
+  # @link http://pear.php.net/package/PHP_CodeSniffer/
+  - |
+    if [[ "$WP_PHPCS" == "1" ]] ; then
+      phpcs
+    fi
+
+  # Run the plugin's unit tests, both in single and multisite.
+  # TODO: Set up tests with FM dependency.
+  # - phpunit
+  # - WP_MULTISITE=1 phpunit
+
+# Receive notifications for build results.
+# @link http://docs.travis-ci.com/user/notifications/#Email-notifications
+notifications:
+  email: false
