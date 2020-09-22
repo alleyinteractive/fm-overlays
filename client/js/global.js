@@ -1,6 +1,5 @@
-require('../css/global.scss');
-const $ = require('jQuery');
-
+import '../css/global.scss';
+import $ from "jquery";
 /**
 * fm-overlays-global.js
 *

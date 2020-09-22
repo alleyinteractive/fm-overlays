@@ -1,5 +1,5 @@
-require('../css/admin.scss');
-const $ = require('jQuery');
+import '../css/admin.scss';
+import $ from "jquery";
 
 /**
  * fm-overlays-admin.js

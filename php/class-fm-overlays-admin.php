@@ -30,8 +30,8 @@ class Fm_Overlays_Admin extends Fm_Overlays_Singleton {
 	public function admin_assets() {
 		// make sure this doesn't load on any edit pages other than fm-overlays CPT edit pages.
 		if ( Fm_Overlays_Post_Type()->get_post_type() === get_post_type() ) {
-			wp_enqueue_script( 'fm-overlays-admin-js', FM_OVERLAYS_ASSET_URL . '/static/js/fm-overlays-admin.js', array( 'jquery' ), FM_OVERLAYS_ASSETS_VERSION, true );
-			wp_enqueue_style( 'fm-overlays-admin-css', FM_OVERLAYS_ASSET_URL . '/static/css/fm-overlays-admin.css', array(), FM_OVERLAYS_ASSETS_VERSION );
+			wp_enqueue_script( 'fm-overlays-admin-js', FM_OVERLAYS_ASSET_URL . '/static/js/admin.min.js', array( 'jquery' ), FM_OVERLAYS_ASSETS_VERSION, true );
+			wp_enqueue_style( 'fm-overlays-admin-css', FM_OVERLAYS_ASSET_URL . '/static/admin.css', array(), FM_OVERLAYS_ASSETS_VERSION );
 		}
 	}
 }
