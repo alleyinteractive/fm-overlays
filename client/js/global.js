@@ -1,5 +1,5 @@
 import '../css/global.scss';
-import $ from "jquery";
+
 /**
 * fm-overlays-global.js
 *
@@ -15,36 +15,36 @@ import $ from "jquery";
  *
  * @returns {fmOverlay}
  */
-function fmOverlay() {
-  const $window = $(window);
-  const $overlay = $('#fm-overlay');
-  const $overlayWrapper = $overlay.children('.fm-overlay-wrapper');
-  const $overlayFade = $overlay.children('.fm-overlay-fade');
-  const $overlayImage = $overlay.find('img', '.fm-overlay-content.image');
-  const $closeButton = $overlayWrapper.find('button.fm-overlay-close');
-  const timer = 500; // matches css transition duration
+const fmOverlay = () => {
+  const overlay = document.getElementById('fm-overlay');
+  const overlayWrapper = overlay.querySelector('.fm-overlay-wrapper');
+  const overlayFade = overlay.querySelector('.fm-overlay-fade');
+  const overlayImage = overlay.querySelector('.fm-overlay-content.image img');
+  const closeButton = overlayWrapper.querySelector('button.fm-overlay-close');
   const activeClass = 'visible';
-  const cookieName = $overlay.data('cookiename');
-  const expiration = $overlay.data('expiration');
+  const cookieName = overlay.dataset.cookiename;
+  const expiration = overlay.dataset.expiration;
   // Image Overlay Variables
-  let wrapperWidth = $window.innerWidth() * 0.75;
-  let wrapperHeight = $window.innerHeight() * 0.75;
-  let imgRatio = $overlayImage.width() / $overlayImage.height();
+  let wrapperWidth = window.innerWidth * 0.75;
+  let wrapperHeight = window.innerHeight * 0.75;
+  let imgRatio;
+  if(overlayImage) {
+    imgRatio = overlayImage.getBoundingClientRect().width / overlayImage.getBoundingClientRect().height;
+  }
   let wrapperRatio = wrapperWidth / wrapperHeight;
 
   /**
    * Hide overlay after fading out
    */
   function hideOverlay() {
-    $overlay.removeClass(activeClass);
-    $window.off('resize', resizeOverlayImage);
-    setTimeout(() => $overlay.hide(), timer);
+    overlay.classList.remove(activeClass);
+    window.removeEventListener('resize', resizeOverlayImage);
   }
 
   /**
    * Set Overlay cookies.
    */
-  function setCookie() {
+  const setCookie = () => {
     const date = new Date();
 
     // set cookie for 2 hours
@@ -59,72 +59,53 @@ function fmOverlay() {
    * image should fill overlay wrapper while
    * maintaining aspect ratio
    */
-  function resizeOverlayImage() {
-    wrapperWidth = $window.innerWidth() * 0.75;
-    wrapperHeight = $window.innerHeight() * 0.75;
-    imgRatio = $overlayImage.width() / $overlayImage.height();
+  const resizeOverlayImage = () => {
+    wrapperWidth = window.innerWidth * 0.75;
+    wrapperHeight = window.innerHeight * 0.75;
+    imgRatio = overlayImage.getBoundingClientRect().width / overlayImage.getBoundingClientRect().height;
     wrapperRatio = wrapperWidth / wrapperHeight;
 
     if (wrapperRatio >= imgRatio) {
-      $overlayImage.css({
-        width: 'auto',
-        'max-height': Math.ceil(wrapperHeight),
-      });
+      overlayImage.style.cssText = `width: auto; max-height: ${Math.ceil(wrapperHeight)};`;
+
       /**
        * shrink overlay wrapper width if image height is maxed out
        */
-      if ($overlayImage.width() < $overlayWrapper.width()) {
-        $overlayWrapper.css('width', 'auto');
+      if (overlayImage.getBoundingClientRect().width < overlayWrapper.getBoundingClientRect().height) {
+        overlayWrapper.style.width = 'auto';
       }
     } else {
-      $overlayWrapper.css('width', '75%');
-      $overlayImage.css({
-        width: '100%',
-        'max-height': 'auto',
-      });
+      overlayWrapper.style.width = '75%';
+      overlayImage.style.cssText = 'width: 100; max-height: auto;';
     }
   }
 
   /**
    * Display the overlay
    */
-  if ($overlay.length) {
-    setTimeout(() => {
-      // Display Overlay
-      $overlay.show().addClass(activeClass);
-      setCookie();
-      // checks if we need to listen for image resizing events
-      if ($overlay.hasClass('fm-overlay-image')) {
-        /**
-         * handles image resizing based on
-         * screen v.s. image ratio
-         */
-        resizeOverlayImage();
-        $window.resize(resizeOverlayImage);
-      }
-    }, timer);
+  if (overlay) {
+    overlay.classList.add(activeClass);
+    setCookie();
 
-    /**
-     * Exit strategies
-     * Escape (keyCode 27)
-     * Close Button
-     * Click Overlay
-     *
-     */
-    $(document).keyup((e) => {
-      if (27 === e.keyCode) {
+    if (overlay.classList.contains('fm-overlay-image')) {
+      resizeOverlayImage();
+      window.addEventListener('resize', resizeOverlayImage);
+    }
+
+    window.addEventListener( 'keydown', (e) => {
+      if ('Escape' === e.key) {
         hideOverlay();
       }
     });
 
-    $closeButton.click(() => hideOverlay());
-
-    // close the overlay when a click occurs outside of the overlay content
-    $overlayFade.click(() => hideOverlay());
+    closeButton.addEventListener('click', hideOverlay);
+    overlayFade.addEventListener('click', hideOverlay);
   }
 }
 
 /**
  * Initialize
  */
-$(document).ready(() => fmOverlay());
+document.addEventListener('DOMContentLoaded', () => {
+  fmOverlay();
+});
