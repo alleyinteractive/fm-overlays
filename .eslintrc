@@ -16,9 +16,6 @@
     "browser": true,
     "node": true
   },
-  // "globals": {
-  //   "wp": true
-  // },
   "settings": {
     "import/resolver": {
       "babel-module": {}
