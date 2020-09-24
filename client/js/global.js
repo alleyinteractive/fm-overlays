@@ -1,4 +1,4 @@
-import '../css/global.scss';
+import '../scss/global.scss';
 
 /**
 * fm-overlays-global.js

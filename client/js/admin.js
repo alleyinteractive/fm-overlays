@@ -1,4 +1,4 @@
-import '../css/admin.scss';
+import '../scss/admin.scss';
 
 /**
  * fm-overlays-admin.js
