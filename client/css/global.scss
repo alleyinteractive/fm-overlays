@@ -1,13 +1,12 @@
 $overlay-index: 50000;
 
 .fm-overlay {
-	transition: opacity .5s ease-in-out;
+	transition: opacity .2s ease-in-out;
 	opacity: 0;
 
 	&.visible {
 		opacity: 1;
 	}
-
 }
 
 
