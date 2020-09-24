@@ -163,6 +163,7 @@ class Fm_Overlays_Post_Type extends Fm_Overlays_Singleton {
 				'condition_select'            => new Fieldmanager_Select( array(
 					'attributes' => array(
 						'conditional' => 'labels',
+						'data-label'  => 'condition-select',
 					),
 					'options'    => array(
 						'is_home'       => __( 'Is Home', 'fm-overlays' ),

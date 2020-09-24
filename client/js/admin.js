@@ -1,5 +1,4 @@
 import '../css/admin.scss';
-import $ from "jquery";
 
 /**
  * fm-overlays-admin.js
@@ -15,35 +14,23 @@ import $ from "jquery";
  * Pass select field data to the labels
  * to make the UI a little easier and slicker
  */
-function conditionFieldLabelLoader() {
-  // When a select field is updated, also update the label
-  $('body').on('change', 'select[conditional="labels"]', () => {
-    const $selectField = $(this);
-    let selectVal = $selectField.val();
-    let separator = ' - ';
-    const $labelSelector = $selectField
-                            .closest('.fm-fm_overlays_conditionals')
-                            .find('.fm-label-fm_overlays_conditionals');
-    let labelText = $labelSelector.text();
+const conditionFieldLabelLoader = () => {
+  const conditionWrapper = document.querySelector('.fm-fm_overlays_conditionals-wrapper');
 
-    if (!selectVal) {
-      selectVal = '';
-      separator = '';
+  conditionWrapper.addEventListener('input', (e) => {
+    const input = e.target;
+
+    if (input.dataset.label === 'condition-select') {
+      const wrapper = e.target.closest('.fm-fm_overlays_conditionals ');
+      const label = wrapper.querySelector('.fm-label');
+      label.innerText = `Condition: ${input.options[input.selectedIndex].text}`;
     }
-
-    // update the label string
-    labelText = labelText.split(' ', 1) + separator + selectVal;
-
-    // replace the label
-    $labelSelector.text(labelText);
   });
-
-  // trigger a change for the select fields
-  // so the labels load according to their values
-  $('select[conditional="labels"]').trigger('change');
 }
 
 /**
  * DOM ready
  */
-$(document).ready(() => conditionFieldLabelLoader());
+document.addEventListener('DOMContentLoaded', () => {
+  conditionFieldLabelLoader();
+});
