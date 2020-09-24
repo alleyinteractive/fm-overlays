@@ -9,13 +9,13 @@ const config = {
     admin: path.join(__dirname, '../js/admin.js'),
   },
   output: {
-		path: path.resolve(__dirname, '../../static'),
-		publicPath: '/wp-content/plugins/fm-overlays/static/',
+    path: path.resolve(__dirname, '../../static'),
+    publicPath: '/wp-content/plugins/fm-overlays/static/',
     filename: 'js/[name].min.js'
-	},
+  },
   module: {
     rules: [
-			{
+      {
         test: /\.scss$/,
         use: [
           {
@@ -24,8 +24,8 @@ const config = {
               publicPath: '../../',
             },
           },
-					'css-loader',
-					'sass-loader',
+          'css-loader',
+          'sass-loader',
         ],
       },
       {
@@ -40,8 +40,10 @@ const config = {
     ]
   },
   plugins: [
-		new CleanWebpackPlugin(),
-		new MiniCssExtractPlugin(),
+    new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].min.css',
+    }),
   ]
 };
 
