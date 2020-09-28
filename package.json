@@ -36,6 +36,10 @@
     "postcss-preset-env": "^6.7.0",
     "sass-loader": "^10.0.2",
     "style-loader": "^1.2.1",
+    "stylelint": "^13.7.2",
+    "stylelint-a11y": "^1.2.3",
+    "stylelint-bare-webpack-plugin": "^2.0.2",
+    "stylelint-order": "^4.1.0",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12"
   }

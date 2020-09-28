@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const StylelintPlugin = require('stylelint-bare-webpack-plugin');
 
 const config = {
   entry: {
@@ -46,6 +47,7 @@ const config = {
     ]
   },
   plugins: [
+    new StylelintPlugin(),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: 'css/[name].min.css',
