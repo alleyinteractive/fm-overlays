@@ -24,7 +24,14 @@ const config = {
               publicPath: '../../',
             },
           },
-          'postcss-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                config: path.resolve(__dirname, '../config/postcss.config.js')
+              }
+            },
+          },
           'css-loader',
           'sass-loader',
         ],
