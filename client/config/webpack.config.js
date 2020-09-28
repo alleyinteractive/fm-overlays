@@ -24,6 +24,7 @@ const config = {
               publicPath: '../../',
             },
           },
+          'postcss-loader',
           'css-loader',
           'sass-loader',
         ],
