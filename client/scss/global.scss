@@ -58,6 +58,16 @@ $overlay-index: 50000;
   }
 }
 
+.fm-overlay-close-text {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
 .fm-overlay-title {
   margin-bottom: 15px;
 }
