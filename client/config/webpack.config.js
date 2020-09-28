@@ -18,21 +18,19 @@ const config = {
       {
         test: /\.scss$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              publicPath: '../../',
-            },
-          },
+          MiniCssExtractPlugin.loader,
+          'css-loader',
           {
             loader: 'postcss-loader',
             options: {
               postcssOptions: {
-                config: path.resolve(__dirname, '../config/postcss.config.js')
+                plugins: [
+                  'postcss-preset-env',
+                  'autoprefixer'
+                ]
               }
             },
           },
-          'css-loader',
           'sass-loader',
         ],
       },
