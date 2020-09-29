@@ -3,6 +3,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const StylelintPlugin = require('stylelint-bare-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const config = {
   entry: {
@@ -52,7 +53,8 @@ const config = {
     new MiniCssExtractPlugin({
       filename: 'css/[name].min.css',
     }),
-  ]
+    new ESLintPlugin(),
+  ],
 };
 
 module.exports = config;
