@@ -15,8 +15,15 @@ import '../scss/global.scss';
  *
  * @returns {fmOverlay}
  */
+
 const fmOverlay = () => {
   const overlay = document.getElementById('fm-overlay');
+
+  // If we have no overlay to work with, bail.
+  if (!overlay) {
+    return;
+  }
+
   const overlayWrapper = overlay.querySelector('.fm-overlay-wrapper');
   const overlayFade = overlay.querySelector('.fm-overlay-fade');
   const overlayImage = overlay.querySelector('.fm-overlay-content.image img');
