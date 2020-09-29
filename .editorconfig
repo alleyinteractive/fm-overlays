@@ -14,7 +14,7 @@ trim_trailing_whitespace = true
 indent_style = space
 indent_size = 2
 
-[{*.php}]
+[*.php]
 indent_style = tab
 
 [{*.txt,wp-config-sample.php}]
