@@ -4,7 +4,7 @@
   "description": "A Fieldmanager extension to render dynamic content in modal boxes/overlays on a site.",
   "private": true,
   "scripts": {
-    "dev": "webpack --config client/config/webpack.config.js -d --mode development",
+    "dev": "webpack --watch --config client/config/webpack.config.js -d",
     "build": "webpack --config client/config/webpack.config.js -p --mode production"
   },
   "repository": {
