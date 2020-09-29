@@ -1,9 +1,13 @@
-const webpack = require('webpack');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const StylelintPlugin = require('stylelint-bare-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+
+const exclude = [
+  /node_modules/,
+  /\.min\.js$/,
+];
 
 const config = {
   entry: {
@@ -13,7 +17,7 @@ const config = {
   output: {
     path: path.resolve(__dirname, '../../static'),
     publicPath: '/wp-content/plugins/fm-overlays/static/',
-    filename: 'js/[name].min.js'
+    filename: 'js/[name].min.js',
   },
   module: {
     rules: [
@@ -28,9 +32,9 @@ const config = {
               postcssOptions: {
                 plugins: [
                   'postcss-preset-env',
-                  'autoprefixer'
-                ]
-              }
+                  'autoprefixer',
+                ],
+              },
             },
           },
           'sass-loader',
@@ -39,13 +43,13 @@ const config = {
       {
         test: /\.js$/,
         use: 'babel-loader',
-        exclude: /node_modules/,
+        exclude,
       },
       {
         test: /\.svg$/,
         use: 'file-loader',
-      }
-    ]
+      },
+    ],
   },
   plugins: [
     new StylelintPlugin(),

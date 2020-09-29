@@ -30,23 +30,48 @@ const fmOverlay = () => {
   const closeButton = overlayWrapper.querySelector('button.fm-overlay-close');
   const activeClass = 'visible';
   const cookieName = overlay.dataset.cookiename;
-  const expiration = overlay.dataset.expiration;
+  const expiration = overlay.dataset.expiration; // eslint-disable-line prefer-destructuring
   // Image Overlay Variables
   let wrapperWidth = window.innerWidth * 0.75;
   let wrapperHeight = window.innerHeight * 0.75;
   let imgRatio;
-  if(overlayImage) {
-    imgRatio = overlayImage.getBoundingClientRect().width / overlayImage.getBoundingClientRect().height;
+  if (overlayImage) {
+    imgRatio = overlayImage.getBoundingClientRect().width
+    / overlayImage.getBoundingClientRect().height;
   }
   let wrapperRatio = wrapperWidth / wrapperHeight;
 
   /**
+   * Resize Image Overlay
+   * image should fill overlay wrapper while
+   * maintaining aspect ratio
+   */
+  const resizeOverlayImage = () => {
+    wrapperWidth = window.innerWidth * 0.75;
+    wrapperHeight = window.innerHeight * 0.75;
+    // eslint-disable-next-line max-len
+    imgRatio = overlayImage.getBoundingClientRect().width / overlayImage.getBoundingClientRect().height;
+    wrapperRatio = wrapperWidth / wrapperHeight;
+
+    if (wrapperRatio >= imgRatio) {
+      overlayImage.style.cssText = `width: auto; max-height: ${Math.ceil(wrapperHeight)};`;
+      // eslint-disable-next-line max-len
+      if (overlayImage.getBoundingClientRect().width < overlayWrapper.getBoundingClientRect().height) {
+        overlayWrapper.style.width = 'auto';
+      }
+    } else {
+      overlayWrapper.style.width = '75%';
+      overlayImage.style.cssText = 'width: 100; max-height: auto;';
+    }
+  };
+
+  /**
    * Hide overlay after fading out
    */
-  function hideOverlay() {
+  const hideOverlay = () => {
     overlay.classList.remove(activeClass);
     window.removeEventListener('resize', resizeOverlayImage);
-  }
+  };
 
   /**
    * Set Overlay cookies.
@@ -59,33 +84,7 @@ const fmOverlay = () => {
 
     const expires = `; expires=' + ${date.toGMTString()}`;
     document.cookie = `${cookieName} = ${true} ${expires}; path=/`;
-  }
-
-  /**
-   * Resize Image Overlay
-   * image should fill overlay wrapper while
-   * maintaining aspect ratio
-   */
-  const resizeOverlayImage = () => {
-    wrapperWidth = window.innerWidth * 0.75;
-    wrapperHeight = window.innerHeight * 0.75;
-    imgRatio = overlayImage.getBoundingClientRect().width / overlayImage.getBoundingClientRect().height;
-    wrapperRatio = wrapperWidth / wrapperHeight;
-
-    if (wrapperRatio >= imgRatio) {
-      overlayImage.style.cssText = `width: auto; max-height: ${Math.ceil(wrapperHeight)};`;
-
-      /**
-       * shrink overlay wrapper width if image height is maxed out
-       */
-      if (overlayImage.getBoundingClientRect().width < overlayWrapper.getBoundingClientRect().height) {
-        overlayWrapper.style.width = 'auto';
-      }
-    } else {
-      overlayWrapper.style.width = '75%';
-      overlayImage.style.cssText = 'width: 100; max-height: auto;';
-    }
-  }
+  };
 
   /**
    * Display the overlay
@@ -99,8 +98,8 @@ const fmOverlay = () => {
       window.addEventListener('resize', resizeOverlayImage);
     }
 
-    window.addEventListener( 'keydown', (e) => {
-      if ('Escape' === e.key) {
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
         hideOverlay();
       }
     });
@@ -108,7 +107,7 @@ const fmOverlay = () => {
     closeButton.addEventListener('click', hideOverlay);
     overlayFade.addEventListener('click', hideOverlay);
   }
-}
+};
 
 /**
  * Initialize
