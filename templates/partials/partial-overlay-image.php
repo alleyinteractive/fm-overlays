@@ -4,6 +4,8 @@
  * implements the srcset attribute in the <img> tag
  *
  * @package fm-overlays
+ *
+ * phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
  */
 
 if ( empty( $overlay ) ) {

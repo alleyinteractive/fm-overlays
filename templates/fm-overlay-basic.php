@@ -6,6 +6,8 @@
  * @author      Alley Interactive
  * @package     fm-overlays
  * @description Basic template for displaying fm-overlay
+ *
+ * phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
  */
 
 if ( empty( $overlay ) ) {
