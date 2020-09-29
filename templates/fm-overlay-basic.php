@@ -45,8 +45,8 @@ $targeted_conditions = Fm_Overlays()->targeted_conditions;
 				<?php elseif ( 'richtext' === $overlay->overlay_content['content_type_select'] ) : ?>
 					<?php do_action( 'fm_overlays_before_the_content' ); ?>
 					<?php
-							echo ( ! empty( $overlay->overlay_content['richtext_content'] ) ) ? // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							apply_filters( 'the_content', wp_kses_post( $overlay->overlay_content['richtext_content'] ) ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+							echo ( ! empty( $overlay->overlay_content['richtext_content'] ) ) ?
+							apply_filters( 'the_content', wp_kses_post( $overlay->overlay_content['richtext_content'] ) ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound,WordPress.Security.EscapeOutput.OutputNotEscaped
 							'';
 					?>
 					<?php do_action( 'fm_overlays_after_the_content' ); ?>
