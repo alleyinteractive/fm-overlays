@@ -1,0 +1,91 @@
+$overlay-index: 50000;
+
+.fm-overlay {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+
+  &.visible {
+    opacity: 1;
+  }
+}
+
+.fm-overlay-fade {
+  background-color: rgba(0, 0, 0, 0.75);
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: $overlay-index;
+}
+
+.fm-overlay-richtext .fm-overlay-wrapper {
+  border-radius: 5px;
+  padding: 50px;
+}
+
+.fm-overlay-wrapper {
+  background: rgba(255, 255, 255,0.925);
+  box-shadow: 5px 5px 15px -3px #000;
+  height: auto;
+  left: 50%;
+  max-height: 75%;
+  max-width: 75%;
+  position: fixed;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: auto;
+  z-index: $overlay-index + 2;
+}
+
+.fm-overlay-close {
+  background: none;
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 12;
+
+  svg {
+    display: block;
+    height: 22px;
+    width: 20px;
+  }
+}
+
+.fm-overlay-close-text {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.fm-overlay-title {
+  margin-bottom: 15px;
+}
+
+.fm-overlay-content {
+
+  *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.fm-image-link {
+  display: block;
+
+  .fm-image {
+    display: block;
+    margin-bottom: -1px;
+  }
+}

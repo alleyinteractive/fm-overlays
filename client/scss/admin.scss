@@ -1,0 +1,11 @@
+.fm-condition_select-wrapper {
+  display: inline-block;
+}
+/* stylelint-disable selector-max-specificity */
+.fm-fm_overlays_conditionals .fm-wrapper[data-display-src="condition_select"] {
+  display: inline-block;
+  margin-left: 30px;
+  position: relative;
+  top: 2px;
+}
+/* stylelint-enable */

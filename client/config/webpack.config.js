@@ -1,100 +1,64 @@
-'use strict';
+const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const StylelintPlugin = require('stylelint-bare-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
-// Webpack dependencies
-var path = require('path');
-var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var LiveReloadPlugin = require('webpack-livereload-plugin');
+const exclude = [
+  /node_modules/,
+  /\.min\.js$/,
+];
 
-// Path definitions
-var buildRoot = path.resolve(__dirname, '../../');
-var appRoot = path.join(buildRoot, 'client/js/app');
-
-// Plugin namespace
-var pluginName = path.join(__dirname, '../../').match(/([^\/]*)\/*$/)[1];
-
-module.exports = {
-  // Two discrete module entry points
+const config = {
   entry: {
-    global: 'client/js/global.js',
-    admin: 'client/js/admin.js'
+    global: path.join(__dirname, '../js/global.js'),
+    admin: path.join(__dirname, '../js/admin.js'),
   },
-
-  // Define module outputs
   output: {
-    path: 'static',
-    publicPath: '/wp-content/plugins/' + pluginName + '/static/',
-    filename: 'js/fm-overlays-[name].js'
+    path: path.resolve(__dirname, '../../static'),
+    publicPath: '/wp-content/plugins/fm-overlays/static/',
+    filename: 'js/[name].min.js',
   },
-
-  // So we can put config files in config/
-  eslint: {
-    configFile: path.join(__dirname, '.eslintrc')
-  },
-
-  // Where webpack resolves modules
-  resolve: {
-    root: buildRoot,
-    modulesDirectories: [
-      'node_modules'
-    ]
-  },
-
-  // Enable require('jquery') where jquery is already a global
-  externals: {
-    'jQuery': 'jQuery'
-  },
-
-  plugins: [
-    new ExtractTextPlugin('css/fm-overlays-[name].css'),
-    new LiveReloadPlugin({ appendScriptTag: true }),
-    new webpack.NoErrorsPlugin()
-  ],
-
   module: {
-    preLoaders: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'eslint'
-      }
-    ],
-    loaders: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel',
-        query: {
-          presets: ['es2015']
-        }
-      },
+    rules: [
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('style-loader',
-          'css?sourceMap!autoprefixer?{browsers:["last 3 version"]}' +
-          '!sass?outputStyle=compact&sourceMap=true&sourceMapContents=true'
-        )
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: [
+                  'postcss-preset-env',
+                  'autoprefixer',
+                ],
+              },
+            },
+          },
+          'sass-loader',
+        ],
       },
       {
-        test: /\.png(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url'
+        test: /\.js$/,
+        use: 'babel-loader',
+        exclude,
       },
       {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url?limit=10000&minetype=image/svg+xml'
+        test: /\.svg$/,
+        use: 'file-loader',
       },
-      {
-        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url?limit=10000&minetype=application/font-woff'
-      },
-      {
-        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url?limit=10000&minetype=application/octet-stream'
-      },
-      {
-        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'file'
-      },
-    ]
-  }
-}
+    ],
+  },
+  plugins: [
+    new StylelintPlugin(),
+    new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].min.css',
+    }),
+    new ESLintPlugin(),
+  ],
+};
+
+module.exports = config;

@@ -1,10 +1,8 @@
-require('../css/admin.scss');
-const $ = require('jQuery');
+import '../scss/admin.scss';
 
 /**
  * fm-overlays-admin.js
  *
- * @created 1/8/16 2:44 PM
  * @author Alley Interactive
  * @package fm-overlays
  * @description JS manipulations to the fm-overlays admin area.
@@ -12,38 +10,42 @@ const $ = require('jQuery');
  */
 
 /**
- * Pass select field data to the labels
- * to make the UI a little easier and slicker
+  * Set a condition field's wrapper label to the same value as the current option.
+  * @param {node} selectEl a <select> element
+  */
+const setLabelText = (selectEl) => {
+  const wrapper = selectEl.closest('.fm-fm_overlays_conditionals');
+  const label = wrapper.querySelector('.fm-label');
+  label.innerText = `Condition: ${selectEl.options[selectEl.selectedIndex].text}`;
+};
+
+/**
+ * Update condition field wrapper labels with the currently selected option.
  */
-function conditionFieldLabelLoader() {
-  // When a select field is updated, also update the label
-  $('body').on('change', 'select[conditional="labels"]', () => {
-    const $selectField = $(this);
-    let selectVal = $selectField.val();
-    let separator = ' - ';
-    const $labelSelector = $selectField
-                            .closest('.fm-fm_overlays_conditionals')
-                            .find('.fm-label-fm_overlays_conditionals');
-    let labelText = $labelSelector.text();
+const updateConditionLabels = () => {
+  const conditionWrappers = document.querySelectorAll('.fm-fm_overlays_conditionals');
 
-    if (!selectVal) {
-      selectVal = '';
-      separator = '';
-    }
+  if (conditionWrappers.length) {
+    conditionWrappers.forEach((condition) => {
+      // Update all condition labels on page load.
+      let select = condition.querySelector('select');
+      setLabelText(select);
 
-    // update the label string
-    labelText = labelText.split(' ', 1) + separator + selectVal;
+      // Update each condition label based on its select menu option.
+      condition.addEventListener('input', (e) => {
+        select = e.target;
 
-    // replace the label
-    $labelSelector.text(labelText);
-  });
-
-  // trigger a change for the select fields
-  // so the labels load according to their values
-  $('select[conditional="labels"]').trigger('change');
-}
+        if (select.dataset.label === 'condition-select') {
+          setLabelText(select);
+        }
+      });
+    });
+  }
+};
 
 /**
  * DOM ready
  */
-$(document).ready(() => conditionFieldLabelLoader());
+document.addEventListener('DOMContentLoaded', () => {
+  updateConditionLabels();
+});

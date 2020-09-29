@@ -38,8 +38,8 @@ class Fm_Overlays extends Fm_Overlays_Singleton {
 	 * Load in scripts and styles used by the front end
 	 */
 	public function enqueue_fe_assets() {
-		wp_enqueue_style( 'fm-overlays-global-css', FM_OVERLAYS_ASSET_URL . '/static/css/fm-overlays-global.css', array(), FM_GLOBAL_ASSET_VERSION );
-		wp_enqueue_script( 'fm-overlays-global-js', FM_OVERLAYS_ASSET_URL . '/static/js/fm-overlays-global.js', array( 'jquery' ), FM_GLOBAL_ASSET_VERSION, true );
+		wp_enqueue_style( 'fm-overlays-global-css', FM_OVERLAYS_ASSET_URL . '/static/css/global.min.css', array(), FM_GLOBAL_ASSET_VERSION );
+		wp_enqueue_script( 'fm-overlays-global-js', FM_OVERLAYS_ASSET_URL . '/static/js/global.min.js', array(), FM_GLOBAL_ASSET_VERSION, true );
 	}
 
 	/**

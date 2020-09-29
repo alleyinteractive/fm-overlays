@@ -1,0 +1,25 @@
+{
+  // Extend the AirBnb lint config
+  "extends": "airbnb-base",
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "ecmaFeatures": {
+      "globalReturn": true,
+      "impliedStrict": true
+    },
+    "sourceType": "module"
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true
+  },
+  "settings": {
+    "import/resolver": {
+      "babel-module": {}
+    }
+  },
+  "ignorePatterns": ["node_modules", "**/*.min.js"],
+  "rules": {}
+}

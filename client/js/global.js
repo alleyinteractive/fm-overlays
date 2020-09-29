@@ -1,5 +1,4 @@
-require('../css/global.scss');
-const $ = require('jQuery');
+import '../scss/global.scss';
 
 /**
 * fm-overlays-global.js
@@ -16,36 +15,68 @@ const $ = require('jQuery');
  *
  * @returns {fmOverlay}
  */
-function fmOverlay() {
-  const $window = $(window);
-  const $overlay = $('#fm-overlay');
-  const $overlayWrapper = $overlay.children('.fm-overlay-wrapper');
-  const $overlayFade = $overlay.children('.fm-overlay-fade');
-  const $overlayImage = $overlay.find('img', '.fm-overlay-content.image');
-  const $closeButton = $overlayWrapper.find('button.fm-overlay-close');
-  const timer = 500; // matches css transition duration
+
+const fmOverlay = () => {
+  const overlay = document.getElementById('fm-overlay');
+
+  // If we have no overlay to work with, bail.
+  if (!overlay) {
+    return;
+  }
+
+  const overlayWrapper = overlay.querySelector('.fm-overlay-wrapper');
+  const overlayFade = overlay.querySelector('.fm-overlay-fade');
+  const overlayImage = overlay.querySelector('.fm-overlay-content.image img');
+  const closeButton = overlayWrapper.querySelector('button.fm-overlay-close');
   const activeClass = 'visible';
-  const cookieName = $overlay.data('cookiename');
-  const expiration = $overlay.data('expiration');
+  const cookieName = overlay.dataset.cookiename;
+  const expiration = overlay.dataset.expiration; // eslint-disable-line prefer-destructuring
   // Image Overlay Variables
-  let wrapperWidth = $window.innerWidth() * 0.75;
-  let wrapperHeight = $window.innerHeight() * 0.75;
-  let imgRatio = $overlayImage.width() / $overlayImage.height();
+  let wrapperWidth = window.innerWidth * 0.75;
+  let wrapperHeight = window.innerHeight * 0.75;
+  let imgRatio;
+  if (overlayImage) {
+    imgRatio = overlayImage.getBoundingClientRect().width
+    / overlayImage.getBoundingClientRect().height;
+  }
   let wrapperRatio = wrapperWidth / wrapperHeight;
+
+  /**
+   * Resize Image Overlay
+   * image should fill overlay wrapper while
+   * maintaining aspect ratio
+   */
+  const resizeOverlayImage = () => {
+    wrapperWidth = window.innerWidth * 0.75;
+    wrapperHeight = window.innerHeight * 0.75;
+    // eslint-disable-next-line max-len
+    imgRatio = overlayImage.getBoundingClientRect().width / overlayImage.getBoundingClientRect().height;
+    wrapperRatio = wrapperWidth / wrapperHeight;
+
+    if (wrapperRatio >= imgRatio) {
+      overlayImage.style.cssText = `width: auto; max-height: ${Math.ceil(wrapperHeight)};`;
+      // eslint-disable-next-line max-len
+      if (overlayImage.getBoundingClientRect().width < overlayWrapper.getBoundingClientRect().height) {
+        overlayWrapper.style.width = 'auto';
+      }
+    } else {
+      overlayWrapper.style.width = '75%';
+      overlayImage.style.cssText = 'width: 100; max-height: auto;';
+    }
+  };
 
   /**
    * Hide overlay after fading out
    */
-  function hideOverlay() {
-    $overlay.removeClass(activeClass);
-    $window.off('resize', resizeOverlayImage);
-    setTimeout(() => $overlay.hide(), timer);
-  }
+  const hideOverlay = () => {
+    overlay.classList.remove(activeClass);
+    window.removeEventListener('resize', resizeOverlayImage);
+  };
 
   /**
    * Set Overlay cookies.
    */
-  function setCookie() {
+  const setCookie = () => {
     const date = new Date();
 
     // set cookie for 2 hours
@@ -53,79 +84,34 @@ function fmOverlay() {
 
     const expires = `; expires=' + ${date.toGMTString()}`;
     document.cookie = `${cookieName} = ${true} ${expires}; path=/`;
-  }
-
-  /**
-   * Resize Image Overlay
-   * image should fill overlay wrapper while
-   * maintaining aspect ratio
-   */
-  function resizeOverlayImage() {
-    wrapperWidth = $window.innerWidth() * 0.75;
-    wrapperHeight = $window.innerHeight() * 0.75;
-    imgRatio = $overlayImage.width() / $overlayImage.height();
-    wrapperRatio = wrapperWidth / wrapperHeight;
-
-    if (wrapperRatio >= imgRatio) {
-      $overlayImage.css({
-        width: 'auto',
-        'max-height': Math.ceil(wrapperHeight),
-      });
-      /**
-       * shrink overlay wrapper width if image height is maxed out
-       */
-      if ($overlayImage.width() < $overlayWrapper.width()) {
-        $overlayWrapper.css('width', 'auto');
-      }
-    } else {
-      $overlayWrapper.css('width', '75%');
-      $overlayImage.css({
-        width: '100%',
-        'max-height': 'auto',
-      });
-    }
-  }
+  };
 
   /**
    * Display the overlay
    */
-  if ($overlay.length) {
-    setTimeout(() => {
-      // Display Overlay
-      $overlay.show().addClass(activeClass);
-      setCookie();
-      // checks if we need to listen for image resizing events
-      if ($overlay.hasClass('fm-overlay-image')) {
-        /**
-         * handles image resizing based on
-         * screen v.s. image ratio
-         */
-        resizeOverlayImage();
-        $window.resize(resizeOverlayImage);
-      }
-    }, timer);
+  if (overlay) {
+    overlay.classList.add(activeClass);
+    setCookie();
 
-    /**
-     * Exit strategies
-     * Escape (keyCode 27)
-     * Close Button
-     * Click Overlay
-     *
-     */
-    $(document).keyup((e) => {
-      if (27 === e.keyCode) {
+    if (overlay.classList.contains('fm-overlay-image')) {
+      resizeOverlayImage();
+      window.addEventListener('resize', resizeOverlayImage);
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
         hideOverlay();
       }
     });
 
-    $closeButton.click(() => hideOverlay());
-
-    // close the overlay when a click occurs outside of the overlay content
-    $overlayFade.click(() => hideOverlay());
+    closeButton.addEventListener('click', hideOverlay);
+    overlayFade.addEventListener('click', hideOverlay);
   }
-}
+};
 
 /**
  * Initialize
  */
-$(document).ready(() => fmOverlay());
+document.addEventListener('DOMContentLoaded', () => {
+  fmOverlay();
+});
