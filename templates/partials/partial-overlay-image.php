@@ -5,7 +5,7 @@
  *
  * @package fm-overlays
  *
- * phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
+ * phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
  */
 
 if ( empty( $overlay ) ) {

@@ -7,7 +7,7 @@
  * @package     fm-overlays
  * @description Basic template for displaying fm-overlay
  *
- * phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
+ * phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
  */
 
 if ( empty( $overlay ) ) {
